@@ -189,18 +189,30 @@
             </div>
             <div class="p-6 overflow-y-auto space-y-4">
                 <div class="grid grid-cols-12 gap-4">
+                    <!-- Fila 1: Via -->
                     <div class="col-span-12 sm:col-span-4"><label class="input-label">Tipo Vía</label><select id="TIPO_VIA" class="input address-part"></select></div>
                     <div class="col-span-12 sm:col-span-8"><label class="input-label">Nombre Vía</label><input id="NOM_VIA" class="input address-part" placeholder="Ej: JAVIER PRADO ESTE"></div>
+                    
+                    <!-- Fila 2: Nro, Mza, Lte -->
                     <div class="col-span-4"><label class="input-label">Número</label><input id="NRO" class="input address-part" placeholder="123"></div>
                     <div class="col-span-4"><label class="input-label">Manzana</label><input id="MZA" class="input address-part" placeholder="A"></div>
                     <div class="col-span-4"><label class="input-label">Lote</label><input id="LTE" class="input address-part" placeholder="5"></div>
+
+                    <!-- Fila 3: Interior -->
                     <div class="col-span-12 sm:col-span-6"><label class="input-label">Tipo Interior</label><select id="TIP_INT" class="input address-part"></select></div>
                     <div class="col-span-12 sm:col-span-6"><label class="input-label">Nro Int.</label><input id="NRO_INT" class="input address-part"></div>
+                    
+                    <!-- Fila 4: Edificacion -->
                     <div class="col-span-12 sm:col-span-6"><label class="input-label">Tipo Edif.</label><select id="TIP_EDIF" class="input address-part"></select></div>
                     <div class="col-span-12 sm:col-span-6"><label class="input-label">Nom Edif.</label><input id="NOM_EDIF" class="input address-part"></div>
+
+                    <!-- Fila 5: Urb -->
                     <div class="col-span-12"><label class="input-label">Urb.</label><input id="URB_ADDR" class="input address-part" placeholder="Ej: LOS FICUS"></div>
+
+                    <!-- Fila 6: Distrito -->
                     <div class="col-span-12"><label class="input-label">Distrito <span class="text-red-500">*</span></label><select id="DISTRITO_SEL" class="input address-part"></select></div>
                 </div>
+                
                 <div class="bg-blue-50 p-3 rounded border border-blue-100 mt-4">
                     <label class="input-label text-blue-800 mb-1">Vista Previa:</label>
                     <p id="addressPreview" class="text-sm font-mono font-medium text-gray-700 min-h-[1.5em]">---</p>
@@ -322,11 +334,16 @@
                             <div class="sm:col-span-6"><label class="input-label">Ciudad <span class="text-red-500">*</span></label><input id="CIUDAD" class="input"></div>
 
                             <div class="sm:col-span-12 border-t border-gray-100 my-2 pt-2"><p class="text-xs font-bold text-gray-400 uppercase mb-3">Datos Personales del RL</p></div>
+                            <div class="sm:col-span-6">
+                                <label class="input-label">DNI <span class="text-red-500">*</span></label>
+                                <div class="flex gap-2"><input id="DNI" class="input" maxlength="8"><button id="btnSearchDni" class="btn alt px-3" title="Buscar DNI"><i data-lucide="search" class="w-4 h-4"></i></button></div>
+                            </div>
+                            <div class="sm:col-span-6"><label class="input-label">Cargo <span class="text-red-500">*</span></label><input id="CARGO_RL" class="input" placeholder="Ej: Gerente General"></div>
+                            
                             <div class="sm:col-span-4"><label class="input-label">Apellido Paterno <span class="text-red-500">*</span></label><input id="APELLIDO_PATERNO" class="input"></div>
                             <div class="sm:col-span-4"><label class="input-label">Apellido Materno <span class="text-red-500">*</span></label><input id="APELLIDO_MATERNO" class="input"></div>
                             <div class="sm:col-span-4"><label class="input-label">Nombres <span class="text-red-500">*</span></label><input id="NOMBRES" class="input"></div>
-                            <div class="sm:col-span-6"><label class="input-label">Cargo <span class="text-red-500">*</span></label><input id="CARGO_RL" class="input" placeholder="Ej: Gerente General"></div>
-                            <div class="sm:col-span-6"><label class="input-label">DNI <span class="text-red-500">*</span></label><input id="DNI" class="input" maxlength="8"></div>
+                            
                             <div class="sm:col-span-4"><label class="input-label">Teléfono <span class="text-red-500">*</span></label><input id="TELEFONO" class="input"></div>
                             <div class="sm:col-span-8"><label class="input-label">Correo Electrónico <span class="text-red-500">*</span></label><input id="CORREO" class="input" type="email" placeholder="email@empresa.com"></div>
                         </div>
@@ -418,7 +435,6 @@
             <div class="mb-6 flex justify-between items-center"><h2 class="text-xl font-bold text-gray-800">Configuración</h2><div class="flex bg-white rounded-md shadow-sm border border-gray-200 p-1"><button onclick="switchConfigTab('users')" id="btnConfigUsers" class="px-4 py-1.5 rounded text-sm font-medium transition-colors">Usuarios</button><button onclick="switchConfigTab('plans')" id="btnConfigPlans" class="px-4 py-1.5 rounded text-sm font-medium transition-colors">Planes</button></div></div>
             <div id="panel-users" class="grid md:grid-cols-12 gap-6"><div class="md:col-span-4"><div class="card sticky top-24"><h3 class="card-header border-0 pb-0 mb-4">Crear Usuario</h3><div class="space-y-4"><div><label class="input-label">Usuario</label><input id="newUserName" class="input"></div><div><label class="input-label">Contraseña</label><div class="flex gap-2"><input id="newUserPass" class="input" type="text"><button onclick="generateUserPass()" class="btn alt px-3" title="Generar"><i data-lucide="key" class="w-4 h-4"></i></button></div></div><div><label class="input-label">Rol</label><select id="newUserRole" class="input"><option value="normal">NORMAL</option><option value="admin">ADMIN</option></select></div><label class="flex items-center gap-2 text-sm p-1"><input type="checkbox" id="newUserRestrict" checked class="w-4 h-4 rounded text-entel-blue"><span>Restringir IP</span></label><button onclick="createNewUser()" class="btn w-full mt-2">Guardar Usuario</button><p id="userMsg" class="text-center text-xs font-medium py-2 hidden"></p></div></div></div><div class="md:col-span-8"><div class="card"><h3 class="card-header border-0 pb-0 mb-4">Usuarios Registrados</h3><div id="usersList" class="space-y-2 max-h-[500px] overflow-y-auto pr-1"></div></div></div></div>
             
-            <!-- PANEL PLANES (BASE DE DATOS) -->
             <div id="panel-plans" class="grid lg:grid-cols-12 gap-6 hidden-vis">
                 <div class="lg:col-span-12">
                     <div class="card p-0 overflow-hidden shadow-lg border-0">
@@ -468,7 +484,6 @@
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
         
-        // DATOS ACTUALIZADOS SEGÚN TU EXCEL - PLAZOS COMO NÚMEROS PUROS
         const SEED_PLANS = [
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
@@ -521,12 +536,12 @@
             byId('btnReset').onclick = handleResetAccess;
             byId('btnLogout').onclick = logout;
             byId('btnSearchRuc').onclick = fetchRucData;
+            byId('btnSearchDni').onclick = fetchDniData; 
+            
             ['loginUser', 'loginPass'].forEach(id => byId(id).addEventListener('keyup', e => { if (e.key === 'Enter') handleLogin(); }));
             
-            // Focus on Install Address opens Modal
             byId('DIREC_INST').addEventListener('focus', openAddressModal);
             
-            // Address Builder Listeners inside modal
             const addressInputs = document.querySelectorAll('.address-part');
             addressInputs.forEach(inp => inp.addEventListener('input', buildAddressPreview));
             addressInputs.forEach(inp => inp.addEventListener('change', buildAddressPreview));
@@ -722,6 +737,37 @@
             const btn = byId('btnSearchRuc'); btn.disabled = true; btn.innerHTML = '...';
             try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`); if(!res.ok) throw new Error(); const d = await res.json(); if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; } catch { alert('Error consultando RUC.'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
         }
+
+        async function fetchDniData() {
+            const dni = byId('DNI').value;
+            if (!dni || dni.length !== 8) return alert('DNI inválido (debe tener 8 dígitos).');
+            
+            const btn = byId('btnSearchDni'); 
+            btn.disabled = true; 
+            btn.innerHTML = '...';
+
+            try {
+                const res = await fetch(`https://dniruc.apisperu.com/api/v1/dni/${dni}?token=${APISPERU_TOKEN}`);
+                if (!res.ok) throw new Error("Error en la petición");
+                const d = await res.json();
+                
+                if (d && d.success !== false) {
+                    byId('APELLIDO_PATERNO').value = d.apellidoPaterno || '';
+                    byId('APELLIDO_MATERNO').value = d.apellidoMaterno || '';
+                    byId('NOMBRES').value = d.nombres || '';
+                } else {
+                    alert('No se encontraron datos para este DNI.');
+                }
+            } catch (e) { 
+                console.error(e);
+                alert('Error consultando DNI. Verifique la conexión o el servicio.'); 
+            } finally { 
+                btn.disabled = false; 
+                btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; 
+                lucide.createIcons(); 
+            }
+        }
+
         async function handleExportAll() {
             if (!byId('RUC').value || !byId('RAZON_SOCIAL').value) return alert('Faltan datos del Cliente.');
             const req = ['APELLIDO_PATERNO','APELLIDO_MATERNO','NOMBRES','DNI','TELEFONO','CORREO','CONT_NOMB','CONT_CARGO','CONT_DNI','CONT_TELEF','CONT_CORREO','RL','CARGO_FIRM','DIREC_INST'];
@@ -762,7 +808,7 @@
             state.plans.forEach((p, idx) => {
                 const tr = document.createElement('tr'); tr.className = "table-row-hover hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0";
                 tr.onclick = () => openPlanModal(idx);
-                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} m</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
+                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} Meses</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
                 tbody.appendChild(tr);
             });
             lucide.createIcons();
