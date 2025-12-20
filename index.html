@@ -490,7 +490,7 @@
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
         
-        // DATOS ACTUALIZADOS: Plazos como números puros
+        // DATOS ACTUALIZADOS SEGÚN TU EXCEL - PLAZOS COMO NÚMEROS PUROS
         const SEED_PLANS = [
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
@@ -506,8 +506,16 @@
             { name: "INTERNET FIBRA + 1000 MBPS", minGar: "0.7", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "670", tarif: "670", plazo: "12", type: "internet" },
         ];
 
-        const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO' };
-        const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'CANTIDAD': 'CANTIDAD', 'SUB_TOTAL': 'SUB_TOTAL', 'TOTAL': 'TOTAL', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
+        // MAPEOS CORREGIDOS PARA ASEGURAR INDEPENDENCIA
+        // DIRECCION (Fiscal) = campo DIRECCION
+        // DIRECCION (Instalación en SUP) = campo DIREC_INST
+        const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO' };
+        
+        // En servicios suplementarios, normalmente la dirección es la de instalación (DIREC_INST)
+        // Pero si hay un campo específico para fiscal, debería ser 'DIRECCION'.
+        // Asumiendo que el PDF SUP pide la dirección de instalación principal:
+        const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'CANTIDAD': 'CANTIDAD', 'SUB_TOTAL': 'SUB_TOTAL', 'TOTAL': 'TOTAL', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
+        
         const MAP_TAR = { 'CARGO FIJO': 'CARGO_FIJO_VAL', 'CARGO': 'CARGO_FIRM', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'NOM_PLAN': 'NOM_PLAN', 'MIN_GAR': 'MIN_GAR', 'VEL_MAX_BAJ': 'VEL_MAX_BAJ', 'VEL_MIN_BAJ': 'VEL_MIN_BAJ', 'VEL_MAX_SUB': 'VEL_MAX_SUB', 'VEL_MIN_SUB': 'VEL_MIN_SUB', 'TARIF_MENS': 'TARIF_MENS', 'DIREC_INST': 'DIREC_INST', 'PLAZO_INST': 'PLAZO_CONT', 'PLAZO_CONT': 'PLAZO_CONT' };
 
         let state = { currentUser: null, users: [], plans: [], ip: null, serviceType: 'internet' };
@@ -747,7 +755,7 @@
                 if(!res.ok) throw new Error(); 
                 const d = await res.json(); 
                 if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; 
-                // ONLY fill RZ, leave DIRECCION empty for manual entry as requested
+                // Removed autofill for DIRECCION to ensure manual entry
             } catch { alert('Error consultando RUC.'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
         }
 
@@ -812,7 +820,7 @@
             state.plans.forEach((p, idx) => {
                 const tr = document.createElement('tr'); tr.className = "table-row-hover hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0";
                 tr.onclick = () => openPlanModal(idx);
-                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} Meses</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
+                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} m</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
                 tbody.appendChild(tr);
             });
             lucide.createIcons();
