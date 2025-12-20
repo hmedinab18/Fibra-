@@ -334,9 +334,14 @@
                             <div class="sm:col-span-6"><label class="input-label">Ciudad <span class="text-red-500">*</span></label><input id="CIUDAD" class="input"></div>
 
                             <div class="sm:col-span-12 border-t border-gray-100 my-2 pt-2"><p class="text-xs font-bold text-gray-400 uppercase mb-3">Datos Personales del RL</p></div>
+                            
+                            <!-- DNI with API -->
                             <div class="sm:col-span-6">
                                 <label class="input-label">DNI <span class="text-red-500">*</span></label>
-                                <div class="flex gap-2"><input id="DNI" class="input" maxlength="8"><button id="btnSearchDni" class="btn alt px-3" title="Buscar DNI"><i data-lucide="search" class="w-4 h-4"></i></button></div>
+                                <div class="flex gap-2">
+                                    <input id="DNI" class="input" maxlength="8" placeholder="8 dígitos">
+                                    <button id="btnSearchDni" class="btn alt px-3" title="Buscar DNI"><i data-lucide="search" class="w-4 h-4"></i></button>
+                                </div>
                             </div>
                             <div class="sm:col-span-6"><label class="input-label">Cargo <span class="text-red-500">*</span></label><input id="CARGO_RL" class="input" placeholder="Ej: Gerente General"></div>
                             
@@ -484,6 +489,7 @@
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
         
+        // DATOS ACTUALIZADOS: Plazos como números puros
         const SEED_PLANS = [
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
@@ -818,3 +824,4 @@
     </script>
 </body>
 </html>
+
