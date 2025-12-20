@@ -218,6 +218,47 @@
         </div>
     </div>
 
+    <!-- MODAL DE PLANES (ADD/EDIT) -->
+    <div id="planModal" class="fixed inset-0 z-[70] flex items-center justify-center bg-gray-900/60 backdrop-blur-sm hidden-vis">
+        <div class="w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden m-4 flex flex-col max-h-[90vh]">
+            <div class="bg-entel-blue px-6 py-4 flex justify-between items-center text-white">
+                <h3 id="planModalTitle" class="font-bold text-lg flex items-center gap-2"><i data-lucide="plus" class="w-5 h-5"></i> Nuevo Plan</h3>
+                <button onclick="closePlanModal()" class="hover:bg-white/20 p-1 rounded transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4">
+                <input type="hidden" id="planOriginalName">
+                <div><label class="input-label">Nombre del Plan</label><input id="planName" class="input" placeholder="Ej: INTERNET FIBRA + 100 MBPS"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="input-label">Tarifa</label><input id="planTarif" class="input" placeholder="S/ 0.00"></div>
+                    <div><label class="input-label">Cargo Fijo</label><input id="planCargoFijo" class="input" placeholder="S/ 0.00"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="input-label">Plazo (Meses)</label><input id="planPlazo" class="input" placeholder="36"></div>
+                    <div><label class="input-label">Garantía</label><input id="planGar" class="input" placeholder="70%"></div>
+                </div>
+                <div class="p-3 bg-gray-50 rounded border border-gray-100">
+                    <label class="input-label mb-2">Velocidades (Mbps)</label>
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <input id="planVmb" class="input text-xs" type="number" placeholder="Bajada Max">
+                        <input id="planVminb" class="input text-xs" type="number" placeholder="Bajada Min">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input id="planVms" class="input text-xs" type="number" placeholder="Subida Max">
+                        <input id="planVmins" class="input text-xs" type="number" placeholder="Subida Min">
+                    </div>
+                </div>
+                <p id="planMsg" class="text-center text-xs font-medium py-2 hidden"></p>
+            </div>
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-between gap-3">
+                <button id="btnDeletePlan" onclick="deleteCurrentPlan()" class="btn danger hidden">Eliminar</button>
+                <div class="flex gap-2 ml-auto">
+                    <button onclick="closePlanModal()" class="btn alt">Cancelar</button>
+                    <button onclick="savePlan()" class="btn">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- APP HEADER -->
     <header id="appHeader" class="bg-entel-blue text-white shadow-md sticky top-0 z-40 hidden-vis">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -248,7 +289,6 @@
             <div class="grid lg:grid-cols-12 gap-8 items-start">
                 
                 <div class="lg:col-span-8 space-y-6">
-                    <!-- Tipo Servicio -->
                     <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
                         <h2 class="font-bold text-gray-700 uppercase text-xs tracking-wide flex items-center gap-2"><i data-lucide="layers" class="text-entel-blue w-4 h-4"></i> Tipo de Servicio</h2>
                         <div class="flex bg-gray-100 p-1 rounded-md">
@@ -257,13 +297,11 @@
                         </div>
                     </div>
 
-                    <!-- 0. Opportunity -->
                     <div class="card">
                         <h2 class="card-header text-entel-blue">0. Información de Oportunidad</h2>
                         <div><label class="input-label">Nro. de Oportunidad</label><input id="NRO_OPORT" class="input" placeholder="Ej: OP-2023-56789"></div>
                     </div>
 
-                    <!-- 1. Legal Rep Data -->
                     <div class="card">
                         <h2 class="card-header text-entel-blue">1. Datos del Representante Legal</h2>
                         <div class="grid sm:grid-cols-12 gap-4">
@@ -299,7 +337,6 @@
                         </div>
                     </div>
 
-                    <!-- 2. Contact Info -->
                     <div class="card">
                         <h2 class="card-header text-entel-blue">2. Contacto de Instalación</h2>
                         <div class="grid sm:grid-cols-12 gap-4">
@@ -311,7 +348,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. Tarifas y Servicios -->
                     <div class="card border-l-4 border-l-entel-blue">
                         <h2 class="card-header text-entel-blue">3. Selección de Plan y Tarifas</h2>
                         <div class="bg-blue-50 p-4 rounded-md border border-blue-100 mb-6">
@@ -330,7 +366,6 @@
                         </div>
                     </div>
 
-                    <!-- 4. Info Adicional -->
                     <div class="card">
                         <h2 class="card-header text-entel-blue">4. Información Adicional y Firmante</h2>
                         <div class="grid sm:grid-cols-12 gap-6">
@@ -345,7 +380,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Campo Instalación con evento -->
                             <div class="sm:col-span-12">
                                 <label class="input-label flex items-center gap-2">
                                     Dirección de Instalación <span class="text-red-500">*</span> 
@@ -357,7 +391,6 @@
                                 </div>
                             </div>
 
-                            <!-- Hidden auto fields -->
                             <div class="sm:col-span-12 grid grid-cols-4 gap-4 opacity-70">
                                 <div><label class="input-label">Cant IP</label><input id="CANTIDAD" class="input text-xs" value="01" readonly></div>
                                 <div><label class="input-label">Subtotal</label><input id="SUB_TOTAL" class="input text-xs" value="S/. 0.00" readonly></div>
@@ -368,7 +401,6 @@
                     </div>
                 </div>
 
-                <!-- Sidebar -->
                 <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
                     <div class="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
                         <div class="bg-gray-50 px-5 py-4 border-b border-gray-200"><h2 class="text-sm font-bold uppercase tracking-wider text-gray-600 flex items-center gap-2"><i data-lucide="file-output" class="w-4 h-4"></i> Exportación</h2></div>
@@ -386,11 +418,36 @@
             </div>
         </div>
 
-        <!-- CONFIG & LOGS Views kept same but hidden -->
+        <!-- CONFIG & LOGS -->
         <div id="view-config" class="fade-in hidden-vis">
             <div class="mb-6 flex justify-between items-center"><h2 class="text-xl font-bold text-gray-800">Configuración</h2><div class="flex bg-white rounded-md shadow-sm border border-gray-200 p-1"><button onclick="switchConfigTab('users')" id="btnConfigUsers" class="px-4 py-1.5 rounded text-sm font-medium transition-colors">Usuarios</button><button onclick="switchConfigTab('plans')" id="btnConfigPlans" class="px-4 py-1.5 rounded text-sm font-medium transition-colors">Planes</button></div></div>
             <div id="panel-users" class="grid md:grid-cols-12 gap-6"><div class="md:col-span-4"><div class="card sticky top-24"><h3 class="card-header border-0 pb-0 mb-4">Crear Usuario</h3><div class="space-y-4"><div><label class="input-label">Usuario</label><input id="newUserName" class="input"></div><div><label class="input-label">Contraseña</label><div class="flex gap-2"><input id="newUserPass" class="input" type="text"><button onclick="generateUserPass()" class="btn alt px-3" title="Generar"><i data-lucide="key" class="w-4 h-4"></i></button></div></div><div><label class="input-label">Rol</label><select id="newUserRole" class="input"><option value="normal">NORMAL</option><option value="admin">ADMIN</option></select></div><label class="flex items-center gap-2 text-sm p-1"><input type="checkbox" id="newUserRestrict" checked class="w-4 h-4 rounded text-entel-blue"><span>Restringir IP</span></label><button onclick="createNewUser()" class="btn w-full mt-2">Guardar Usuario</button><p id="userMsg" class="text-center text-xs font-medium py-2 hidden"></p></div></div></div><div class="md:col-span-8"><div class="card"><h3 class="card-header border-0 pb-0 mb-4">Usuarios Registrados</h3><div id="usersList" class="space-y-2 max-h-[500px] overflow-y-auto pr-1"></div></div></div></div>
-            <div id="panel-plans" class="grid lg:grid-cols-12 gap-6 hidden-vis"><div class="lg:col-span-4"><div class="card sticky top-24"><h3 id="planFormTitle" class="card-header border-0 pb-0 mb-4">Nuevo Plan</h3><div class="space-y-3"><input type="hidden" id="planOriginalName"><div><label class="input-label">Nombre del Plan</label><input id="planName" class="input"></div><div class="grid grid-cols-2 gap-3"><div><label class="input-label">Tarifa</label><input id="planTarif" class="input"></div><div><label class="input-label">Cargo Fijo</label><input id="planCargoFijo" class="input"></div></div><div class="grid grid-cols-2 gap-3"><div><label class="input-label">Plazo</label><input id="planPlazo" class="input"></div><div><label class="input-label">Garantía</label><input id="planGar" class="input" placeholder="70%"></div></div><div class="p-3 bg-gray-50 rounded border border-gray-100"><label class="input-label mb-2">Velocidades (Mbps)</label><div class="grid grid-cols-2 gap-2 mb-2"><input id="planVmb" class="input text-xs" type="number" placeholder="Bajada Max"><input id="planVminb" class="input text-xs" type="number" placeholder="Bajada Min"></div><div class="grid grid-cols-2 gap-2"><input id="planVms" class="input text-xs" type="number" placeholder="Subida Max"><input id="planVmins" class="input text-xs" type="number" placeholder="Subida Min"></div></div><div class="flex gap-2 pt-2"><button id="btnCancelPlan" onclick="resetPlanForm()" class="btn alt flex-1 hidden">Cancelar</button><button onclick="savePlan()" class="btn flex-1">Guardar Plan</button></div><p id="planMsg" class="text-center text-xs font-medium py-2 hidden"></p></div></div></div><div class="lg:col-span-8"><div class="card p-0 overflow-hidden"><div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center"><h3 class="font-bold text-gray-800">Catálogo de Planes</h3><span class="text-xs text-gray-400" id="planCount">0 planes</span></div><div class="max-h-[600px] overflow-y-auto"><table class="w-full text-xs text-left"><thead class="bg-gray-50 text-gray-600 font-bold sticky top-0 shadow-sm"><tr><th class="p-4">Nombre del Plan</th><th class="p-4">Tarifa / C. Fijo</th><th class="p-4 text-center">Acciones</th></tr></thead><tbody id="plansListBody" class="divide-y divide-gray-100"></tbody></table></div></div></div></div>
+            
+            <!-- PANEL PLANES (BASE DE DATOS) -->
+            <div id="panel-plans" class="grid lg:grid-cols-12 gap-6 hidden-vis">
+                <div class="lg:col-span-12">
+                    <div class="card p-0 overflow-hidden shadow-lg border-0">
+                        <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-white">
+                            <div><h3 class="text-lg font-bold text-gray-800">Catálogo de Planes</h3><p class="text-xs text-gray-500" id="planCount">0 planes registrados</p></div>
+                            <button onclick="openPlanModal()" class="btn flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Nuevo Plan</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-gray-50 text-gray-600 font-bold border-b border-gray-200">
+                                    <tr>
+                                        <th class="p-4 w-1/3">Nombre del Plan</th>
+                                        <th class="p-4">Tarifa / C. Fijo</th>
+                                        <th class="p-4">Velocidades</th>
+                                        <th class="p-4">Plazo</th>
+                                        <th class="p-4 text-center">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="plansListBody" class="divide-y divide-gray-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="view-logs" class="fade-in hidden-vis">
@@ -408,7 +465,6 @@
         const ALLOWED_IPS = ['148.102.51.78', '190.8.133.125'];
         const APISPERU_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1vYmlsZW5ldGZpamFAZ21haWwuY29tIn0.p96PEX6kNXdguiZk1jpodcUHgUaXRwLi3DzsGzkxsBY";
 
-        // Listas para comboboxes
         const LIST_TIPO_VIA = [" ","ALAMEDA","AVENIDA","BAJADA","BOULEVARD","CALLE","CAMPAMENTO","CARRETERA","COORDENADA","GRANJA 1","JIRON","MALECON","PASAJE","PASEO","PLAZA","PROLONGACION"];
         const LIST_TIPO_INT = [" ","BLOCK","CASETA","DPTO/INT.","ESQUINA","LOCAL","MODULO","OFICINA","PISO","PUESTO","STAND","TIENDA"];
         const LIST_TIPO_EDIF = [" ","AGRUPACION","ASENTAMIENTO HUMANO","ASOCIACION","BARRIO","CENTRO COMERCIAL","CENTRO EMPRESARIAL","CENTRO POBLADO","CIUDAD","COMPLEJO","COMUNIDAD","CONDOMINIO","CONJUNTO HABITACIONAL","EDIFICIO","HACIENDA","GALERIA","MERCADO","MULTIFAMILIAR","PARQUE INDUSTRIAL","PARQUE ZONAL","PUEBLO JOVEN","QUINTA","RESIDENCIAL","SUPERMERCADO"];
@@ -416,24 +472,49 @@
         const CALLAO_DISTRITOS = ["BELLAVISTA", "CALLAO", "CARMEN DE LA LEGUA REYNOSO", "VENTANILLA"];
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
+        
+        // DATOS ACTUALIZADOS SEGÚN TU EXCEL
         const SEED_PLANS = [
-            { name: "INTERNET FIBRA + 100 MBPS - 36 Meses", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "S/ 160.00", tarif: "S/ 160.00", plazo: "36 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 100 MBPS - 24 Meses", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "S/ 210.00", tarif: "S/ 210.00", plazo: "24 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 100 MBPS - 12 Meses", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "S/ 250.00", tarif: "S/ 250.00", plazo: "12 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 200 MBPS - 36 Meses", minGar: "70%", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "S/ 230.00", tarif: "S/ 230.00", plazo: "36 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 200 MBPS - 24 Meses", minGar: "70%", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "S/ 300.00", tarif: "S/ 300.00", plazo: "24 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 200 MBPS - 12 Meses", minGar: "70%", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "S/ 340.00", tarif: "S/ 340.00", plazo: "12 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 500 MBPS - 36 Meses", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "S/ 370.00", tarif: "S/ 370.00", plazo: "36 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 500 MBPS - 24 Meses", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "S/ 420.00", tarif: "S/ 420.00", plazo: "24 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 500 MBPS - 12 Meses", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "S/ 460.00", tarif: "S/ 460.00", plazo: "12 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 1000 MBPS - 36 Meses", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "S/ 550.00", tarif: "S/ 550.00", plazo: "36 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 1000 MBPS - 24 Meses", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "S/ 610.00", tarif: "S/ 610.00", plazo: "24 Meses", type: "internet" },
-            { name: "INTERNET FIBRA + 1000 MBPS - 12 Meses", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "S/ 670.00", tarif: "S/ 670.00", plazo: "12 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
+            { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
+            { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "250", tarif: "250", plazo: "12", type: "internet" },
+            { name: "INTERNET FIBRA + 200 MBPS", minGar: "0.7", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "230", tarif: "230", plazo: "36", type: "internet" },
+            { name: "INTERNET FIBRA + 200 MBPS", minGar: "0.7", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "300", tarif: "300", plazo: "24", type: "internet" },
+            { name: "INTERNET FIBRA + 200 MBPS", minGar: "0.7", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "340", tarif: "340", plazo: "12", type: "internet" },
+            { name: "INTERNET FIBRA + 500 MBPS", minGar: "0.7", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "370", tarif: "370", plazo: "36", type: "internet" },
+            { name: "INTERNET FIBRA + 500 MBPS", minGar: "0.7", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "420", tarif: "420", plazo: "24", type: "internet" },
+            { name: "INTERNET FIBRA + 500 MBPS", minGar: "0.7", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "460", tarif: "460", plazo: "12", type: "internet" },
+            { name: "INTERNET FIBRA + 1000 MBPS", minGar: "0.7", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "550", tarif: "550", plazo: "36", type: "internet" },
+            { name: "INTERNET FIBRA + 1000 MBPS", minGar: "0.7", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "610", tarif: "610", plazo: "24", type: "internet" },
+            { name: "INTERNET FIBRA + 1000 MBPS", minGar: "0.7", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "670", tarif: "670", plazo: "12", type: "internet" },
         ];
 
         // Mapeo PDF
-        const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL' };
-        const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'CANTIDAD': 'CANTIDAD', 'SUB_TOTAL': 'SUB_TOTAL', 'TOTAL': 'TOTAL', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
+        // Se agregaron campos de contacto al mapeo de Arrendamiento
+        const MAP_ARR = { 
+            'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 
+            'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 
+            'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 
+            'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 
+            'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 
+            'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 
+            'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 
+            'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL' 
+        };
+        
+        const MAP_SUP = { 
+            'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 
+            'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 
+            'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 
+            'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 
+            'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 
+            'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 
+            'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 
+            'CANTIDAD': 'CANTIDAD', 'SUB_TOTAL': 'SUB_TOTAL', 'TOTAL': 'TOTAL', 
+            'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 
+            'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' 
+        };
+
         const MAP_TAR = { 'CARGO FIJO': 'CARGO_FIJO_VAL', 'CARGO': 'CARGO_FIRM', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'NOM_PLAN': 'NOM_PLAN', 'MIN_GAR': 'MIN_GAR', 'VEL_MAX_BAJ': 'VEL_MAX_BAJ', 'VEL_MIN_BAJ': 'VEL_MIN_BAJ', 'VEL_MAX_SUB': 'VEL_MAX_SUB', 'VEL_MIN_SUB': 'VEL_MIN_SUB', 'TARIF_MENS': 'TARIF_MENS', 'DIREC_INST': 'DIREC_INST', 'PLAZO_INST': 'PLAZO_CONT', 'PLAZO_CONT': 'PLAZO_CONT' };
 
         let state = { currentUser: null, users: [], plans: [], ip: null, serviceType: 'internet' };
@@ -470,31 +551,99 @@
             byId('btnLogout').onclick = logout;
             byId('btnSearchRuc').onclick = fetchRucData;
             ['loginUser', 'loginPass'].forEach(id => byId(id).addEventListener('keyup', e => { if (e.key === 'Enter') handleLogin(); }));
-            
-            // Focus on Install Address opens Modal
             byId('DIREC_INST').addEventListener('focus', openAddressModal);
             
-            // Address Builder Listeners inside modal
             const addressInputs = document.querySelectorAll('.address-part');
             addressInputs.forEach(inp => inp.addEventListener('input', buildAddressPreview));
             addressInputs.forEach(inp => inp.addEventListener('change', buildAddressPreview));
         }
 
-        // --- ADDRESS MODAL LOGIC ---
+        // --- PLAN MODAL LOGIC ---
+        function openPlanModal(idx = null) {
+            byId('planModal').classList.remove('hidden-vis');
+            byId('btnDeletePlan').classList.add('hidden');
+            
+            if (idx !== null) {
+                const p = state.plans[idx];
+                byId('planModalTitle').innerHTML = '<i data-lucide="edit-2" class="w-5 h-5"></i> Editar Plan';
+                byId('planOriginalName').value = idx;
+                byId('planName').value = p.name;
+                byId('planTarif').value = p.tarif;
+                byId('planCargoFijo').value = p.cargoFijo;
+                byId('planPlazo').value = p.plazo;
+                byId('planGar').value = p.minGar;
+                byId('planVmb').value = p.vmb;
+                byId('planVminb').value = p.vminb;
+                byId('planVms').value = p.vms;
+                byId('planVmins').value = p.vmins;
+                byId('btnDeletePlan').classList.remove('hidden');
+            } else {
+                byId('planModalTitle').innerHTML = '<i data-lucide="plus" class="w-5 h-5"></i> Nuevo Plan';
+                byId('planOriginalName').value = '';
+                byId('planName').value = '';
+                byId('planTarif').value = '';
+                byId('planCargoFijo').value = '';
+                byId('planPlazo').value = '';
+                byId('planGar').value = '70%';
+                byId('planVmb').value = ''; byId('planVminb').value = '';
+                byId('planVms').value = ''; byId('planVmins').value = '';
+            }
+            lucide.createIcons();
+        }
+
+        function closePlanModal() {
+            byId('planModal').classList.add('hidden-vis');
+        }
+
+        function savePlan() {
+            const name = byId('planName').value;
+            const tarif = byId('planTarif').value;
+            if(!name || !tarif) return alert('Nombre y Tarifa obligatorios.');
+
+            const newP = {
+                name, tarif,
+                cargoFijo: byId('planCargoFijo').value,
+                plazo: byId('planPlazo').value,
+                minGar: byId('planGar').value,
+                vmb: byId('planVmb').value, vminb: byId('planVminb').value,
+                vms: byId('planVms').value, vmins: byId('planVmins').value
+            };
+
+            const idx = byId('planOriginalName').value;
+            if (idx !== '') {
+                state.plans[parseInt(idx)] = newP;
+            } else {
+                state.plans.push(newP);
+            }
+            
+            localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans));
+            renderPlans();
+            updatePlanSelect();
+            closePlanModal();
+        }
+
+        function deleteCurrentPlan() {
+            const idx = parseInt(byId('planOriginalName').value);
+            if(isNaN(idx)) return;
+            if(!confirm('¿Eliminar este plan?')) return;
+            state.plans.splice(idx, 1);
+            localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans));
+            renderPlans();
+            updatePlanSelect();
+            closePlanModal();
+        }
+
+        // --- ADDRESS LOGIC ---
         function openAddressModal() {
             byId('addressModal').classList.remove('hidden-vis');
-            // Populate selects if empty
             if(byId('TIPO_VIA').options.length === 0) populateSelect('TIPO_VIA', LIST_TIPO_VIA);
             if(byId('TIP_INT').options.length === 0) populateSelect('TIP_INT', LIST_TIPO_INT);
             if(byId('TIP_EDIF').options.length === 0) populateSelect('TIP_EDIF', LIST_TIPO_EDIF);
             if(byId('DISTRITO_SEL').options.length === 0) populateSelect('DISTRITO_SEL', LIST_DISTRITOS);
-            buildAddressPreview(); // Initial build
+            buildAddressPreview();
         }
 
-        function closeAddressModal() {
-            byId('addressModal').classList.add('hidden-vis');
-        }
-
+        function closeAddressModal() { byId('addressModal').classList.add('hidden-vis'); }
         function confirmAddress() {
             const addr = byId('addressPreview').textContent;
             if(!addr || addr === '---') return;
@@ -504,318 +653,143 @@
 
         function buildAddressPreview() {
             let addr = "";
-            
-            // 1. Tipo Via + Nombre Via
             const tVia = byId('TIPO_VIA').value.trim();
             const nVia = byId('NOM_VIA').value.trim().toUpperCase();
             if(tVia) addr += tVia;
-            if(nVia) {
-                if(addr) addr += " ";
-                addr += nVia;
-            }
-
-            // 2. Nro, Mza, Lte
+            if(nVia) { if(addr) addr += " "; addr += nVia; }
             const nro = byId('NRO').value.trim().toUpperCase();
             if(nro) addr += " NRO. " + nro;
-            
             const mza = byId('MZA').value.trim().toUpperCase();
             if(mza) addr += " MZA. " + mza;
-
             const lte = byId('LTE').value.trim().toUpperCase();
             if(lte) addr += " LTE. " + lte;
-
-            // 3. Interior
             const tInt = byId('TIP_INT').value.trim();
             const nInt = byId('NRO_INT').value.trim().toUpperCase();
-            if(tInt && tInt !== "NINGUNO" && tInt.trim() !== "") {
-                addr += " " + tInt;
-                if(nInt) addr += " " + nInt;
-            }
-
-            // 4. Edificacion
+            if(tInt && tInt !== "NINGUNO" && tInt.trim() !== "") { addr += " " + tInt; if(nInt) addr += " " + nInt; }
             const tEdif = byId('TIP_EDIF').value.trim();
             const nEdif = byId('NOM_EDIF').value.trim().toUpperCase();
             if(tEdif && tEdif.trim() !== "") addr += " " + tEdif;
             if(nEdif) addr += " " + nEdif;
-
-            // 5. Urb
             const urb = byId('URB_ADDR').value.trim().toUpperCase();
             if(urb) addr += " URB. " + urb;
-
-            // 6. Distrito (Sufijo)
             const dist = byId('DISTRITO_SEL').value.trim().toUpperCase();
             let suffix = "LIMA - LIMA";
             if(CALLAO_DISTRITOS.includes(dist)) suffix = "CALLAO - LIMA";
-            
             if(dist && dist.trim() !== "") addr += ` (${dist} - ${suffix})`;
-
-            const final = addr.trim();
-            byId('addressPreview').textContent = final || '---';
+            byId('addressPreview').textContent = addr.trim() || '---';
         }
 
         function populateSelect(id, list) {
-            const sel = byId(id);
-            sel.innerHTML = '';
-            list.forEach(item => {
-                const opt = document.createElement('option');
-                opt.value = item;
-                opt.textContent = item;
-                sel.appendChild(opt);
-            });
+            const sel = byId(id); sel.innerHTML = '';
+            list.forEach(item => { const opt = document.createElement('option'); opt.value = item; opt.textContent = item; sel.appendChild(opt); });
         }
 
         // --- AUTH ---
         function handleLogin() {
-            const uInput = byId('loginUser').value;
-            const pInput = byId('loginPass').value.trim();
-            const uKey = userId(uInput);
+            const uInput = byId('loginUser').value; const pInput = byId('loginPass').value.trim(); const uKey = userId(uInput);
             const found = state.users.find(x => x.uid === uKey && x.p === pInput);
             const errDiv = byId('loginError');
             if (!found) { errDiv.textContent = 'Usuario o contraseña incorrectos.'; return; }
-            if (found.role !== 'admin' && found.restrictIp && state.ip && !ALLOWED_IPS.includes(state.ip)) {
-                errDiv.textContent = `Acceso restringido desde IP ${state.ip}.`;
-                return;
-            }
+            if (found.role !== 'admin' && found.restrictIp && state.ip && !ALLOWED_IPS.includes(state.ip)) { errDiv.textContent = `Acceso restringido desde IP ${state.ip}.`; return; }
             loginSuccess({ u: found.u, role: found.role });
         }
-
         function loginSuccess(user) {
-            state.currentUser = user;
-            localStorage.setItem(KEYS.LOG_OK, '1');
-            localStorage.setItem(KEYS.LOG_USER, JSON.stringify(user));
-            byId('loginScreen').classList.add('hidden-vis');
-            byId('appHeader').classList.remove('hidden-vis');
-            byId('mainContent').classList.remove('hidden-vis');
-            byId('headerUser').textContent = user.u;
-            byId('headerRole').textContent = user.role;
-            byId('displaySession').textContent = user.u;
-            byId('displayIP').textContent = state.ip || '...';
+            state.currentUser = user; localStorage.setItem(KEYS.LOG_OK, '1'); localStorage.setItem(KEYS.LOG_USER, JSON.stringify(user));
+            byId('loginScreen').classList.add('hidden-vis'); byId('appHeader').classList.remove('hidden-vis'); byId('mainContent').classList.remove('hidden-vis');
+            byId('headerUser').textContent = user.u; byId('headerRole').textContent = user.role;
+            byId('displaySession').textContent = user.u; byId('displayIP').textContent = state.ip || '...';
             byId('adminTabs').classList.toggle('hidden-vis', user.role !== 'admin');
             switchTab('generator');
         }
-
         function logout() { localStorage.removeItem(KEYS.LOG_OK); localStorage.removeItem(KEYS.LOG_USER); location.reload(); }
         function handleResetAccess() {
             const seeded = SEED_USERS.map(s => ({ ...s, uLower: norm(s.u), uid: userId(s.u) }));
-            localStorage.setItem(KEYS.USERS, JSON.stringify(seeded));
-            state.users = seeded;
-            byId('loginError').textContent = 'Usuarios restablecidos.';
-            setTimeout(() => byId('loginError').textContent = '', 3000);
+            localStorage.setItem(KEYS.USERS, JSON.stringify(seeded)); state.users = seeded;
+            byId('loginError').textContent = 'Usuarios restablecidos.'; setTimeout(() => byId('loginError').textContent = '', 3000);
         }
 
-        // --- NAVIGATION ---
+        // --- NAV ---
         function switchTab(tabId) {
-            ['generator', 'config', 'logs'].forEach(t => {
-                byId(`view-${t}`).classList.add('hidden-vis');
-                if(byId(`tab-${t}`)) byId(`tab-${t}`).classList.remove('active', 'border-b-2', 'border-white', 'text-white');
-            });
-            byId(`view-${tabId}`).classList.remove('hidden-vis');
-            if(byId(`tab-${tabId}`)) byId(`tab-${tabId}`).classList.add('active', 'border-b-2', 'border-white', 'text-white');
-            if (tabId === 'config') initConfigView();
-            if (tabId === 'logs') renderLogs();
+            ['generator', 'config', 'logs'].forEach(t => { byId(`view-${t}`).classList.add('hidden-vis'); if(byId(`tab-${t}`)) byId(`tab-${t}`).classList.remove('active', 'border-b-2', 'border-white', 'text-white'); });
+            byId(`view-${tabId}`).classList.remove('hidden-vis'); if(byId(`tab-${tabId}`)) byId(`tab-${tabId}`).classList.add('active', 'border-b-2', 'border-white', 'text-white');
+            if (tabId === 'config') initConfigView(); if (tabId === 'logs') renderLogs();
         }
-
         function switchConfigTab(subTab) {
-            const btnUsers = byId('btnConfigUsers'); const btnPlans = byId('btnConfigPlans');
-            const pUsers = byId('panel-users'); const pPlans = byId('panel-plans');
-            if (subTab === 'users') {
-                btnUsers.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-entel-blue text-white";
-                btnPlans.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-white text-gray-600 hover:bg-gray-50";
-                pUsers.classList.remove('hidden-vis'); pPlans.classList.add('hidden-vis');
-            } else {
-                btnPlans.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-entel-blue text-white";
-                btnUsers.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-white text-gray-600 hover:bg-gray-50";
-                pPlans.classList.remove('hidden-vis'); pUsers.classList.add('hidden-vis');
-            }
+            const btnUsers = byId('btnConfigUsers'); const btnPlans = byId('btnConfigPlans'); const pUsers = byId('panel-users'); const pPlans = byId('panel-plans');
+            if (subTab === 'users') { btnUsers.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-entel-blue text-white"; btnPlans.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-white text-gray-600 hover:bg-gray-50"; pUsers.classList.remove('hidden-vis'); pPlans.classList.add('hidden-vis'); }
+            else { btnPlans.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-entel-blue text-white"; btnUsers.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-white text-gray-600 hover:bg-gray-50"; pPlans.classList.remove('hidden-vis'); pUsers.classList.add('hidden-vis'); }
         }
 
-        // --- GENERATOR LOGIC ---
+        // --- GEN ---
         function initGeneratorLogic() {
-            const d = new Date();
-            byId('DIA').value = String(d.getDate()).padStart(2,'0');
-            byId('MES').value = getMonthName(d.getMonth());
-            byId('ANO').value = d.getFullYear();
-            
-            updatePlanSelect();
-            byId('planSelect').addEventListener('change', onPlanSelectChange);
-            byId('btnExport').onclick = handleExportAll;
-            setServiceType('internet');
+            const d = new Date(); byId('DIA').value = String(d.getDate()).padStart(2,'0'); byId('MES').value = getMonthName(d.getMonth()); byId('ANO').value = d.getFullYear();
+            updatePlanSelect(); byId('planSelect').addEventListener('change', onPlanSelectChange); byId('btnExport').onclick = handleExportAll; setServiceType('internet');
         }
-
         function setServiceType(type) {
-            state.serviceType = type;
-            const btnInt = byId('btnTypeInternet'); const btnPack = byId('btnTypePack');
-            if (type === 'internet') {
-                btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200";
-                btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900";
-            } else {
-                btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200";
-                btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900";
-            }
+            state.serviceType = type; const btnInt = byId('btnTypeInternet'); const btnPack = byId('btnTypePack');
+            if (type === 'internet') { btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"; btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900"; }
+            else { btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"; btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900"; }
             updateFileListPreview();
         }
-
         function updateFileListPreview() {
-            const list = byId('fileListPreview');
-            const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
-            list.innerHTML = `
-                <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Arrendamiento.pdf</li>
-                <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Servicios Suplementarios.pdf</li>
-                <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Tarifas y Servicios.pdf</li>
-            `;
+            const list = byId('fileListPreview'); const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
+            list.innerHTML = `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Arrendamiento.pdf</li><li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Servicios Suplementarios.pdf</li><li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Tarifas y Servicios.pdf</li>`;
         }
-
-        function updatePlanSelect() {
-            const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar Plan —</option>';
-            state.plans.forEach(p => { const opt = document.createElement('option'); opt.value = p.name; opt.textContent = p.name; sel.appendChild(opt); });
-        }
-
+        function updatePlanSelect() { const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar Plan —</option>'; state.plans.forEach((p, idx) => { const opt = document.createElement('option'); opt.value = p.name; opt.dataset.idx = idx; opt.textContent = p.name; sel.appendChild(opt); }); }
         function onPlanSelectChange(e) {
-            const planName = e.target.value;
-            const p = state.plans.find(x => x.name === planName);
-            if (!p) return;
+            const planName = e.target.value; const p = state.plans.find(x => x.name === planName); if (!p) return;
             if (p.name.toLowerCase().includes('pack')) setServiceType('pack'); else setServiceType('internet');
-            byId('NOM_PLAN').value = p.name; byId('MIN_GAR').value = p.minGar;
-            byId('VEL_MAX_BAJ').value = p.vmb; byId('VEL_MIN_BAJ').value = p.vminb;
-            byId('VEL_MAX_SUB').value = p.vms; byId('VEL_MIN_SUB').value = p.vmins;
-            byId('TARIF_MENS').value = p.tarif;
+            byId('NOM_PLAN').value = p.name; byId('MIN_GAR').value = p.minGar; byId('VEL_MAX_BAJ').value = p.vmb; byId('VEL_MIN_BAJ').value = p.vminb; byId('VEL_MAX_SUB').value = p.vms; byId('VEL_MIN_SUB').value = p.vmins; byId('TARIF_MENS').value = formatMoney(p.tarif);
             if (p.plazo) byId('PLAZO_CONT').value = p.plazo;
-            if (p.cargoFijo) byId('CARGO_FIJO_VAL').value = p.cargoFijo;
+            if (p.cargoFijo) byId('CARGO_FIJO_VAL').value = formatMoney(p.cargoFijo);
         }
-
         async function fetchRucData() {
-            const ruc = byId('RUC').value;
-            if (!ruc || ruc.length !== 11) return alert('RUC inválido (11 dígitos).');
+            const ruc = byId('RUC').value; if (!ruc || ruc.length !== 11) return alert('RUC inválido.');
             const btn = byId('btnSearchRuc'); btn.disabled = true; btn.innerHTML = '...';
-            try {
-                const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`);
-                if (!res.ok) throw new Error();
-                const d = await res.json();
-                if (d) {
-                    byId('RAZON_SOCIAL').value = d.razonSocial || '';
-                    // No llenar direccion automaticamente, usar el generador manual/fiscal si se desea, o dejar vacio para obligar llenado
-                }
-            } catch { alert('Error consultando RUC.'); }
-            finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
+            try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`); if(!res.ok) throw new Error(); const d = await res.json(); if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; } catch { alert('Error consultando RUC.'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
         }
-
         async function handleExportAll() {
-            // Check mandatory
             if (!byId('RUC').value || !byId('RAZON_SOCIAL').value) return alert('Faltan datos del Cliente.');
             const req = ['APELLIDO_PATERNO','APELLIDO_MATERNO','NOMBRES','DNI','TELEFONO','CORREO','CONT_NOMB','CONT_CARGO','CONT_DNI','CONT_TELEF','CONT_CORREO','RL','CARGO_FIRM','DIREC_INST'];
-            const missing = req.filter(id => !byId(id).value);
-            if (missing.length > 0) return alert('Faltan campos obligatorios: ' + missing.join(', '));
-
-            // Email Valid
-            if (!isValidEmail(byId('CORREO').value)) return alert('Correo RL inválido.');
-            if (!isValidEmail(byId('CONT_CORREO').value)) return alert('Correo Contacto inválido.');
-
-            // Check Installation Address != Fiscal Address
-            const fiscal = byId('DIRECCION').value.trim().toUpperCase();
-            const inst = byId('DIREC_INST').value.trim().toUpperCase();
+            const missing = req.filter(id => !byId(id).value); if (missing.length > 0) return alert('Faltan campos obligatorios: ' + missing.join(', '));
+            if (!isValidEmail(byId('CORREO').value)) return alert('Correo RL inválido.'); if (!isValidEmail(byId('CONT_CORREO').value)) return alert('Correo Contacto inválido.');
+            const fiscal = byId('DIRECCION').value.trim().toUpperCase(); const inst = byId('DIREC_INST').value.trim().toUpperCase();
             if (fiscal && inst && fiscal === inst) return alert('La Dirección de Instalación NO puede ser igual a la Dirección Fiscal.');
-
-            const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ');
-            const suffix = nro ? ` - ${nro}.pdf` : '.pdf';
-            const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
-            const st = byId('exportStatus');
-            st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3";
-            st.innerHTML = "<span>Generando archivos...</span>"; st.classList.remove('hidden');
-
+            const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' '); const suffix = nro ? ` - ${nro}.pdf` : '.pdf'; const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
+            const st = byId('exportStatus'); st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3"; st.innerHTML = "<span>Generando archivos...</span>"; st.classList.remove('hidden');
             try {
                 await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix);
                 await generatePdf(prefix + 'Servicios Suplementarios.pdf', MAP_SUP, prefix + 'Servicios Suplementarios' + suffix);
                 await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix);
-
                 const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
                 logs.unshift({ date: new Date().toLocaleString(), user: state.currentUser.u, RUC: byId('RUC').value, RAZON_SOCIAL: byId('RAZON_SOCIAL').value, TELEFONO: byId('TELEFONO').value });
                 localStorage.setItem(KEYS.LOGS, JSON.stringify(logs));
-                st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-green-50 text-green-700 border-green-100 block mt-3";
-                st.innerHTML = "<span>¡Archivos generados correctamente!</span>";
-            } catch (e) {
-                st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-red-50 text-red-700 border-red-100 block mt-3";
-                st.innerHTML = `<span>Error: ${e.message}</span>`;
-            }
+                st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-green-50 text-green-700 border-green-100 block mt-3"; st.innerHTML = "<span>¡Archivos generados correctamente!</span>";
+            } catch (e) { st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-red-50 text-red-700 border-red-100 block mt-3"; st.innerHTML = `<span>Error: ${e.message}</span>`; }
         }
-
         async function generatePdf(fileName, map, outName) {
-            const resp = await fetch(fileName);
-            if (!resp.ok) throw new Error(`${fileName} no encontrado`);
-            const arrBuffer = await resp.arrayBuffer();
-            const pdfDoc = await PDFLib.PDFDocument.load(arrBuffer);
-            const form = pdfDoc.getForm();
-            for (const [pdfField, domId] of Object.entries(map)) {
-                try { const el = byId(domId); if (el) form.getTextField(pdfField).setText(el.value || ''); } catch(e) {}
-            }
-            form.flatten();
-            const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = outName; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            const resp = await fetch(fileName); if (!resp.ok) throw new Error(`${fileName} no encontrado`); const arrBuffer = await resp.arrayBuffer(); const pdfDoc = await PDFLib.PDFDocument.load(arrBuffer); const form = pdfDoc.getForm();
+            for (const [pdfField, domId] of Object.entries(map)) { try { const el = byId(domId); if (el) form.getTextField(pdfField).setText(el.value || ''); } catch(e) {} }
+            form.flatten(); const pdfBytes = await pdfDoc.save(); const blob = new Blob([pdfBytes], { type: 'application/pdf' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = outName; document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
-
         function initConfigView() { renderUsers(); renderPlans(); }
         function renderUsers() {
-            const cont = byId('usersList'); cont.innerHTML = '';
-            state.users.forEach(u => {
-                const div = document.createElement('div');
-                div.className = "bg-white p-3 rounded border border-gray-200 shadow-sm flex items-center justify-between group";
-                div.innerHTML = `<div><div class="flex items-center gap-3"><span class="font-bold text-gray-800 text-sm">${u.u}</span><span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${u.role==='admin'?'bg-purple-100 text-purple-700':'bg-blue-100 text-blue-700'}">${u.role}</span></div><div class="flex items-center gap-2 mt-1 text-xs text-gray-500">${u.role==='admin' || !u.restrictIp ? 'Acceso Libre' : 'Restringido por IP'}</div></div><button onclick="deleteUser('${u.u}')" class="text-gray-300 hover:text-red-500 p-2 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`;
-                cont.appendChild(div);
-            });
-            lucide.createIcons();
+            const cont = byId('usersList'); cont.innerHTML = ''; state.users.forEach(u => { const div = document.createElement('div'); div.className = "bg-white p-3 rounded border border-gray-200 shadow-sm flex items-center justify-between group"; div.innerHTML = `<div><div class="flex items-center gap-3"><span class="font-bold text-gray-800 text-sm">${u.u}</span><span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${u.role==='admin'?'bg-purple-100 text-purple-700':'bg-blue-100 text-blue-700'}">${u.role}</span></div><div class="flex items-center gap-2 mt-1 text-xs text-gray-500">${u.role==='admin' || !u.restrictIp ? 'Acceso Libre' : 'Restringido por IP'}</div></div><button onclick="deleteUser('${u.u}')" class="text-gray-300 hover:text-red-500 p-2 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`; cont.appendChild(div); }); lucide.createIcons();
         }
-        function generateUserPass() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"; let pass = "";
-            for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random()*chars.length));
-            byId('newUserPass').value = pass;
-        }
-        function createNewUser() {
-            const u = byId('newUserName').value; const p = byId('newUserPass').value; const role = byId('newUserRole').value; const restrict = byId('newUserRestrict').checked;
-            if(!u || !p) return alert('Completa los campos.');
-            if(state.users.some(x=>x.uid === userId(u))) return alert('Existe.');
-            state.users.push({ u, p, role, uLower: norm(u), uid: userId(u), restrictIp: role==='admin'?false:restrict });
-            localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
-            renderUsers(); byId('newUserName').value=''; byId('newUserPass').value='';
-            const msg = byId('userMsg'); msg.textContent = 'Usuario creado.'; msg.classList.remove('hidden'); msg.classList.add('bg-blue-50', 'text-entel-blue'); setTimeout(()=>msg.classList.add('hidden'), 2000);
-        }
-        function deleteUser(username) {
-            if(!confirm(`¿Eliminar ${username}?`)) return;
-            state.users = state.users.filter(x => x.u !== username); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers();
-        }
+        function generateUserPass() { const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"; let pass = ""; for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random()*chars.length)); byId('newUserPass').value = pass; }
+        function createNewUser() { const u = byId('newUserName').value; const p = byId('newUserPass').value; const role = byId('newUserRole').value; const restrict = byId('newUserRestrict').checked; if(!u || !p) return alert('Completa los campos.'); if(state.users.some(x=>x.uid === userId(u))) return alert('Existe.'); state.users.push({ u, p, role, uLower: norm(u), uid: userId(u), restrictIp: role==='admin'?false:restrict }); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); byId('newUserName').value=''; byId('newUserPass').value=''; const msg = byId('userMsg'); msg.textContent = 'Usuario creado.'; msg.classList.remove('hidden'); msg.classList.add('bg-blue-50', 'text-entel-blue'); setTimeout(()=>msg.classList.add('hidden'), 2000); }
+        function deleteUser(username) { if(!confirm(`¿Eliminar ${username}?`)) return; state.users = state.users.filter(x => x.u !== username); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); }
         function renderPlans() {
             const tbody = byId('plansListBody'); tbody.innerHTML = ''; byId('planCount').textContent = `${state.plans.length} planes`;
             state.plans.forEach((p, idx) => {
-                const tr = document.createElement('tr'); tr.className = "hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0";
-                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${p.tarif}</div><div class="text-[10px] text-gray-400">CF: ${p.cargoFijo || '-'}</div></td><td class="p-4 text-center"><div class="flex items-center justify-center gap-2"><button onclick="editPlan(${idx})" class="text-gray-400 hover:text-entel-blue p-1 transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button><button onclick="deletePlan(${idx})" class="text-gray-400 hover:text-red-500 p-1 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></td>`;
+                const tr = document.createElement('tr'); tr.className = "table-row-hover hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0";
+                tr.onclick = () => openPlanModal(idx);
+                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} m</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
                 tbody.appendChild(tr);
             });
             lucide.createIcons();
         }
-        function resetPlanForm() {
-            byId('planOriginalName').value = ''; byId('planName').value = ''; byId('planTarif').value = ''; byId('planCargoFijo').value = ''; byId('planPlazo').value = ''; byId('planGar').value = '70%';
-            byId('planVmb').value = ''; byId('planVminb').value = ''; byId('planVms').value = ''; byId('planVmins').value = '';
-            byId('planFormTitle').innerHTML = 'Nuevo Plan'; byId('btnCancelPlan').classList.add('hidden'); lucide.createIcons();
-        }
-        function savePlan() {
-            const name = byId('planName').value; const tarif = byId('planTarif').value;
-            if(!name || !tarif) return alert('Nombre y Tarifa obligatorios.');
-            const newP = { name, tarif, cargoFijo: byId('planCargoFijo').value, plazo: byId('planPlazo').value, minGar: byId('planGar').value, vmb: byId('planVmb').value, vminb: byId('planVminb').value, vms: byId('planVms').value, vmins: byId('planVmins').value };
-            const orig = byId('planOriginalName').value;
-            if (orig) { const idx = state.plans.findIndex(x=>x.name===orig); if(idx !== -1) state.plans[idx] = newP; }
-            else { if(state.plans.some(x=>x.name===name)) return alert('Ya existe nombre.'); state.plans.push(newP); }
-            localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans)); renderPlans(); updatePlanSelect(); resetPlanForm();
-        }
-        window.editPlan = function(idx) {
-            const p = state.plans[idx]; byId('planOriginalName').value = p.name; byId('planName').value = p.name; byId('planTarif').value = p.tarif; byId('planCargoFijo').value = p.cargoFijo || ''; byId('planPlazo').value = p.plazo || ''; byId('planGar').value = p.minGar || '70%'; byId('planVmb').value = p.vmb; byId('planVminb').value = p.vminb; byId('planVms').value = p.vms; byId('planVmins').value = p.vmins;
-            byId('planFormTitle').innerHTML = 'Editar Plan'; byId('btnCancelPlan').classList.remove('hidden'); lucide.createIcons();
-        }
-        window.deletePlan = function(idx) { if(!confirm('¿Borrar plan?')) return; state.plans.splice(idx, 1); localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans)); renderPlans(); updatePlanSelect(); }
-        function renderLogs() {
-            const tbody = byId('logsTableBody'); const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; tbody.innerHTML = '';
-            if (logs.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No hay registros aún.</td></tr>'; return; }
-            logs.forEach(l => { const tr = document.createElement('tr'); tr.className = "hover:bg-blue-50/30 transition-colors"; tr.innerHTML = `<td class="p-4 text-gray-500 whitespace-nowrap">${l.date}</td><td class="p-4 font-bold text-entel-blue">${l.user}</td><td class="p-4 font-mono text-gray-600">${l.RUC || '-'}</td><td class="p-4 max-w-[250px] truncate font-medium text-gray-800">${l.RAZON_SOCIAL || '-'}</td><td class="p-4 text-gray-500">${l.TELEFONO || '-'}</td>`; tbody.appendChild(tr); });
-        }
+        function renderLogs() { const tbody = byId('logsTableBody'); const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; tbody.innerHTML = ''; if (logs.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No hay registros aún.</td></tr>'; return; } logs.forEach(l => { const tr = document.createElement('tr'); tr.className = "hover:bg-blue-50/30 transition-colors"; tr.innerHTML = `<td class="p-4 text-gray-500 whitespace-nowrap">${l.date}</td><td class="p-4 font-bold text-entel-blue">${l.user}</td><td class="p-4 font-mono text-gray-600">${l.RUC || '-'}</td><td class="p-4 max-w-[250px] truncate font-medium text-gray-800">${l.RAZON_SOCIAL || '-'}</td><td class="p-4 text-gray-500">${l.TELEFONO || '-'}</td>`; tbody.appendChild(tr); }); }
         function clearAllLogs() { if(!confirm('¿Borrar todo el historial?')) return; localStorage.setItem(KEYS.LOGS, '[]'); renderLogs(); }
     </script>
 </body>
