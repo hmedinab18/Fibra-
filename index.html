@@ -323,7 +323,7 @@
                             
                             <div class="sm:col-span-12">
                                 <label class="input-label">Dirección Fiscal <span class="text-red-500">*</span></label>
-                                <input id="DIRECCION" class="input">
+                                <input id="DIRECCION" class="input" placeholder="Ingrese Dirección Fiscal Manualmente">
                             </div>
 
                             <div class="sm:col-span-4"><label class="input-label">N° Calle</label><input id="NUMERO_DE_CALLE" class="input"></div>
@@ -440,6 +440,7 @@
             <div class="mb-6 flex justify-between items-center"><h2 class="text-xl font-bold text-gray-800">Configuración</h2><div class="flex bg-white rounded-md shadow-sm border border-gray-200 p-1"><button onclick="switchConfigTab('users')" id="btnConfigUsers" class="px-4 py-1.5 rounded text-sm font-medium transition-colors">Usuarios</button><button onclick="switchConfigTab('plans')" id="btnConfigPlans" class="px-4 py-1.5 rounded text-sm font-medium transition-colors">Planes</button></div></div>
             <div id="panel-users" class="grid md:grid-cols-12 gap-6"><div class="md:col-span-4"><div class="card sticky top-24"><h3 class="card-header border-0 pb-0 mb-4">Crear Usuario</h3><div class="space-y-4"><div><label class="input-label">Usuario</label><input id="newUserName" class="input"></div><div><label class="input-label">Contraseña</label><div class="flex gap-2"><input id="newUserPass" class="input" type="text"><button onclick="generateUserPass()" class="btn alt px-3" title="Generar"><i data-lucide="key" class="w-4 h-4"></i></button></div></div><div><label class="input-label">Rol</label><select id="newUserRole" class="input"><option value="normal">NORMAL</option><option value="admin">ADMIN</option></select></div><label class="flex items-center gap-2 text-sm p-1"><input type="checkbox" id="newUserRestrict" checked class="w-4 h-4 rounded text-entel-blue"><span>Restringir IP</span></label><button onclick="createNewUser()" class="btn w-full mt-2">Guardar Usuario</button><p id="userMsg" class="text-center text-xs font-medium py-2 hidden"></p></div></div></div><div class="md:col-span-8"><div class="card"><h3 class="card-header border-0 pb-0 mb-4">Usuarios Registrados</h3><div id="usersList" class="space-y-2 max-h-[500px] overflow-y-auto pr-1"></div></div></div></div>
             
+            <!-- PANEL PLANES (BASE DE DATOS) -->
             <div id="panel-plans" class="grid lg:grid-cols-12 gap-6 hidden-vis">
                 <div class="lg:col-span-12">
                     <div class="card p-0 overflow-hidden shadow-lg border-0">
@@ -489,7 +490,7 @@
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
         
-        // DATOS ACTUALIZADOS: Plazos como números puros
+        // DATOS ACTUALIZADOS SEGÚN TU EXCEL - PLAZOS COMO NÚMEROS PUROS
         const SEED_PLANS = [
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
@@ -741,37 +742,29 @@
         async function fetchRucData() {
             const ruc = byId('RUC').value; if (!ruc || ruc.length !== 11) return alert('RUC inválido.');
             const btn = byId('btnSearchRuc'); btn.disabled = true; btn.innerHTML = '...';
-            try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`); if(!res.ok) throw new Error(); const d = await res.json(); if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; } catch { alert('Error consultando RUC.'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
+            try { 
+                const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`); 
+                if(!res.ok) throw new Error(); 
+                const d = await res.json(); 
+                if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; 
+                // Removed autofill for DIRECCION to ensure manual entry
+            } catch { alert('Error consultando RUC.'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
         }
 
         async function fetchDniData() {
             const dni = byId('DNI').value;
             if (!dni || dni.length !== 8) return alert('DNI inválido (debe tener 8 dígitos).');
-            
-            const btn = byId('btnSearchDni'); 
-            btn.disabled = true; 
-            btn.innerHTML = '...';
-
+            const btn = byId('btnSearchDni'); btn.disabled = true; btn.innerHTML = '...';
             try {
                 const res = await fetch(`https://dniruc.apisperu.com/api/v1/dni/${dni}?token=${APISPERU_TOKEN}`);
                 if (!res.ok) throw new Error("Error en la petición");
                 const d = await res.json();
-                
                 if (d && d.success !== false) {
                     byId('APELLIDO_PATERNO').value = d.apellidoPaterno || '';
                     byId('APELLIDO_MATERNO').value = d.apellidoMaterno || '';
                     byId('NOMBRES').value = d.nombres || '';
-                } else {
-                    alert('No se encontraron datos para este DNI.');
-                }
-            } catch (e) { 
-                console.error(e);
-                alert('Error consultando DNI. Verifique la conexión o el servicio.'); 
-            } finally { 
-                btn.disabled = false; 
-                btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; 
-                lucide.createIcons(); 
-            }
+                } else { alert('No se encontraron datos para este DNI.'); }
+            } catch (e) { alert('Error consultando DNI.'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
         }
 
         async function handleExportAll() {
@@ -783,7 +776,14 @@
             // VALIDACIÓN ESTRICTA: Dirección Fiscal != Dirección Instalación
             const fiscal = byId('DIRECCION').value.trim().toUpperCase(); 
             const inst = byId('DIREC_INST').value.trim().toUpperCase();
-            if (fiscal && inst && fiscal === inst) return alert('La Dirección de Instalación NO puede ser igual a la Dirección Fiscal.');
+            
+            // If fiscal is empty (user didn't fill it), we warn too, but the 'req' check above handles mandatory fields if we add DIRECCION to req.
+            // Let's add DIRECCION to mandatory check manually here just in case.
+            if (!fiscal) return alert('Falta la Dirección Fiscal.');
+
+            if (fiscal === inst) {
+                return alert('ERROR: La Dirección de Instalación NO puede ser idéntica a la Dirección Fiscal. Por favor verifique.');
+            }
             
             const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' '); const suffix = nro ? ` - ${nro}.pdf` : '.pdf'; const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
             const st = byId('exportStatus'); st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3"; st.innerHTML = "<span>Generando archivos...</span>"; st.classList.remove('hidden');
@@ -814,7 +814,7 @@
             state.plans.forEach((p, idx) => {
                 const tr = document.createElement('tr'); tr.className = "table-row-hover hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0";
                 tr.onclick = () => openPlanModal(idx);
-                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} Meses</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
+                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} m</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
                 tbody.appendChild(tr);
             });
             lucide.createIcons();
@@ -824,4 +824,3 @@
     </script>
 </body>
 </html>
-
