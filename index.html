@@ -108,6 +108,10 @@
             border: 1px solid #d1d5db; 
         }
         .btn.alt:hover { background-color: #f9fafb; border-color: #9ca3af; }
+        .btn.danger {
+            background-color: #ef4444; color: white; border: none;
+        }
+        .btn.danger:hover { background-color: #dc2626; }
 
         /* Tarjetas limpias */
         .card { 
@@ -150,6 +154,9 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Tabla Hover */
+        .table-row-hover:hover { background-color: #f0f9ff; cursor: pointer; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50 font-sans text-gray-900">
@@ -182,30 +189,18 @@
             </div>
             <div class="p-6 overflow-y-auto space-y-4">
                 <div class="grid grid-cols-12 gap-4">
-                    <!-- Fila 1: Via -->
                     <div class="col-span-12 sm:col-span-4"><label class="input-label">Tipo Vía</label><select id="TIPO_VIA" class="input address-part"></select></div>
                     <div class="col-span-12 sm:col-span-8"><label class="input-label">Nombre Vía</label><input id="NOM_VIA" class="input address-part" placeholder="Ej: JAVIER PRADO ESTE"></div>
-                    
-                    <!-- Fila 2: Nro, Mza, Lte -->
                     <div class="col-span-4"><label class="input-label">Número</label><input id="NRO" class="input address-part" placeholder="123"></div>
                     <div class="col-span-4"><label class="input-label">Manzana</label><input id="MZA" class="input address-part" placeholder="A"></div>
                     <div class="col-span-4"><label class="input-label">Lote</label><input id="LTE" class="input address-part" placeholder="5"></div>
-
-                    <!-- Fila 3: Interior -->
                     <div class="col-span-12 sm:col-span-6"><label class="input-label">Tipo Interior</label><select id="TIP_INT" class="input address-part"></select></div>
                     <div class="col-span-12 sm:col-span-6"><label class="input-label">Nro Int.</label><input id="NRO_INT" class="input address-part"></div>
-                    
-                    <!-- Fila 4: Edificacion -->
                     <div class="col-span-12 sm:col-span-6"><label class="input-label">Tipo Edif.</label><select id="TIP_EDIF" class="input address-part"></select></div>
                     <div class="col-span-12 sm:col-span-6"><label class="input-label">Nom Edif.</label><input id="NOM_EDIF" class="input address-part"></div>
-
-                    <!-- Fila 5: Urb -->
                     <div class="col-span-12"><label class="input-label">Urb.</label><input id="URB_ADDR" class="input address-part" placeholder="Ej: LOS FICUS"></div>
-
-                    <!-- Fila 6: Distrito -->
                     <div class="col-span-12"><label class="input-label">Distrito <span class="text-red-500">*</span></label><select id="DISTRITO_SEL" class="input address-part"></select></div>
                 </div>
-                
                 <div class="bg-blue-50 p-3 rounded border border-blue-100 mt-4">
                     <label class="input-label text-blue-800 mb-1">Vista Previa:</label>
                     <p id="addressPreview" class="text-sm font-mono font-medium text-gray-700 min-h-[1.5em]">---</p>
@@ -473,7 +468,7 @@
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
         
-        // DATOS ACTUALIZADOS SEGÚN TU EXCEL
+        // DATOS ACTUALIZADOS SEGÚN TU EXCEL - PLAZOS COMO NÚMEROS PUROS
         const SEED_PLANS = [
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
@@ -489,32 +484,8 @@
             { name: "INTERNET FIBRA + 1000 MBPS", minGar: "0.7", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "670", tarif: "670", plazo: "12", type: "internet" },
         ];
 
-        // Mapeo PDF
-        // Se agregaron campos de contacto al mapeo de Arrendamiento
-        const MAP_ARR = { 
-            'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 
-            'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 
-            'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 
-            'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 
-            'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 
-            'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 
-            'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 
-            'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL' 
-        };
-        
-        const MAP_SUP = { 
-            'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 
-            'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 
-            'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 
-            'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 
-            'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 
-            'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 
-            'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 
-            'CANTIDAD': 'CANTIDAD', 'SUB_TOTAL': 'SUB_TOTAL', 'TOTAL': 'TOTAL', 
-            'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 
-            'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' 
-        };
-
+        const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO' };
+        const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'CANTIDAD': 'CANTIDAD', 'SUB_TOTAL': 'SUB_TOTAL', 'TOTAL': 'TOTAL', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
         const MAP_TAR = { 'CARGO FIJO': 'CARGO_FIJO_VAL', 'CARGO': 'CARGO_FIRM', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'NOM_PLAN': 'NOM_PLAN', 'MIN_GAR': 'MIN_GAR', 'VEL_MAX_BAJ': 'VEL_MAX_BAJ', 'VEL_MIN_BAJ': 'VEL_MIN_BAJ', 'VEL_MAX_SUB': 'VEL_MAX_SUB', 'VEL_MIN_SUB': 'VEL_MIN_SUB', 'TARIF_MENS': 'TARIF_MENS', 'DIREC_INST': 'DIREC_INST', 'PLAZO_INST': 'PLAZO_CONT', 'PLAZO_CONT': 'PLAZO_CONT' };
 
         let state = { currentUser: null, users: [], plans: [], ip: null, serviceType: 'internet' };
@@ -551,8 +522,11 @@
             byId('btnLogout').onclick = logout;
             byId('btnSearchRuc').onclick = fetchRucData;
             ['loginUser', 'loginPass'].forEach(id => byId(id).addEventListener('keyup', e => { if (e.key === 'Enter') handleLogin(); }));
+            
+            // Focus on Install Address opens Modal
             byId('DIREC_INST').addEventListener('focus', openAddressModal);
             
+            // Address Builder Listeners inside modal
             const addressInputs = document.querySelectorAll('.address-part');
             addressInputs.forEach(inp => inp.addEventListener('input', buildAddressPreview));
             addressInputs.forEach(inp => inp.addEventListener('change', buildAddressPreview));
@@ -584,7 +558,7 @@
                 byId('planTarif').value = '';
                 byId('planCargoFijo').value = '';
                 byId('planPlazo').value = '';
-                byId('planGar').value = '70%';
+                byId('planGar').value = '0.7';
                 byId('planVmb').value = ''; byId('planVminb').value = '';
                 byId('planVms').value = ''; byId('planVmins').value = '';
             }
@@ -753,8 +727,12 @@
             const req = ['APELLIDO_PATERNO','APELLIDO_MATERNO','NOMBRES','DNI','TELEFONO','CORREO','CONT_NOMB','CONT_CARGO','CONT_DNI','CONT_TELEF','CONT_CORREO','RL','CARGO_FIRM','DIREC_INST'];
             const missing = req.filter(id => !byId(id).value); if (missing.length > 0) return alert('Faltan campos obligatorios: ' + missing.join(', '));
             if (!isValidEmail(byId('CORREO').value)) return alert('Correo RL inválido.'); if (!isValidEmail(byId('CONT_CORREO').value)) return alert('Correo Contacto inválido.');
-            const fiscal = byId('DIRECCION').value.trim().toUpperCase(); const inst = byId('DIREC_INST').value.trim().toUpperCase();
+            
+            // VALIDACIÓN ESTRICTA: Dirección Fiscal != Dirección Instalación
+            const fiscal = byId('DIRECCION').value.trim().toUpperCase(); 
+            const inst = byId('DIREC_INST').value.trim().toUpperCase();
             if (fiscal && inst && fiscal === inst) return alert('La Dirección de Instalación NO puede ser igual a la Dirección Fiscal.');
+            
             const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' '); const suffix = nro ? ` - ${nro}.pdf` : '.pdf'; const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
             const st = byId('exportStatus'); st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3"; st.innerHTML = "<span>Generando archivos...</span>"; st.classList.remove('hidden');
             try {
@@ -784,7 +762,7 @@
             state.plans.forEach((p, idx) => {
                 const tr = document.createElement('tr'); tr.className = "table-row-hover hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0";
                 tr.onclick = () => openPlanModal(idx);
-                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} m</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
+                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} Meses</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
                 tbody.appendChild(tr);
             });
             lucide.createIcons();
