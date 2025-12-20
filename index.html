@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Contratos | Entel Empresas</title>
+    
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- PDF Lib -->
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        entel: { 
+                            blue: '#005CB9', 
+                            dark: '#004a94',
+                            cyan: '#00A9E0', 
+                            orange: '#FF6A13',
+                            gray: '#F1F5F9'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 10px rgba(0, 0, 0, 0.05)',
+                        'card': '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos base y personalizados */
+        body { background-color: #f3f4f6; color: #1f2937; font-size: 0.9rem; }
+        
+        /* Inputs profesionales */
+        .input-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+        .input {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+            color: #111827;
+            font-weight: 500;
+            transition: all 0.15s ease-in-out;
+            font-size: 0.9rem;
+            height: 38px;
+        }
+        .input:focus { 
+            outline: none; 
+            border-color: #005CB9; 
+            box-shadow: 0 0 0 2px rgba(0, 92, 185, 0.1); 
+        }
+        .input::placeholder { color: #9ca3af; font-weight: 400; }
+        .input:read-only { 
+            background-color: #f9fafb; 
+            color: #6b7280; 
+            cursor: default;
+            border-color: #e5e7eb;
+        }
+        
+        /* Botones corporativos */
+        .btn {
+            background-color: #005CB9; 
+            color: white; 
+            font-weight: 600;
+            border-radius: 6px; 
+            padding: 0.5rem 1rem; 
+            transition: all 0.2s;
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            border: 1px solid transparent;
+            height: 38px;
+        }
+        .btn:hover { background-color: #004a94; }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { background-color: #9ca3af; cursor: not-allowed; transform: none; }
+        
+        .btn.alt { 
+            background-color: white; 
+            color: #374151; 
+            border: 1px solid #d1d5db; 
+        }
+        .btn.alt:hover { background-color: #f9fafb; border-color: #9ca3af; }
+
+        /* Tarjetas limpias */
+        .card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 8px; 
+            border: 1px solid #e5e7eb; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+        }
+        .card-header { 
+            font-size: 1rem; 
+            font-weight: 700; 
+            margin-bottom: 1.25rem; 
+            color: #111827; 
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Navegación */
+        .nav-btn {
+            color: rgba(255,255,255,0.7);
+            border-bottom: 3px solid transparent;
+            padding: 1rem 1.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { color: white; background: rgba(255,255,255,0.05); }
+        .nav-btn.active { color: white; border-bottom-color: #FF6A13; background: rgba(255,255,255,0.1); }
+
+        /* Utilidades */
+        .hidden-vis { display: none !important; }
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50 font-sans text-gray-900">
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm">
+        <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-2xl border-t-4 border-entel-blue">
+            <div class="text-center mb-8">
+                <div class="w-12 h-12 bg-entel-blue text-white rounded-lg flex items-center justify-center text-2xl font-bold mx-auto mb-3 shadow-md">e</div>
+                <h2 class="text-2xl font-bold text-gray-800">Portal de Contratos</h2>
+                <p class="text-sm text-gray-500 mt-1">Acceso Corporativo</p>
+            </div>
+            <div class="space-y-5">
+                <div><label class="input-label">Usuario</label><input id="loginUser" class="input" autocomplete="username"></div>
+                <div><label class="input-label">Contraseña</label><input id="loginPass" class="input" type="password" autocomplete="current-password"></div>
+                <button id="btnLogin" class="btn w-full h-10 text-base shadow-sm">Iniciar Sesión</button>
+                <div class="flex justify-center mt-2"><button id="btnReset" class="text-xs text-gray-400 hover:text-entel-blue hover:underline transition-colors">Restablecer acceso (Debug)</button></div>
+                <div id="loginError" class="min-h-[20px] text-sm text-red-600 font-medium text-center mt-2"></div>
+                <div class="text-xs text-gray-400 text-center border-t pt-4 mt-2"><p id="ipDisplay" class="font-mono">Detectando IP...</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE DIRECCIÓN (ADDRESS BUILDER) -->
+    <div id="addressModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/60 backdrop-blur-sm hidden-vis">
+        <div class="w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden m-4 flex flex-col max-h-[90vh]">
+            <div class="bg-entel-blue px-6 py-4 flex justify-between items-center text-white">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5"></i> Construir Dirección de Instalación</h3>
+                <button onclick="closeAddressModal()" class="hover:bg-white/20 p-1 rounded transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4">
+                <div class="grid grid-cols-12 gap-4">
+                    <!-- Fila 1: Via -->
+                    <div class="col-span-12 sm:col-span-4"><label class="input-label">Tipo Vía</label><select id="TIPO_VIA" class="input address-part"></select></div>
+                    <div class="col-span-12 sm:col-span-8"><label class="input-label">Nombre Vía</label><input id="NOM_VIA" class="input address-part" placeholder="Ej: JAVIER PRADO ESTE"></div>
+                    
+                    <!-- Fila 2: Nro, Mza, Lte -->
+                    <div class="col-span-4"><label class="input-label">Número</label><input id="NRO" class="input address-part" placeholder="123"></div>
+                    <div class="col-span-4"><label class="input-label">Manzana</label><input id="MZA" class="input address-part" placeholder="A"></div>
+                    <div class="col-span-4"><label class="input-label">Lote</label><input id="LTE" class="input address-part" placeholder="5"></div>
+
+                    <!-- Fila 3: Interior -->
+                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Tipo Interior</label><select id="TIP_INT" class="input address-part"></select></div>
+                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Nro Int.</label><input id="NRO_INT" class="input address-part"></div>
+                    
+                    <!-- Fila 4: Edificacion -->
+                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Tipo Edif.</label><select id="TIP_EDIF" class="input address-part"></select></div>
+                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Nom Edif.</label><input id="NOM_EDIF" class="input address-part"></div>
+
+                    <!-- Fila 5: Urb -->
+                    <div class="col-span-12"><label class="input-label">Urb.</label><input id="URB_ADDR" class="input address-part" placeholder="Ej: LOS FICUS"></div>
+
+                    <!-- Fila 6: Distrito -->
+                    <div class="col-span-12"><label class="input-label">Distrito <span class="text-red-500">*</span></label><select id="DISTRITO_SEL" class="input address-part"></select></div>
+                </div>
+                
+                <div class="bg-blue-50 p-3 rounded border border-blue-100 mt-4">
+                    <label class="input-label text-blue-800 mb-1">Vista Previa:</label>
+                    <p id="addressPreview" class="text-sm font-mono font-medium text-gray-700 min-h-[1.5em]">---</p>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
+                <button onclick="closeAddressModal()" class="btn alt">Cancelar</button>
+                <button onclick="confirmAddress()" class="btn">Confirmar Dirección</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APP HEADER -->
+    <header id="appHeader" class="bg-entel-blue text-white shadow-md sticky top-0 z-40 hidden-vis">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-white text-entel-blue w-8 h-8 rounded flex items-center justify-center font-bold text-lg shadow-sm">e</div>
+                <div class="leading-tight"><h1 class="text-lg font-bold tracking-tight">Generador de Contratos</h1><p class="text-[10px] uppercase tracking-wider text-blue-100 opacity-80">Entel Empresas</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex flex-col items-end mr-2"><span id="headerUser" class="text-sm font-medium leading-none">Usuario</span><span id="headerRole" class="text-[10px] uppercase bg-blue-800/50 px-1.5 py-0.5 rounded text-blue-100 mt-1">Rol</span></div>
+                <div class="h-8 w-[1px] bg-blue-400/30 hidden md:block"></div>
+                <button id="btnLogout" class="text-blue-100 hover:text-white transition-colors p-2 hover:bg-blue-700 rounded-md" title="Cerrar Sesión"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+            </div>
+        </div>
+        <div id="adminTabs" class="bg-blue-800/30 border-t border-blue-400/20 hidden-vis">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 flex overflow-x-auto">
+                <button onclick="switchTab('generator')" class="nav-btn active" id="tab-generator"><i data-lucide="file-edit" class="w-4 h-4 inline-block mr-1"></i> Generador</button>
+                <button onclick="switchTab('logs')" class="nav-btn" id="tab-logs"><i data-lucide="file-text" class="w-4 h-4 inline-block mr-1"></i> Historial</button>
+                <button onclick="switchTab('config')" class="nav-btn" id="tab-config"><i data-lucide="settings" class="w-4 h-4 inline-block mr-1"></i> Configuración</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main id="mainContent" class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full hidden-vis flex-1">
+        
+        <!-- === VISTA GENERADOR === -->
+        <div id="view-generator" class="fade-in hidden-vis">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                
+                <div class="lg:col-span-8 space-y-6">
+                    <!-- Tipo Servicio -->
+                    <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <h2 class="font-bold text-gray-700 uppercase text-xs tracking-wide flex items-center gap-2"><i data-lucide="layers" class="text-entel-blue w-4 h-4"></i> Tipo de Servicio</h2>
+                        <div class="flex bg-gray-100 p-1 rounded-md">
+                            <button onclick="setServiceType('internet')" id="btnTypeInternet" class="px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"><i data-lucide="wifi" class="w-3 h-3"></i> INTERNET</button>
+                            <button onclick="setServiceType('pack')" id="btnTypePack" class="px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900"><i data-lucide="layers" class="w-3 h-3"></i> PACK</button>
+                        </div>
+                    </div>
+
+                    <!-- 0. Opportunity -->
+                    <div class="card">
+                        <h2 class="card-header text-entel-blue">0. Información de Oportunidad</h2>
+                        <div><label class="input-label">Nro. de Oportunidad</label><input id="NRO_OPORT" class="input" placeholder="Ej: OP-2023-56789"></div>
+                    </div>
+
+                    <!-- 1. Legal Rep Data -->
+                    <div class="card">
+                        <h2 class="card-header text-entel-blue">1. Datos del Representante Legal</h2>
+                        <div class="grid sm:grid-cols-12 gap-4">
+                            <div class="sm:col-span-4">
+                                <label class="input-label">RUC <span class="text-red-500">*</span></label>
+                                <div class="flex gap-2"><input id="RUC" class="input" placeholder="11 dígitos" maxlength="11"><button id="btnSearchRuc" class="btn alt px-3" title="Buscar"><i data-lucide="search" class="w-4 h-4"></i></button></div>
+                            </div>
+                            <div class="sm:col-span-8">
+                                <label class="input-label">Razón Social <span class="text-red-500">*</span></label>
+                                <input id="RAZON_SOCIAL" class="input" readonly>
+                            </div>
+                            
+                            <div class="sm:col-span-12">
+                                <label class="input-label">Dirección Fiscal <span class="text-red-500">*</span></label>
+                                <input id="DIRECCION" class="input">
+                            </div>
+
+                            <div class="sm:col-span-4"><label class="input-label">N° Calle</label><input id="NUMERO_DE_CALLE" class="input"></div>
+                            <div class="sm:col-span-4"><label class="input-label">Dpto / Int</label><input id="DPTO_INT" class="input"></div>
+                            <div class="sm:col-span-4"><label class="input-label">Urbanización</label><input id="URB" class="input"></div>
+
+                            <div class="sm:col-span-6"><label class="input-label">Distrito <span class="text-red-500">*</span></label><input id="DISTRITO" class="input"></div>
+                            <div class="sm:col-span-6"><label class="input-label">Ciudad <span class="text-red-500">*</span></label><input id="CIUDAD" class="input"></div>
+
+                            <div class="sm:col-span-12 border-t border-gray-100 my-2 pt-2"><p class="text-xs font-bold text-gray-400 uppercase mb-3">Datos Personales del RL</p></div>
+                            <div class="sm:col-span-4"><label class="input-label">Apellido Paterno <span class="text-red-500">*</span></label><input id="APELLIDO_PATERNO" class="input"></div>
+                            <div class="sm:col-span-4"><label class="input-label">Apellido Materno <span class="text-red-500">*</span></label><input id="APELLIDO_MATERNO" class="input"></div>
+                            <div class="sm:col-span-4"><label class="input-label">Nombres <span class="text-red-500">*</span></label><input id="NOMBRES" class="input"></div>
+                            <div class="sm:col-span-6"><label class="input-label">Cargo <span class="text-red-500">*</span></label><input id="CARGO_RL" class="input" placeholder="Ej: Gerente General"></div>
+                            <div class="sm:col-span-6"><label class="input-label">DNI <span class="text-red-500">*</span></label><input id="DNI" class="input" maxlength="8"></div>
+                            <div class="sm:col-span-4"><label class="input-label">Teléfono <span class="text-red-500">*</span></label><input id="TELEFONO" class="input"></div>
+                            <div class="sm:col-span-8"><label class="input-label">Correo Electrónico <span class="text-red-500">*</span></label><input id="CORREO" class="input" type="email" placeholder="email@empresa.com"></div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Contact Info -->
+                    <div class="card">
+                        <h2 class="card-header text-entel-blue">2. Contacto de Instalación</h2>
+                        <div class="grid sm:grid-cols-12 gap-4">
+                            <div class="sm:col-span-6"><label class="input-label">Nombre Completo <span class="text-red-500">*</span></label><input id="CONT_NOMB" class="input"></div>
+                            <div class="sm:col-span-6"><label class="input-label">Cargo <span class="text-red-500">*</span></label><input id="CONT_CARGO" class="input"></div>
+                            <div class="sm:col-span-4"><label class="input-label">DNI <span class="text-red-500">*</span></label><input id="CONT_DNI" class="input" maxlength="8"></div>
+                            <div class="sm:col-span-4"><label class="input-label">Teléfono <span class="text-red-500">*</span></label><input id="CONT_TELEF" class="input"></div>
+                            <div class="sm:col-span-4"><label class="input-label">Correo <span class="text-red-500">*</span></label><input id="CONT_CORREO" class="input" type="email"></div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Tarifas y Servicios -->
+                    <div class="card border-l-4 border-l-entel-blue">
+                        <h2 class="card-header text-entel-blue">3. Selección de Plan y Tarifas</h2>
+                        <div class="bg-blue-50 p-4 rounded-md border border-blue-100 mb-6">
+                            <div class="grid sm:grid-cols-2 gap-6">
+                                <div><label class="input-label text-blue-800">Plan Contratado</label><select id="planSelect" class="input border-blue-300"><option value="">— Seleccionar Plan —</option></select></div>
+                                <div><label class="input-label text-blue-800">Tarifa Mensual</label><input id="TARIF_MENS" class="input border-blue-300 font-bold text-entel-blue" readonly></div>
+                            </div>
+                        </div>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <div><label class="input-label">Nombre del Plan</label><input id="NOM_PLAN" class="input" readonly></div>
+                            <div><label class="input-label">Min. Garantizado</label><input id="MIN_GAR" class="input" readonly></div>
+                            <div><label class="input-label">Plazo (Meses)</label><input id="PLAZO_CONT" class="input" readonly></div>
+                            <div class="bg-gray-50 p-2 rounded border border-gray-100"><label class="input-label text-xs">Vel. Bajada (Max/Min)</label><div class="flex gap-2"><input id="VEL_MAX_BAJ" class="input text-xs h-8" readonly><input id="VEL_MIN_BAJ" class="input text-xs h-8" readonly></div></div>
+                            <div class="bg-gray-50 p-2 rounded border border-gray-100"><label class="input-label text-xs">Vel. Subida (Max/Min)</label><div class="flex gap-2"><input id="VEL_MAX_SUB" class="input text-xs h-8" readonly><input id="VEL_MIN_SUB" class="input text-xs h-8" readonly></div></div>
+                            <div><label class="input-label">Cargo Fijo</label><input id="CARGO_FIJO_VAL" class="input font-semibold" readonly></div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Info Adicional -->
+                    <div class="card">
+                        <h2 class="card-header text-entel-blue">4. Información Adicional y Firmante</h2>
+                        <div class="grid sm:grid-cols-12 gap-6">
+                            <div class="sm:col-span-12 md:col-span-4 bg-gray-50 p-3 rounded border border-gray-200">
+                                <label class="input-label mb-2">Fecha de Firma (Auto)</label>
+                                <div class="flex gap-2"><input id="DIA" class="input text-center font-mono" readonly><input id="MES" class="input text-center font-mono flex-grow" readonly><input id="ANO" class="input text-center font-mono" readonly></div>
+                            </div>
+                            <div class="sm:col-span-12 md:col-span-8">
+                                <div class="grid sm:grid-cols-2 gap-4">
+                                    <div><label class="input-label">Nombre Firmante <span class="text-red-500">*</span></label><input id="RL" class="input"></div>
+                                    <div><label class="input-label">Cargo Firmante <span class="text-red-500">*</span></label><input id="CARGO_FIRM" class="input"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Campo Instalación con evento -->
+                            <div class="sm:col-span-12">
+                                <label class="input-label flex items-center gap-2">
+                                    Dirección de Instalación <span class="text-red-500">*</span> 
+                                    <span class="text-xs text-gray-400 font-normal ml-auto">(Haga clic para editar)</span>
+                                </label>
+                                <div class="relative cursor-pointer" onclick="openAddressModal()">
+                                    <input id="DIREC_INST" class="input cursor-pointer bg-gray-50 border-blue-200 hover:border-blue-400 transition-colors" placeholder="Haga clic aquí para generar la dirección..." readonly>
+                                    <i data-lucide="edit-3" class="absolute right-3 top-3 text-blue-400 w-4 h-4 pointer-events-none"></i>
+                                </div>
+                            </div>
+
+                            <!-- Hidden auto fields -->
+                            <div class="sm:col-span-12 grid grid-cols-4 gap-4 opacity-70">
+                                <div><label class="input-label">Cant IP</label><input id="CANTIDAD" class="input text-xs" value="01" readonly></div>
+                                <div><label class="input-label">Subtotal</label><input id="SUB_TOTAL" class="input text-xs" value="S/. 0.00" readonly></div>
+                                <div><label class="input-label">Total</label><input id="TOTAL" class="input text-xs" value="S/. 0.00" readonly></div>
+                                <div><label class="input-label">Promoción</label><input id="NOMB_PROMOCION" class="input text-xs" value="30% por 4 – Fibra +" readonly></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
+                    <div class="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+                        <div class="bg-gray-50 px-5 py-4 border-b border-gray-200"><h2 class="text-sm font-bold uppercase tracking-wider text-gray-600 flex items-center gap-2"><i data-lucide="file-output" class="w-4 h-4"></i> Exportación</h2></div>
+                        <div class="p-5">
+                            <div class="mb-5"><p class="text-xs font-semibold text-gray-500 mb-2 uppercase">Archivos a Generar:</p><ul class="space-y-2 text-sm text-gray-700" id="fileListPreview"></ul></div>
+                            <button id="btnExport" class="btn w-full h-12 text-base shadow-md hover:shadow-lg transform transition-all"><i data-lucide="download" class="w-5 h-5"></i> GENERAR CONTRATOS</button>
+                            <div id="exportStatus" class="mt-4 hidden text-xs p-3 rounded border flex items-start gap-2"></div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 text-gray-300 rounded-lg p-4 text-xs shadow-md">
+                        <div class="flex justify-between items-center mb-1"><span>Sesión Activa:</span><strong class="text-white" id="displaySession">...</strong></div>
+                        <div class="flex justify-between items-center"><span>Dirección IP:</span><strong class="text-white font-mono" id="displayIP">...</strong></div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <!-- CONFIG & LOGS Views kept same but hidden -->
+        <div id="view-config" class="fade-in hidden-vis">
+            <div class="mb-6 flex justify-between items-center"><h2 class="text-xl font-bold text-gray-800">Configuración</h2><div class="flex bg-white rounded-md shadow-sm border border-gray-200 p-1"><button onclick="switchConfigTab('users')" id="btnConfigUsers" class="px-4 py-1.5 rounded text-sm font-medium transition-colors">Usuarios</button><button onclick="switchConfigTab('plans')" id="btnConfigPlans" class="px-4 py-1.5 rounded text-sm font-medium transition-colors">Planes</button></div></div>
+            <div id="panel-users" class="grid md:grid-cols-12 gap-6"><div class="md:col-span-4"><div class="card sticky top-24"><h3 class="card-header border-0 pb-0 mb-4">Crear Usuario</h3><div class="space-y-4"><div><label class="input-label">Usuario</label><input id="newUserName" class="input"></div><div><label class="input-label">Contraseña</label><div class="flex gap-2"><input id="newUserPass" class="input" type="text"><button onclick="generateUserPass()" class="btn alt px-3" title="Generar"><i data-lucide="key" class="w-4 h-4"></i></button></div></div><div><label class="input-label">Rol</label><select id="newUserRole" class="input"><option value="normal">NORMAL</option><option value="admin">ADMIN</option></select></div><label class="flex items-center gap-2 text-sm p-1"><input type="checkbox" id="newUserRestrict" checked class="w-4 h-4 rounded text-entel-blue"><span>Restringir IP</span></label><button onclick="createNewUser()" class="btn w-full mt-2">Guardar Usuario</button><p id="userMsg" class="text-center text-xs font-medium py-2 hidden"></p></div></div></div><div class="md:col-span-8"><div class="card"><h3 class="card-header border-0 pb-0 mb-4">Usuarios Registrados</h3><div id="usersList" class="space-y-2 max-h-[500px] overflow-y-auto pr-1"></div></div></div></div>
+            <div id="panel-plans" class="grid lg:grid-cols-12 gap-6 hidden-vis"><div class="lg:col-span-4"><div class="card sticky top-24"><h3 id="planFormTitle" class="card-header border-0 pb-0 mb-4">Nuevo Plan</h3><div class="space-y-3"><input type="hidden" id="planOriginalName"><div><label class="input-label">Nombre del Plan</label><input id="planName" class="input"></div><div class="grid grid-cols-2 gap-3"><div><label class="input-label">Tarifa</label><input id="planTarif" class="input"></div><div><label class="input-label">Cargo Fijo</label><input id="planCargoFijo" class="input"></div></div><div class="grid grid-cols-2 gap-3"><div><label class="input-label">Plazo</label><input id="planPlazo" class="input"></div><div><label class="input-label">Garantía</label><input id="planGar" class="input" placeholder="70%"></div></div><div class="p-3 bg-gray-50 rounded border border-gray-100"><label class="input-label mb-2">Velocidades (Mbps)</label><div class="grid grid-cols-2 gap-2 mb-2"><input id="planVmb" class="input text-xs" type="number" placeholder="Bajada Max"><input id="planVminb" class="input text-xs" type="number" placeholder="Bajada Min"></div><div class="grid grid-cols-2 gap-2"><input id="planVms" class="input text-xs" type="number" placeholder="Subida Max"><input id="planVmins" class="input text-xs" type="number" placeholder="Subida Min"></div></div><div class="flex gap-2 pt-2"><button id="btnCancelPlan" onclick="resetPlanForm()" class="btn alt flex-1 hidden">Cancelar</button><button onclick="savePlan()" class="btn flex-1">Guardar Plan</button></div><p id="planMsg" class="text-center text-xs font-medium py-2 hidden"></p></div></div></div><div class="lg:col-span-8"><div class="card p-0 overflow-hidden"><div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center"><h3 class="font-bold text-gray-800">Catálogo de Planes</h3><span class="text-xs text-gray-400" id="planCount">0 planes</span></div><div class="max-h-[600px] overflow-y-auto"><table class="w-full text-xs text-left"><thead class="bg-gray-50 text-gray-600 font-bold sticky top-0 shadow-sm"><tr><th class="p-4">Nombre del Plan</th><th class="p-4">Tarifa / C. Fijo</th><th class="p-4 text-center">Acciones</th></tr></thead><tbody id="plansListBody" class="divide-y divide-gray-100"></tbody></table></div></div></div></div>
+        </div>
+
+        <div id="view-logs" class="fade-in hidden-vis">
+            <div class="card p-0 overflow-hidden shadow-lg border-0">
+                <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-white"><div><h2 class="text-lg font-bold text-gray-800">Historial de Generación</h2><p class="text-xs text-gray-500">Registro de auditoría.</p></div><button onclick="clearAllLogs()" class="btn alt text-red-600 border-gray-200 hover:border-red-200 hover:bg-red-50 text-xs h-8"><i data-lucide="trash-2" class="w-3 h-3"></i> Limpiar Todo</button></div>
+                <div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="bg-gray-50 text-gray-600 font-bold border-b border-gray-200"><tr><th class="p-4 whitespace-nowrap">Fecha</th><th class="p-4 whitespace-nowrap">Usuario</th><th class="p-4 whitespace-nowrap">RUC</th><th class="p-4 whitespace-nowrap">Razón Social</th><th class="p-4 whitespace-nowrap">Teléfono</th></tr></thead><tbody id="logsTableBody" class="divide-y divide-gray-100"></tbody></table></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- LOGIC -->
+    <script>
+        const KEYS = { USERS: 'contratos_users', PLANS: 'contratos_planes', LOG_OK: 'contratos_login_ok', LOG_USER: 'contratos_login_user', LOGS: 'contratos_registros' };
+        const ALLOWED_IPS = ['148.102.51.78', '190.8.133.125'];
+        const APISPERU_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1vYmlsZW5ldGZpamFAZ21haWwuY29tIn0.p96PEX6kNXdguiZk1jpodcUHgUaXRwLi3DzsGzkxsBY";
+
+        // Listas para comboboxes
+        const LIST_TIPO_VIA = [" ","ALAMEDA","AVENIDA","BAJADA","BOULEVARD","CALLE","CAMPAMENTO","CARRETERA","COORDENADA","GRANJA 1","JIRON","MALECON","PASAJE","PASEO","PLAZA","PROLONGACION"];
+        const LIST_TIPO_INT = [" ","BLOCK","CASETA","DPTO/INT.","ESQUINA","LOCAL","MODULO","OFICINA","PISO","PUESTO","STAND","TIENDA"];
+        const LIST_TIPO_EDIF = [" ","AGRUPACION","ASENTAMIENTO HUMANO","ASOCIACION","BARRIO","CENTRO COMERCIAL","CENTRO EMPRESARIAL","CENTRO POBLADO","CIUDAD","COMPLEJO","COMUNIDAD","CONDOMINIO","CONJUNTO HABITACIONAL","EDIFICIO","HACIENDA","GALERIA","MERCADO","MULTIFAMILIAR","PARQUE INDUSTRIAL","PARQUE ZONAL","PUEBLO JOVEN","QUINTA","RESIDENCIAL","SUPERMERCADO"];
+        const LIST_DISTRITOS = [" ","ASIA","ATE","BARRANCO","BELLAVISTA","BREÑA","CALLAO","CARMEN DE LA LEGUA REYNOSO","CHORRILLOS","COMAS","INDEPENDENCIA","JESUS MARIA","LA MOLINA","LA VICTORIA","LIMA","LINCE","LURIN","MAGDALENA DEL MAR","MIRAFLORES","PUEBLO LIBRE","PUENTE PIEDRA","SAN BORJA","SAN ISIDRO","SAN LUIS","SAN MARTIN DE PORRES","SAN MIGUEL","SANTA ANITA","SANTIAGO DE SURCO","SURQUILLO","VENTANILLA","EL AGUSTINO"];
+        const CALLAO_DISTRITOS = ["BELLAVISTA", "CALLAO", "CARMEN DE LA LEGUA REYNOSO", "VENTANILLA"];
+
+        const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
+        const SEED_PLANS = [
+            { name: "INTERNET FIBRA + 100 MBPS - 36 Meses", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "S/ 160.00", tarif: "S/ 160.00", plazo: "36 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 100 MBPS - 24 Meses", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "S/ 210.00", tarif: "S/ 210.00", plazo: "24 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 100 MBPS - 12 Meses", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "S/ 250.00", tarif: "S/ 250.00", plazo: "12 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 200 MBPS - 36 Meses", minGar: "70%", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "S/ 230.00", tarif: "S/ 230.00", plazo: "36 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 200 MBPS - 24 Meses", minGar: "70%", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "S/ 300.00", tarif: "S/ 300.00", plazo: "24 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 200 MBPS - 12 Meses", minGar: "70%", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "S/ 340.00", tarif: "S/ 340.00", plazo: "12 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 500 MBPS - 36 Meses", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "S/ 370.00", tarif: "S/ 370.00", plazo: "36 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 500 MBPS - 24 Meses", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "S/ 420.00", tarif: "S/ 420.00", plazo: "24 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 500 MBPS - 12 Meses", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "S/ 460.00", tarif: "S/ 460.00", plazo: "12 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 1000 MBPS - 36 Meses", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "S/ 550.00", tarif: "S/ 550.00", plazo: "36 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 1000 MBPS - 24 Meses", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "S/ 610.00", tarif: "S/ 610.00", plazo: "24 Meses", type: "internet" },
+            { name: "INTERNET FIBRA + 1000 MBPS - 12 Meses", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "S/ 670.00", tarif: "S/ 670.00", plazo: "12 Meses", type: "internet" },
+        ];
+
+        // Mapeo PDF
+        const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL' };
+        const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIREC_INST', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'CANTIDAD': 'CANTIDAD', 'SUB_TOTAL': 'SUB_TOTAL', 'TOTAL': 'TOTAL', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
+        const MAP_TAR = { 'CARGO FIJO': 'CARGO_FIJO_VAL', 'CARGO': 'CARGO_FIRM', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'NOM_PLAN': 'NOM_PLAN', 'MIN_GAR': 'MIN_GAR', 'VEL_MAX_BAJ': 'VEL_MAX_BAJ', 'VEL_MIN_BAJ': 'VEL_MIN_BAJ', 'VEL_MAX_SUB': 'VEL_MAX_SUB', 'VEL_MIN_SUB': 'VEL_MIN_SUB', 'TARIF_MENS': 'TARIF_MENS', 'DIREC_INST': 'DIREC_INST', 'PLAZO_INST': 'PLAZO_CONT', 'PLAZO_CONT': 'PLAZO_CONT' };
+
+        let state = { currentUser: null, users: [], plans: [], ip: null, serviceType: 'internet' };
+        const byId = id => document.getElementById(id);
+        const norm = s => String(s || '').trim().toLowerCase();
+        const userId = s => norm(s).replace(/[\s._-]+/g, '');
+        const formatMoney = v => {
+            if (!v) return '';
+            let clean = String(v).replace(/[^0-9,.]/g, '').replace(',', '.');
+            const n = parseFloat(clean);
+            if (isNaN(n)) return '';
+            let f = new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN', minimumFractionDigits: 2 }).format(n);
+            f = f.replace('PEN', '').trim().replace(/^S\$/, 'S/').replace('S/.', 'S/');
+            if (!f.startsWith('S/')) f = 'S/ ' + f;
+            return f;
+        };
+        const getMonthName = idx => ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"][idx];
+        const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); state.ip = d.ip; byId('ipDisplay').textContent = 'IP: ' + state.ip; } catch { byId('ipDisplay').textContent = '(IP desconocida)'; }
+            try { state.users = JSON.parse(localStorage.getItem(KEYS.USERS)) || []; } catch { state.users = []; }
+            SEED_USERS.forEach(s => { if (!state.users.some(x => x.uid === userId(s.u))) state.users.push({ ...s, uLower: norm(s.u), uid: userId(s.u) }); });
+            localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
+            try { state.plans = JSON.parse(localStorage.getItem(KEYS.PLANS)) || []; } catch { state.plans = []; }
+            if (state.plans.length === 0) { state.plans = SEED_PLANS; localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans)); }
+            if (localStorage.getItem(KEYS.LOG_OK) === '1') { try { const u = JSON.parse(localStorage.getItem(KEYS.LOG_USER)); if (u) loginSuccess(u); } catch { logout(); } }
+            lucide.createIcons(); initGeneratorLogic(); initListeners();
+        });
+
+        function initListeners() {
+            byId('btnLogin').onclick = handleLogin;
+            byId('btnReset').onclick = handleResetAccess;
+            byId('btnLogout').onclick = logout;
+            byId('btnSearchRuc').onclick = fetchRucData;
+            ['loginUser', 'loginPass'].forEach(id => byId(id).addEventListener('keyup', e => { if (e.key === 'Enter') handleLogin(); }));
+            
+            // Focus on Install Address opens Modal
+            byId('DIREC_INST').addEventListener('focus', openAddressModal);
+            
+            // Address Builder Listeners inside modal
+            const addressInputs = document.querySelectorAll('.address-part');
+            addressInputs.forEach(inp => inp.addEventListener('input', buildAddressPreview));
+            addressInputs.forEach(inp => inp.addEventListener('change', buildAddressPreview));
+        }
+
+        // --- ADDRESS MODAL LOGIC ---
+        function openAddressModal() {
+            byId('addressModal').classList.remove('hidden-vis');
+            // Populate selects if empty
+            if(byId('TIPO_VIA').options.length === 0) populateSelect('TIPO_VIA', LIST_TIPO_VIA);
+            if(byId('TIP_INT').options.length === 0) populateSelect('TIP_INT', LIST_TIPO_INT);
+            if(byId('TIP_EDIF').options.length === 0) populateSelect('TIP_EDIF', LIST_TIPO_EDIF);
+            if(byId('DISTRITO_SEL').options.length === 0) populateSelect('DISTRITO_SEL', LIST_DISTRITOS);
+            buildAddressPreview(); // Initial build
+        }
+
+        function closeAddressModal() {
+            byId('addressModal').classList.add('hidden-vis');
+        }
+
+        function confirmAddress() {
+            const addr = byId('addressPreview').textContent;
+            if(!addr || addr === '---') return;
+            byId('DIREC_INST').value = addr;
+            closeAddressModal();
+        }
+
+        function buildAddressPreview() {
+            let addr = "";
+            
+            // 1. Tipo Via + Nombre Via
+            const tVia = byId('TIPO_VIA').value.trim();
+            const nVia = byId('NOM_VIA').value.trim().toUpperCase();
+            if(tVia) addr += tVia;
+            if(nVia) {
+                if(addr) addr += " ";
+                addr += nVia;
+            }
+
+            // 2. Nro, Mza, Lte
+            const nro = byId('NRO').value.trim().toUpperCase();
+            if(nro) addr += " NRO. " + nro;
+            
+            const mza = byId('MZA').value.trim().toUpperCase();
+            if(mza) addr += " MZA. " + mza;
+
+            const lte = byId('LTE').value.trim().toUpperCase();
+            if(lte) addr += " LTE. " + lte;
+
+            // 3. Interior
+            const tInt = byId('TIP_INT').value.trim();
+            const nInt = byId('NRO_INT').value.trim().toUpperCase();
+            if(tInt && tInt !== "NINGUNO" && tInt.trim() !== "") {
+                addr += " " + tInt;
+                if(nInt) addr += " " + nInt;
+            }
+
+            // 4. Edificacion
+            const tEdif = byId('TIP_EDIF').value.trim();
+            const nEdif = byId('NOM_EDIF').value.trim().toUpperCase();
+            if(tEdif && tEdif.trim() !== "") addr += " " + tEdif;
+            if(nEdif) addr += " " + nEdif;
+
+            // 5. Urb
+            const urb = byId('URB_ADDR').value.trim().toUpperCase();
+            if(urb) addr += " URB. " + urb;
+
+            // 6. Distrito (Sufijo)
+            const dist = byId('DISTRITO_SEL').value.trim().toUpperCase();
+            let suffix = "LIMA - LIMA";
+            if(CALLAO_DISTRITOS.includes(dist)) suffix = "CALLAO - LIMA";
+            
+            if(dist && dist.trim() !== "") addr += ` (${dist} - ${suffix})`;
+
+            const final = addr.trim();
+            byId('addressPreview').textContent = final || '---';
+        }
+
+        function populateSelect(id, list) {
+            const sel = byId(id);
+            sel.innerHTML = '';
+            list.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item;
+                opt.textContent = item;
+                sel.appendChild(opt);
+            });
+        }
+
+        // --- AUTH ---
+        function handleLogin() {
+            const uInput = byId('loginUser').value;
+            const pInput = byId('loginPass').value.trim();
+            const uKey = userId(uInput);
+            const found = state.users.find(x => x.uid === uKey && x.p === pInput);
+            const errDiv = byId('loginError');
+            if (!found) { errDiv.textContent = 'Usuario o contraseña incorrectos.'; return; }
+            if (found.role !== 'admin' && found.restrictIp && state.ip && !ALLOWED_IPS.includes(state.ip)) {
+                errDiv.textContent = `Acceso restringido desde IP ${state.ip}.`;
+                return;
+            }
+            loginSuccess({ u: found.u, role: found.role });
+        }
+
+        function loginSuccess(user) {
+            state.currentUser = user;
+            localStorage.setItem(KEYS.LOG_OK, '1');
+            localStorage.setItem(KEYS.LOG_USER, JSON.stringify(user));
+            byId('loginScreen').classList.add('hidden-vis');
+            byId('appHeader').classList.remove('hidden-vis');
+            byId('mainContent').classList.remove('hidden-vis');
+            byId('headerUser').textContent = user.u;
+            byId('headerRole').textContent = user.role;
+            byId('displaySession').textContent = user.u;
+            byId('displayIP').textContent = state.ip || '...';
+            byId('adminTabs').classList.toggle('hidden-vis', user.role !== 'admin');
+            switchTab('generator');
+        }
+
+        function logout() { localStorage.removeItem(KEYS.LOG_OK); localStorage.removeItem(KEYS.LOG_USER); location.reload(); }
+        function handleResetAccess() {
+            const seeded = SEED_USERS.map(s => ({ ...s, uLower: norm(s.u), uid: userId(s.u) }));
+            localStorage.setItem(KEYS.USERS, JSON.stringify(seeded));
+            state.users = seeded;
+            byId('loginError').textContent = 'Usuarios restablecidos.';
+            setTimeout(() => byId('loginError').textContent = '', 3000);
+        }
+
+        // --- NAVIGATION ---
+        function switchTab(tabId) {
+            ['generator', 'config', 'logs'].forEach(t => {
+                byId(`view-${t}`).classList.add('hidden-vis');
+                if(byId(`tab-${t}`)) byId(`tab-${t}`).classList.remove('active', 'border-b-2', 'border-white', 'text-white');
+            });
+            byId(`view-${tabId}`).classList.remove('hidden-vis');
+            if(byId(`tab-${tabId}`)) byId(`tab-${tabId}`).classList.add('active', 'border-b-2', 'border-white', 'text-white');
+            if (tabId === 'config') initConfigView();
+            if (tabId === 'logs') renderLogs();
+        }
+
+        function switchConfigTab(subTab) {
+            const btnUsers = byId('btnConfigUsers'); const btnPlans = byId('btnConfigPlans');
+            const pUsers = byId('panel-users'); const pPlans = byId('panel-plans');
+            if (subTab === 'users') {
+                btnUsers.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-entel-blue text-white";
+                btnPlans.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-white text-gray-600 hover:bg-gray-50";
+                pUsers.classList.remove('hidden-vis'); pPlans.classList.add('hidden-vis');
+            } else {
+                btnPlans.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-entel-blue text-white";
+                btnUsers.className = "px-4 py-1.5 rounded text-sm font-medium transition-colors bg-white text-gray-600 hover:bg-gray-50";
+                pPlans.classList.remove('hidden-vis'); pUsers.classList.add('hidden-vis');
+            }
+        }
+
+        // --- GENERATOR LOGIC ---
+        function initGeneratorLogic() {
+            const d = new Date();
+            byId('DIA').value = String(d.getDate()).padStart(2,'0');
+            byId('MES').value = getMonthName(d.getMonth());
+            byId('ANO').value = d.getFullYear();
+            
+            updatePlanSelect();
+            byId('planSelect').addEventListener('change', onPlanSelectChange);
+            byId('btnExport').onclick = handleExportAll;
+            setServiceType('internet');
+        }
+
+        function setServiceType(type) {
+            state.serviceType = type;
+            const btnInt = byId('btnTypeInternet'); const btnPack = byId('btnTypePack');
+            if (type === 'internet') {
+                btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200";
+                btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900";
+            } else {
+                btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200";
+                btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900";
+            }
+            updateFileListPreview();
+        }
+
+        function updateFileListPreview() {
+            const list = byId('fileListPreview');
+            const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
+            list.innerHTML = `
+                <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Arrendamiento.pdf</li>
+                <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Servicios Suplementarios.pdf</li>
+                <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Tarifas y Servicios.pdf</li>
+            `;
+        }
+
+        function updatePlanSelect() {
+            const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar Plan —</option>';
+            state.plans.forEach(p => { const opt = document.createElement('option'); opt.value = p.name; opt.textContent = p.name; sel.appendChild(opt); });
+        }
+
+        function onPlanSelectChange(e) {
+            const planName = e.target.value;
+            const p = state.plans.find(x => x.name === planName);
+            if (!p) return;
+            if (p.name.toLowerCase().includes('pack')) setServiceType('pack'); else setServiceType('internet');
+            byId('NOM_PLAN').value = p.name; byId('MIN_GAR').value = p.minGar;
+            byId('VEL_MAX_BAJ').value = p.vmb; byId('VEL_MIN_BAJ').value = p.vminb;
+            byId('VEL_MAX_SUB').value = p.vms; byId('VEL_MIN_SUB').value = p.vmins;
+            byId('TARIF_MENS').value = p.tarif;
+            if (p.plazo) byId('PLAZO_CONT').value = p.plazo;
+            if (p.cargoFijo) byId('CARGO_FIJO_VAL').value = p.cargoFijo;
+        }
+
+        async function fetchRucData() {
+            const ruc = byId('RUC').value;
+            if (!ruc || ruc.length !== 11) return alert('RUC inválido (11 dígitos).');
+            const btn = byId('btnSearchRuc'); btn.disabled = true; btn.innerHTML = '...';
+            try {
+                const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`);
+                if (!res.ok) throw new Error();
+                const d = await res.json();
+                if (d) {
+                    byId('RAZON_SOCIAL').value = d.razonSocial || '';
+                    // No llenar direccion automaticamente, usar el generador manual/fiscal si se desea, o dejar vacio para obligar llenado
+                }
+            } catch { alert('Error consultando RUC.'); }
+            finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
+        }
+
+        async function handleExportAll() {
+            // Check mandatory
+            if (!byId('RUC').value || !byId('RAZON_SOCIAL').value) return alert('Faltan datos del Cliente.');
+            const req = ['APELLIDO_PATERNO','APELLIDO_MATERNO','NOMBRES','DNI','TELEFONO','CORREO','CONT_NOMB','CONT_CARGO','CONT_DNI','CONT_TELEF','CONT_CORREO','RL','CARGO_FIRM','DIREC_INST'];
+            const missing = req.filter(id => !byId(id).value);
+            if (missing.length > 0) return alert('Faltan campos obligatorios: ' + missing.join(', '));
+
+            // Email Valid
+            if (!isValidEmail(byId('CORREO').value)) return alert('Correo RL inválido.');
+            if (!isValidEmail(byId('CONT_CORREO').value)) return alert('Correo Contacto inválido.');
+
+            // Check Installation Address != Fiscal Address
+            const fiscal = byId('DIRECCION').value.trim().toUpperCase();
+            const inst = byId('DIREC_INST').value.trim().toUpperCase();
+            if (fiscal && inst && fiscal === inst) return alert('La Dirección de Instalación NO puede ser igual a la Dirección Fiscal.');
+
+            const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ');
+            const suffix = nro ? ` - ${nro}.pdf` : '.pdf';
+            const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
+            const st = byId('exportStatus');
+            st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3";
+            st.innerHTML = "<span>Generando archivos...</span>"; st.classList.remove('hidden');
+
+            try {
+                await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix);
+                await generatePdf(prefix + 'Servicios Suplementarios.pdf', MAP_SUP, prefix + 'Servicios Suplementarios' + suffix);
+                await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix);
+
+                const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
+                logs.unshift({ date: new Date().toLocaleString(), user: state.currentUser.u, RUC: byId('RUC').value, RAZON_SOCIAL: byId('RAZON_SOCIAL').value, TELEFONO: byId('TELEFONO').value });
+                localStorage.setItem(KEYS.LOGS, JSON.stringify(logs));
+                st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-green-50 text-green-700 border-green-100 block mt-3";
+                st.innerHTML = "<span>¡Archivos generados correctamente!</span>";
+            } catch (e) {
+                st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-red-50 text-red-700 border-red-100 block mt-3";
+                st.innerHTML = `<span>Error: ${e.message}</span>`;
+            }
+        }
+
+        async function generatePdf(fileName, map, outName) {
+            const resp = await fetch(fileName);
+            if (!resp.ok) throw new Error(`${fileName} no encontrado`);
+            const arrBuffer = await resp.arrayBuffer();
+            const pdfDoc = await PDFLib.PDFDocument.load(arrBuffer);
+            const form = pdfDoc.getForm();
+            for (const [pdfField, domId] of Object.entries(map)) {
+                try { const el = byId(domId); if (el) form.getTextField(pdfField).setText(el.value || ''); } catch(e) {}
+            }
+            form.flatten();
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = outName; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        }
+
+        function initConfigView() { renderUsers(); renderPlans(); }
+        function renderUsers() {
+            const cont = byId('usersList'); cont.innerHTML = '';
+            state.users.forEach(u => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-3 rounded border border-gray-200 shadow-sm flex items-center justify-between group";
+                div.innerHTML = `<div><div class="flex items-center gap-3"><span class="font-bold text-gray-800 text-sm">${u.u}</span><span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${u.role==='admin'?'bg-purple-100 text-purple-700':'bg-blue-100 text-blue-700'}">${u.role}</span></div><div class="flex items-center gap-2 mt-1 text-xs text-gray-500">${u.role==='admin' || !u.restrictIp ? 'Acceso Libre' : 'Restringido por IP'}</div></div><button onclick="deleteUser('${u.u}')" class="text-gray-300 hover:text-red-500 p-2 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`;
+                cont.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+        function generateUserPass() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"; let pass = "";
+            for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random()*chars.length));
+            byId('newUserPass').value = pass;
+        }
+        function createNewUser() {
+            const u = byId('newUserName').value; const p = byId('newUserPass').value; const role = byId('newUserRole').value; const restrict = byId('newUserRestrict').checked;
+            if(!u || !p) return alert('Completa los campos.');
+            if(state.users.some(x=>x.uid === userId(u))) return alert('Existe.');
+            state.users.push({ u, p, role, uLower: norm(u), uid: userId(u), restrictIp: role==='admin'?false:restrict });
+            localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
+            renderUsers(); byId('newUserName').value=''; byId('newUserPass').value='';
+            const msg = byId('userMsg'); msg.textContent = 'Usuario creado.'; msg.classList.remove('hidden'); msg.classList.add('bg-blue-50', 'text-entel-blue'); setTimeout(()=>msg.classList.add('hidden'), 2000);
+        }
+        function deleteUser(username) {
+            if(!confirm(`¿Eliminar ${username}?`)) return;
+            state.users = state.users.filter(x => x.u !== username); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers();
+        }
+        function renderPlans() {
+            const tbody = byId('plansListBody'); tbody.innerHTML = ''; byId('planCount').textContent = `${state.plans.length} planes`;
+            state.plans.forEach((p, idx) => {
+                const tr = document.createElement('tr'); tr.className = "hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0";
+                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${p.tarif}</div><div class="text-[10px] text-gray-400">CF: ${p.cargoFijo || '-'}</div></td><td class="p-4 text-center"><div class="flex items-center justify-center gap-2"><button onclick="editPlan(${idx})" class="text-gray-400 hover:text-entel-blue p-1 transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button><button onclick="deletePlan(${idx})" class="text-gray-400 hover:text-red-500 p-1 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></td>`;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+        function resetPlanForm() {
+            byId('planOriginalName').value = ''; byId('planName').value = ''; byId('planTarif').value = ''; byId('planCargoFijo').value = ''; byId('planPlazo').value = ''; byId('planGar').value = '70%';
+            byId('planVmb').value = ''; byId('planVminb').value = ''; byId('planVms').value = ''; byId('planVmins').value = '';
+            byId('planFormTitle').innerHTML = 'Nuevo Plan'; byId('btnCancelPlan').classList.add('hidden'); lucide.createIcons();
+        }
+        function savePlan() {
+            const name = byId('planName').value; const tarif = byId('planTarif').value;
+            if(!name || !tarif) return alert('Nombre y Tarifa obligatorios.');
+            const newP = { name, tarif, cargoFijo: byId('planCargoFijo').value, plazo: byId('planPlazo').value, minGar: byId('planGar').value, vmb: byId('planVmb').value, vminb: byId('planVminb').value, vms: byId('planVms').value, vmins: byId('planVmins').value };
+            const orig = byId('planOriginalName').value;
+            if (orig) { const idx = state.plans.findIndex(x=>x.name===orig); if(idx !== -1) state.plans[idx] = newP; }
+            else { if(state.plans.some(x=>x.name===name)) return alert('Ya existe nombre.'); state.plans.push(newP); }
+            localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans)); renderPlans(); updatePlanSelect(); resetPlanForm();
+        }
+        window.editPlan = function(idx) {
+            const p = state.plans[idx]; byId('planOriginalName').value = p.name; byId('planName').value = p.name; byId('planTarif').value = p.tarif; byId('planCargoFijo').value = p.cargoFijo || ''; byId('planPlazo').value = p.plazo || ''; byId('planGar').value = p.minGar || '70%'; byId('planVmb').value = p.vmb; byId('planVminb').value = p.vminb; byId('planVms').value = p.vms; byId('planVmins').value = p.vmins;
+            byId('planFormTitle').innerHTML = 'Editar Plan'; byId('btnCancelPlan').classList.remove('hidden'); lucide.createIcons();
+        }
+        window.deletePlan = function(idx) { if(!confirm('¿Borrar plan?')) return; state.plans.splice(idx, 1); localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans)); renderPlans(); updatePlanSelect(); }
+        function renderLogs() {
+            const tbody = byId('logsTableBody'); const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; tbody.innerHTML = '';
+            if (logs.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No hay registros aún.</td></tr>'; return; }
+            logs.forEach(l => { const tr = document.createElement('tr'); tr.className = "hover:bg-blue-50/30 transition-colors"; tr.innerHTML = `<td class="p-4 text-gray-500 whitespace-nowrap">${l.date}</td><td class="p-4 font-bold text-entel-blue">${l.user}</td><td class="p-4 font-mono text-gray-600">${l.RUC || '-'}</td><td class="p-4 max-w-[250px] truncate font-medium text-gray-800">${l.RAZON_SOCIAL || '-'}</td><td class="p-4 text-gray-500">${l.TELEFONO || '-'}</td>`; tbody.appendChild(tr); });
+        }
+        function clearAllLogs() { if(!confirm('¿Borrar todo el historial?')) return; localStorage.setItem(KEYS.LOGS, '[]'); renderLogs(); }
+    </script>
+</body>
+</html>
