@@ -490,7 +490,7 @@
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
         
-        // DATOS ACTUALIZADOS SEGÚN TU EXCEL - PLAZOS COMO NÚMEROS PUROS
+        // DATOS ACTUALIZADOS: Plazos como números puros
         const SEED_PLANS = [
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
@@ -747,7 +747,7 @@
                 if(!res.ok) throw new Error(); 
                 const d = await res.json(); 
                 if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; 
-                // Removed autofill for DIRECCION to ensure manual entry
+                // ONLY fill RZ, leave DIRECCION empty for manual entry as requested
             } catch { alert('Error consultando RUC.'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
         }
 
@@ -777,8 +777,6 @@
             const fiscal = byId('DIRECCION').value.trim().toUpperCase(); 
             const inst = byId('DIREC_INST').value.trim().toUpperCase();
             
-            // If fiscal is empty (user didn't fill it), we warn too, but the 'req' check above handles mandatory fields if we add DIRECCION to req.
-            // Let's add DIRECCION to mandatory check manually here just in case.
             if (!fiscal) return alert('Falta la Dirección Fiscal.');
 
             if (fiscal === inst) {
@@ -814,7 +812,7 @@
             state.plans.forEach((p, idx) => {
                 const tr = document.createElement('tr'); tr.className = "table-row-hover hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0";
                 tr.onclick = () => openPlanModal(idx);
-                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} m</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
+                tr.innerHTML = `<td class="p-4"><div class="font-medium text-gray-800">${p.name}</div><div class="text-[10px] text-gray-400 mt-0.5 flex gap-2"><span>↓${p.vmb}M</span><span>↑${p.vms}M</span><span>Gar:${p.minGar}</span></div></td><td class="p-4"><div class="font-bold text-entel-blue">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td><td class="p-4 text-xs text-gray-500"><div class="flex flex-col gap-1"><span>Baj: ${p.vmb}/${p.vminb}</span><span>Sub: ${p.vms}/${p.vmins}</span></div></td><td class="p-4 font-mono text-xs">${p.plazo} Meses</td><td class="p-4 text-center"><button class="text-blue-400 hover:text-blue-600 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button></td>`;
                 tbody.appendChild(tr);
             });
             lucide.createIcons();
