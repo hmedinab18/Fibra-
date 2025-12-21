@@ -581,7 +581,24 @@
             try { state.users = JSON.parse(localStorage.getItem(KEYS.USERS)) || []; } catch { state.users = []; }
             SEED_USERS.forEach(s => { if (!state.users.some(x => x.uid === userId(s.u))) state.users.push({ ...s, uLower: norm(s.u), uid: userId(s.u) }); });
             localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
+            
             try { state.plans = JSON.parse(localStorage.getItem(KEYS.PLANS)) || []; } catch { state.plans = []; }
+            
+            // LÓGICA DE MIGRACIÓN: Corrige automáticamente 0.7 a 70% en planes existentes
+            if (state.plans.length > 0) {
+                let updated = false;
+                state.plans.forEach(p => {
+                    if (p.minGar === "0.7") {
+                        p.minGar = "70%";
+                        updated = true;
+                    }
+                });
+                if (updated) {
+                    localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans));
+                    console.log("Planes actualizados de 0.7 a 70%");
+                }
+            }
+
             if (state.plans.length === 0) { state.plans = SEED_PLANS; localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans)); }
             if (localStorage.getItem(KEYS.LOG_OK) === '1') { try { const u = JSON.parse(localStorage.getItem(KEYS.LOG_USER)); if (u) loginSuccess(u); } catch { logout(); } }
             lucide.createIcons(); initGeneratorLogic(); initListeners();
