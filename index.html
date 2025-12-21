@@ -80,6 +80,11 @@
             cursor: default;
             border-color: #e5e7eb;
         }
+        .input:disabled {
+             background-color: #f3f4f6;
+             color: #9ca3af;
+             cursor: not-allowed;
+        }
         
         /* Botones corporativos */
         .btn {
@@ -408,11 +413,43 @@
                                 </div>
                             </div>
 
-                            <div class="sm:col-span-12 grid grid-cols-4 gap-4 opacity-70">
-                                <div><label class="input-label">Cant IP</label><input id="CANTIDAD" class="input text-xs" value="01" readonly></div>
-                                <div><label class="input-label">Subtotal</label><input id="SUB_TOTAL" class="input text-xs" value="S/. 0.00" readonly></div>
-                                <div><label class="input-label">Total</label><input id="TOTAL" class="input text-xs" value="S/. 0.00" readonly></div>
-                                <div><label class="input-label">Promoción</label><input id="NOMB_PROMOCION" class="input text-xs" value="30% por 4 – Fibra +" readonly></div>
+                            <div class="sm:col-span-12 border-t border-gray-100 my-4 pt-4">
+                                <h3 class="font-bold text-gray-700 uppercase text-xs tracking-wide flex items-center gap-2 mb-3">
+                                    <i data-lucide="box" class="text-entel-blue w-4 h-4"></i> Servicios Suplementarios
+                                </h3>
+                                
+                                <div class="grid sm:grid-cols-12 gap-4">
+                                    <div class="sm:col-span-6">
+                                        <label class="input-label">Seleccionar Servicio</label>
+                                        <select id="selSupService" class="input">
+                                            <option value="">— Ninguno —</option>
+                                            <!-- JS Populated -->
+                                        </select>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="input-label">Cantidad</label>
+                                        <input id="inpSupQty" type="number" min="0" max="99" class="input" value="0" disabled>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="input-label">Precio Unit.</label>
+                                        <input id="inpSupPrice" class="input" placeholder="S/. 0.00" onblur="handleSupPriceManual(this)">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="input-label">Subtotal</label>
+                                        <input id="inpSupSubtotal" class="input font-bold text-entel-blue bg-gray-50" readonly value="S/. 0.00">
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 p-3 bg-blue-50 rounded border border-blue-100 flex justify-between items-center">
+                                    <span class="text-sm font-bold text-blue-800">TOTAL SERVICIOS SUPLEMENTARIOS:</span>
+                                    <span id="txtSupTotalGlobal" class="text-lg font-bold text-entel-blue">S/. 0.00</span>
+                                </div>
+                                <input type="hidden" id="TOTAL_SUP_HIDDEN" value="0.00">
+                            </div>
+
+                            <!-- Campos ocultos pero necesarios para el PDF -->
+                            <div class="hidden">
+                                <input id="NOMB_PROMOCION" value="30% por 4 – Fibra +">
                             </div>
                         </div>
                     </div>
@@ -482,6 +519,16 @@
         const ALLOWED_IPS = ['148.102.51.78', '190.8.133.125'];
         const APISPERU_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1vYmlsZW5ldGZpamFAZ21haWwuY29tIn0.p96PEX6kNXdguiZk1jpodcUHgUaXRwLi3DzsGzkxsBY";
 
+        // DATOS DE SERVICIOS SUPLEMENTARIOS DEL EXCEL
+        const SUP_SERVICES_DATA = [
+            { id: 'Líneas Adicionales', price: 9.92, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0 ' },
+            { id: 'Direcciones de 4 IP´s Adicionales', price: 23.60, cantField: 'CANT_IP#1', subField: 'SUB_TOT_IP#2' },
+            { id: 'Direcciones de 8 IP´s Adicionales', price: 47.20, cantField: 'CANT_IP#2', subField: 'SUB_TOT IP#1' },
+            { id: 'Direcciones de 8 IP´s Adicionales Satelital', price: 23.60, cantField: 'CANT_IP#3', subField: 'SUB_TOT_IP#3' },
+            { id: 'Detalle de Facturación en Medio Impreso', price: 24.79, cantField: 'CANT_IP#4', subField: 'SUB_TOT_IP#4' },
+            { id: 'Número de Páginas Adicionales', price: 0.69, cantField: 'CANT_IP#5', subField: 'SUB TOT IP#5' }
+        ];
+
         const LIST_TIPO_VIA = [" ","ALAMEDA","AVENIDA","BAJADA","BOULEVARD","CALLE","CAMPAMENTO","CARRETERA","COORDENADA","GRANJA 1","JIRON","MALECON","PASAJE","PASEO","PLAZA","PROLONGACION"];
         const LIST_TIPO_INT = [" ","BLOCK","CASETA","DPTO/INT.","ESQUINA","LOCAL","MODULO","OFICINA","PISO","PUESTO","STAND","TIENDA"];
         const LIST_TIPO_EDIF = [" ","AGRUPACION","ASENTAMIENTO HUMANO","ASOCIACION","BARRIO","CENTRO COMERCIAL","CENTRO EMPRESARIAL","CENTRO POBLADO","CIUDAD","COMPLEJO","COMUNIDAD","CONDOMINIO","CONJUNTO HABITACIONAL","EDIFICIO","HACIENDA","GALERIA","MERCADO","MULTIFAMILIAR","PARQUE INDUSTRIAL","PARQUE ZONAL","PUEBLO JOVEN","QUINTA","RESIDENCIAL","SUPERMERCADO"];
@@ -490,7 +537,6 @@
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
         
-        // DATOS ACTUALIZADOS: Plazos como números puros
         const SEED_PLANS = [
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
@@ -506,14 +552,15 @@
             { name: "INTERNET FIBRA + 1000 MBPS", minGar: "0.7", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "670", tarif: "670", plazo: "12", type: "internet" },
         ];
 
+        // Mapeo PDF
         const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO' };
         
-        // CORRECCIÓN CLAVE: En Servicios Suplementarios, 'DIRECCION' (en el PDF) debe llenarse con DIRECCION (Fiscal) y 'DIREC_INST' con DIREC_INST.
-        const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'CANTIDAD': 'CANTIDAD', 'SUB_TOTAL': 'SUB_TOTAL', 'TOTAL': 'TOTAL', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
+        // CORRECCIÓN CLAVE: En Servicios Suplementarios, 'DIRECCION' se llena con DIRECCION (Fiscal) y 'DIREC_INST' con DIREC_INST.
+        const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'TOTAL': 'TOTAL_SUP_HIDDEN', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
         
         const MAP_TAR = { 'CARGO FIJO': 'CARGO_FIJO_VAL', 'CARGO': 'CARGO_FIRM', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'NOM_PLAN': 'NOM_PLAN', 'MIN_GAR': 'MIN_GAR', 'VEL_MAX_BAJ': 'VEL_MAX_BAJ', 'VEL_MIN_BAJ': 'VEL_MIN_BAJ', 'VEL_MAX_SUB': 'VEL_MAX_SUB', 'VEL_MIN_SUB': 'VEL_MIN_SUB', 'TARIF_MENS': 'TARIF_MENS', 'DIREC_INST': 'DIREC_INST', 'PLAZO_INST': 'PLAZO_CONT', 'PLAZO_CONT': 'PLAZO_CONT' };
 
-        let state = { currentUser: null, users: [], plans: [], ip: null, serviceType: 'internet' };
+        let state = { currentUser: null, users: [], plans: [], ip: null, serviceType: 'internet', activeSupService: null };
         const byId = id => document.getElementById(id);
         const norm = s => String(s || '').trim().toLowerCase();
         const userId = s => norm(s).replace(/[\s._-]+/g, '');
@@ -527,6 +574,11 @@
             if (!f.startsWith('S/')) f = 'S/ ' + f;
             return f;
         };
+        const parseMoney = v => {
+            if (!v) return 0;
+            let clean = String(v).replace(/[^0-9,.]/g, '').replace(',', '.');
+            return parseFloat(clean) || 0;
+        }
         const getMonthName = idx => ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"][idx];
         const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -549,12 +601,73 @@
             byId('btnSearchDni').onclick = fetchDniData; 
             
             ['loginUser', 'loginPass'].forEach(id => byId(id).addEventListener('keyup', e => { if (e.key === 'Enter') handleLogin(); }));
-            
             byId('DIREC_INST').addEventListener('focus', openAddressModal);
             
             const addressInputs = document.querySelectorAll('.address-part');
             addressInputs.forEach(inp => inp.addEventListener('input', buildAddressPreview));
             addressInputs.forEach(inp => inp.addEventListener('change', buildAddressPreview));
+
+            // Listener para Servicios Suplementarios
+            byId('selSupService').addEventListener('change', handleSupServiceChange);
+            byId('inpSupQty').addEventListener('input', updateSupCalculation);
+        }
+
+        // --- SUPLEMENTARY SERVICES LOGIC ---
+        function initSupServices() {
+            const sel = byId('selSupService');
+            sel.innerHTML = '<option value="">— Ninguno —</option>';
+            SUP_SERVICES_DATA.forEach((s, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = s.id;
+                sel.appendChild(opt);
+            });
+        }
+
+        function handleSupServiceChange(e) {
+            const idx = e.target.value;
+            if (idx === "") {
+                state.activeSupService = null;
+                byId('inpSupQty').value = 0;
+                byId('inpSupQty').disabled = true;
+                byId('inpSupPrice').value = "S/. 0.00";
+                byId('inpSupPrice').readOnly = true;
+                byId('inpSupSubtotal').value = "S/. 0.00";
+                updateTotalGlobal();
+                return;
+            }
+
+            const service = SUP_SERVICES_DATA[idx];
+            state.activeSupService = service;
+            byId('inpSupQty').disabled = false;
+            byId('inpSupQty').value = 1; 
+            
+            // Allow manual price edit
+            byId('inpSupPrice').value = formatMoney(service.price);
+            byId('inpSupPrice').readOnly = false;
+            
+            updateSupCalculation();
+        }
+
+        function handleSupPriceManual(el) {
+            // Re-format on blur and recalc
+            el.value = formatMoney(el.value);
+            updateSupCalculation();
+        }
+
+        function updateSupCalculation() {
+            if (!state.activeSupService) return;
+            const qty = parseInt(byId('inpSupQty').value) || 0;
+            const price = parseMoney(byId('inpSupPrice').value);
+            const sub = qty * price;
+            byId('inpSupSubtotal').value = formatMoney(sub);
+            updateTotalGlobal();
+        }
+
+        function updateTotalGlobal() {
+            const currentSub = parseMoney(byId('inpSupSubtotal').value);
+            byId('txtSupTotalGlobal').textContent = formatMoney(currentSub);
+            byId('TOTAL_SUP_HIDDEN').value = formatMoney(currentSub);
         }
 
         // --- PLAN MODAL LOGIC ---
@@ -723,6 +836,7 @@
         function initGeneratorLogic() {
             const d = new Date(); byId('DIA').value = String(d.getDate()).padStart(2,'0'); byId('MES').value = getMonthName(d.getMonth()); byId('ANO').value = d.getFullYear();
             updatePlanSelect(); byId('planSelect').addEventListener('change', onPlanSelectChange); byId('btnExport').onclick = handleExportAll; setServiceType('internet');
+            initSupServices(); 
         }
         function setServiceType(type) {
             state.serviceType = type; const btnInt = byId('btnTypeInternet'); const btnPack = byId('btnTypePack');
@@ -782,20 +896,67 @@
             const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' '); const suffix = nro ? ` - ${nro}.pdf` : '.pdf'; const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
             const st = byId('exportStatus'); st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3"; st.innerHTML = "<span>Generando archivos...</span>"; st.classList.remove('hidden');
             try {
+                // Generar PDF
                 await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix);
-                await generatePdf(prefix + 'Servicios Suplementarios.pdf', MAP_SUP, prefix + 'Servicios Suplementarios' + suffix);
+                
+                // Para SUP, necesitamos inyectar los datos del servicio seleccionado dinámicamente
+                // Creamos un mapa temporal combinando MAP_SUP con los datos específicos del servicio activo
+                let mapSupFinal = { ...MAP_SUP };
+                if (state.activeSupService) {
+                    // Si hay un servicio seleccionado, añadimos su Cantidad y Subtotal al mapa con los valores actuales
+                    // Pero espera, generatePdf lee del DOM usando IDs.
+                    // Necesitamos que los IDs en el mapa apunten a inputs que tengan los valores correctos.
+                    // Ya tenemos 'inpSupQty' -> CANT_IP#x y 'inpSupSubtotal' -> SUB_TOT_IP#x
+                    // Pero generatePdf usa un mapa estatico ID_PDF -> ID_DOM.
+                    // Truco: Pasamos un objeto de valores directo a una funcion modificada, o
+                    // Mapeamos dinamicamente antes de llamar.
+                    
+                    // Mejor opcion: Modificar generatePdf para aceptar overrides de valores opcionales
+                    // O simplemente, dado que solo es UN servicio activo, podemos asignar IDs virtuales en el mapa
+                    // y llenar campos hidden en el DOM con los valores correctos antes de llamar.
+                    
+                    // Vamos a usar el enfoque de campos ocultos dinámicos o inyección directa.
+                    // Simplificación: Pasamos los valores extras a generatePdf.
+                }
+
+                await generatePdf(prefix + 'Servicios Suplementarios.pdf', MAP_SUP, prefix + 'Servicios Suplementarios' + suffix, true); // true flag for sup logic
                 await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix);
+                
                 const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
                 logs.unshift({ date: new Date().toLocaleString(), user: state.currentUser.u, RUC: byId('RUC').value, RAZON_SOCIAL: byId('RAZON_SOCIAL').value, TELEFONO: byId('TELEFONO').value });
                 localStorage.setItem(KEYS.LOGS, JSON.stringify(logs));
                 st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-green-50 text-green-700 border-green-100 block mt-3"; st.innerHTML = "<span>¡Archivos generados correctamente!</span>";
             } catch (e) { st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-red-50 text-red-700 border-red-100 block mt-3"; st.innerHTML = `<span>Error: ${e.message}</span>`; }
         }
-        async function generatePdf(fileName, map, outName) {
+        
+        async function generatePdf(fileName, map, outName, isSup = false) {
             const resp = await fetch(fileName); if (!resp.ok) throw new Error(`${fileName} no encontrado`); const arrBuffer = await resp.arrayBuffer(); const pdfDoc = await PDFLib.PDFDocument.load(arrBuffer); const form = pdfDoc.getForm();
-            for (const [pdfField, domId] of Object.entries(map)) { try { const el = byId(domId); if (el) form.getTextField(pdfField).setText(el.value || ''); } catch(e) {} }
+            
+            // Fill standard fields from map
+            for (const [pdfField, domId] of Object.entries(map)) { 
+                try { 
+                    const el = byId(domId); 
+                    if (el) form.getTextField(pdfField).setText(el.value || ''); 
+                } catch(e) {} 
+            }
+
+            // Logic special for Supplementary Services
+            if (isSup && state.activeSupService) {
+                try {
+                    // Fill the specific quantity field for the active service
+                    // activeSupService has: { cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0' }
+                    // We get value from 'inpSupQty' (formatted 01, 02) and 'inpSupSubtotal'
+                    const qtyVal = String(byId('inpSupQty').value).padStart(2, '0');
+                    form.getTextField(state.activeSupService.cantField).setText(qtyVal);
+                    
+                    const subVal = byId('inpSupSubtotal').value;
+                    form.getTextField(state.activeSupService.subField).setText(subVal);
+                } catch (e) { console.log("Error filling sup fields", e); }
+            }
+
             form.flatten(); const pdfBytes = await pdfDoc.save(); const blob = new Blob([pdfBytes], { type: 'application/pdf' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = outName; document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
+
         function initConfigView() { renderUsers(); renderPlans(); }
         function renderUsers() {
             const cont = byId('usersList'); cont.innerHTML = ''; state.users.forEach(u => { const div = document.createElement('div'); div.className = "bg-white p-3 rounded border border-gray-200 shadow-sm flex items-center justify-between group"; div.innerHTML = `<div><div class="flex items-center gap-3"><span class="font-bold text-gray-800 text-sm">${u.u}</span><span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${u.role==='admin'?'bg-purple-100 text-purple-700':'bg-blue-100 text-blue-700'}">${u.role}</span></div><div class="flex items-center gap-2 mt-1 text-xs text-gray-500">${u.role==='admin' || !u.restrictIp ? 'Acceso Libre' : 'Restringido por IP'}</div></div><button onclick="deleteUser('${u.u}')" class="text-gray-300 hover:text-red-500 p-2 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`; cont.appendChild(div); }); lucide.createIcons();
