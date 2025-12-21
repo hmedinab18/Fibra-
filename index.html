@@ -490,7 +490,7 @@
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
         
-        // DATOS ACTUALIZADOS
+        // DATOS ACTUALIZADOS: Plazos como números puros
         const SEED_PLANS = [
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "0.7", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
@@ -506,7 +506,6 @@
             { name: "INTERNET FIBRA + 1000 MBPS", minGar: "0.7", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "670", tarif: "670", plazo: "12", type: "internet" },
         ];
 
-        // Mapeo PDF CORREGIDO
         const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO' };
         
         // CORRECCIÓN CLAVE: En Servicios Suplementarios, 'DIRECCION' (en el PDF) debe llenarse con DIRECCION (Fiscal) y 'DIREC_INST' con DIREC_INST.
