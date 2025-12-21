@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Contratos | Entel Empresas</title>
+    <title>Contratos Fija | Mobilenet</title>
     
     <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,14 +117,6 @@
             background-color: #ef4444; color: white; border: none;
         }
         .btn.danger:hover { background-color: #dc2626; }
-        
-        /* Botón Outlook (Naranja Entel) */
-        .btn.outlook {
-            background-color: #FF6A13; 
-            color: white;
-            border: none;
-        }
-        .btn.outlook:hover { background-color: #e55e0f; }
 
         /* Tarjetas limpias */
         .card { 
@@ -455,8 +447,7 @@
                         <div class="bg-gray-50 px-5 py-4 border-b border-gray-200"><h2 class="text-sm font-bold uppercase tracking-wider text-gray-600 flex items-center gap-2"><i data-lucide="file-output" class="w-4 h-4"></i> Exportación</h2></div>
                         <div class="p-5">
                             <div class="mb-5"><p class="text-xs font-semibold text-gray-500 mb-2 uppercase">Archivos a Generar:</p><ul class="space-y-2 text-sm text-gray-700" id="fileListPreview"></ul></div>
-                            <button id="btnExport" class="btn w-full h-12 text-base shadow-md hover:shadow-lg transform transition-all mb-3"><i data-lucide="download" class="w-5 h-5"></i> GENERAR CONTRATOS</button>
-                            <button id="btnMail" onclick="generateOutlookMail()" class="btn outlook w-full h-12 text-base shadow-md hover:shadow-lg transform transition-all"><i data-lucide="mail" class="w-5 h-5"></i> GENERAR CORREO OUTLOOK</button>
+                            <button id="btnExport" class="btn w-full h-12 text-base shadow-md hover:shadow-lg transform transition-all"><i data-lucide="download" class="w-5 h-5"></i> GENERAR CONTRATOS</button>
                             <div id="exportStatus" class="mt-4 hidden text-xs p-3 rounded border flex items-start gap-2"></div>
                         </div>
                     </div>
@@ -516,6 +507,7 @@
         const APISPERU_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1vYmlsZW5ldGZpamFAZ21haWwuY29tIn0.p96PEX6kNXdguiZk1jpodcUHgUaXRwLi3DzsGzkxsBY";
 
         // DATOS DE SERVICIOS SUPLEMENTARIOS DEL EXCEL
+        // La clave es que cada servicio tiene un 'cantField' específico en el PDF.
         const SUP_SERVICES_DATA = [
             { id: 'Líneas Adicionales', price: 9.92, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0 ' },
             { id: 'Direcciones de 4 IP´s Adicionales', price: 23.60, cantField: 'CANT_IP#1', subField: 'SUB_TOT_IP#2' },
@@ -568,7 +560,7 @@
         const norm = s => String(s || '').trim().toLowerCase();
         const userId = s => norm(s).replace(/[\s._-]+/g, '');
         const formatMoney = v => {
-            if (!v) return '';
+            if (v === '' || v === null || v === undefined) return '';
             let clean = String(v).replace(/[^0-9,.]/g, '').replace(',', '.');
             const n = parseFloat(clean);
             if (isNaN(n)) return '';
@@ -661,13 +653,13 @@
                 div.className = "grid sm:grid-cols-12 gap-2 items-center bg-gray-50 p-2 rounded border border-gray-200 animate-fade-in";
                 div.innerHTML = `
                     <div class="sm:col-span-6">
-                        <select onchange="updateSupRow('${row.id}')" id="sel_${row.id}" class="input text-xs h-8 py-0">
+                        <select onchange="onServiceChange('${row.id}')" id="sel_${row.id}" class="input text-xs h-8 py-0">
                             <option value="">— Seleccionar —</option>
                             ${SUP_SERVICES_DATA.map(s => `<option value="${s.id}">${s.id}</option>`).join('')}
                         </select>
                     </div>
                     <div class="sm:col-span-2">
-                        <input oninput="updateSupRow('${row.id}')" id="qty_${row.id}" type="number" min="1" value="${row.qty || 1}" class="input text-xs h-8 py-0" placeholder="Cant.">
+                        <input onblur="formatSupRowQty('${row.id}')" oninput="updateSupRow('${row.id}')" id="qty_${row.id}" type="text" value="${String(row.qty || 1).padStart(2, '0')}" class="input text-xs h-8 py-0 text-center" placeholder="Cant.">
                     </div>
                     <div class="sm:col-span-2">
                         <input onblur="formatSupRowPrice('${row.id}')" oninput="updateSupRow('${row.id}')" id="price_${row.id}" class="input text-xs h-8 py-0" value="${row.price || 'S/. 0.00'}" placeholder="Precio">
@@ -685,6 +677,30 @@
             lucide.createIcons();
         }
 
+        // NUEVO: Maneja el cambio de servicio para cargar el precio automáticamente
+        function onServiceChange(rowId) {
+            const sel = byId(`sel_${rowId}`);
+            const val = sel.value;
+            const data = SUP_SERVICES_DATA.find(s => s.id === val);
+            
+            if (data) {
+                // Pre-llenar el precio solo si existe un precio predefinido
+                const priceInput = byId(`price_${rowId}`);
+                priceInput.value = formatMoney(data.price);
+            }
+            
+            // Actualizar cálculos
+            updateSupRow(rowId);
+        }
+
+        function formatSupRowQty(rowId) {
+            const el = byId(`qty_${rowId}`);
+            let val = parseInt(el.value.replace(/\D/g, '')) || 0;
+            if(val < 1) val = 1; // Default to 1 if invalid or 0
+            el.value = String(val).padStart(2, '0');
+            updateSupRow(rowId);
+        }
+
         function formatSupRowPrice(rowId) {
             const el = byId(`price_${rowId}`);
             let val = parseMoney(el.value);
@@ -697,7 +713,10 @@
             if(rowIdx === -1) return;
 
             const serviceName = byId(`sel_${rowId}`).value;
-            const qty = parseInt(byId(`qty_${rowId}`).value) || 0;
+            // Handle text input parsing for qty
+            const rawQty = byId(`qty_${rowId}`).value.replace(/\D/g, '');
+            const qty = parseInt(rawQty) || 0;
+            
             const priceStr = byId(`price_${rowId}`).value;
             const price = parseMoney(priceStr);
 
@@ -1017,24 +1036,74 @@
         }
         
         async function generatePdf(fileName, map, outName, extraValues = null) {
-            const resp = await fetch(fileName); if (!resp.ok) throw new Error(`${fileName} no encontrado`); const arrBuffer = await resp.arrayBuffer(); const pdfDoc = await PDFLib.PDFDocument.load(arrBuffer); const form = pdfDoc.getForm();
-            
-            // Standard fill from DOM
-            for (const [pdfField, domId] of Object.entries(map)) { 
-                try { 
-                    const el = byId(domId); 
-                    if (el) form.getTextField(pdfField).setText(el.value || ''); 
-                } catch(e) {} 
-            }
+            let pdfDoc;
+            try {
+                const resp = await fetch(fileName);
+                if (!resp.ok) throw new Error("Plantilla no encontrada");
+                const arrBuffer = await resp.arrayBuffer();
+                pdfDoc = await PDFLib.PDFDocument.load(arrBuffer);
+                
+                const form = pdfDoc.getForm();
+                
+                // Standard fill from DOM
+                for (const [pdfField, domId] of Object.entries(map)) { 
+                    try { 
+                        const el = byId(domId); 
+                        if (el) form.getTextField(pdfField).setText(el.value || ''); 
+                    } catch(e) {} 
+                }
 
-            // Extra values injection (for dynamic rows)
-            if (extraValues) {
-                for (const [key, val] of Object.entries(extraValues)) {
-                    try { form.getTextField(key).setText(val || ''); } catch(e) {}
+                // Extra values injection (for dynamic rows)
+                if (extraValues) {
+                    for (const [key, val] of Object.entries(extraValues)) {
+                        try { form.getTextField(key).setText(val || ''); } catch(e) {}
+                    }
+                }
+
+                form.flatten();
+            } catch (err) {
+                // FALLBACK PARA MODO PREVIEW:
+                // Si falla la carga del PDF (porque las plantillas .pdf no existen en este entorno),
+                // generamos un PDF en blanco con los datos listados para demostrar funcionalidad.
+                console.warn("Usando Fallback PDF Generator para Preview");
+                pdfDoc = await PDFLib.PDFDocument.create();
+                const page = pdfDoc.addPage([600, 800]);
+                const { width, height } = page.getSize();
+                
+                page.drawText(`VISTA PREVIA DE DATOS: ${outName}`, { x: 50, y: height - 50, size: 18, color: PDFLib.rgb(0, 0.36, 0.72) });
+                page.drawText(`Nota: La plantilla original '${fileName}' no se encontró en este entorno.`, { x: 50, y: height - 80, size: 10, color: PDFLib.rgb(0.5, 0.5, 0.5) });
+                
+                let y = height - 120;
+                const drawLine = (key, val) => {
+                    if (y < 50) { page = pdfDoc.addPage(); y = height - 50; }
+                    page.drawText(`${key}:`, { x: 50, y, size: 10, color: PDFLib.rgb(0,0,0) });
+                    page.drawText(`${val}`, { x: 200, y, size: 10, color: PDFLib.rgb(0.2,0.2,0.2) });
+                    y -= 15;
+                };
+
+                for (const [pdfField, domId] of Object.entries(map)) {
+                    const el = byId(domId);
+                    if(el) drawLine(pdfField, el.value || '(vacío)');
+                }
+                if (extraValues) {
+                    y -= 10;
+                    page.drawText(`--- SERVICIOS SUPLEMENTARIOS ---`, { x: 50, y, size: 10, color: PDFLib.rgb(0,0,0) });
+                    y -= 15;
+                    for (const [key, val] of Object.entries(extraValues)) {
+                        drawLine(key, val);
+                    }
                 }
             }
 
-            form.flatten(); const pdfBytes = await pdfDoc.save(); const blob = new Blob([pdfBytes], { type: 'application/pdf' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = outName; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = outName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         function initConfigView() { renderUsers(); renderPlans(); }
