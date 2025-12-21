@@ -117,6 +117,14 @@
             background-color: #ef4444; color: white; border: none;
         }
         .btn.danger:hover { background-color: #dc2626; }
+        
+        /* Botón Outlook (Naranja Entel) */
+        .btn.outlook {
+            background-color: #FF6A13; 
+            color: white;
+            border: none;
+        }
+        .btn.outlook:hover { background-color: #e55e0f; }
 
         /* Tarjetas limpias */
         .card { 
@@ -447,7 +455,8 @@
                         <div class="bg-gray-50 px-5 py-4 border-b border-gray-200"><h2 class="text-sm font-bold uppercase tracking-wider text-gray-600 flex items-center gap-2"><i data-lucide="file-output" class="w-4 h-4"></i> Exportación</h2></div>
                         <div class="p-5">
                             <div class="mb-5"><p class="text-xs font-semibold text-gray-500 mb-2 uppercase">Archivos a Generar:</p><ul class="space-y-2 text-sm text-gray-700" id="fileListPreview"></ul></div>
-                            <button id="btnExport" class="btn w-full h-12 text-base shadow-md hover:shadow-lg transform transition-all"><i data-lucide="download" class="w-5 h-5"></i> GENERAR CONTRATOS</button>
+                            <button id="btnExport" class="btn w-full h-12 text-base shadow-md hover:shadow-lg transform transition-all mb-3"><i data-lucide="download" class="w-5 h-5"></i> GENERAR CONTRATOS</button>
+                            <button id="btnMail" onclick="generateOutlookMail()" class="btn outlook w-full h-12 text-base shadow-md hover:shadow-lg transform transition-all"><i data-lucide="mail" class="w-5 h-5"></i> GENERAR CORREO OUTLOOK</button>
                             <div id="exportStatus" class="mt-4 hidden text-xs p-3 rounded border flex items-start gap-2"></div>
                         </div>
                     </div>
@@ -584,11 +593,12 @@
             
             try { state.plans = JSON.parse(localStorage.getItem(KEYS.PLANS)) || []; } catch { state.plans = []; }
             
-            // LÓGICA DE MIGRACIÓN: Corrige automáticamente 0.7 a 70% en planes existentes
+            // LÓGICA DE MIGRACIÓN ROBUSTA: Corrige automáticamente 0.7 a 70% en planes existentes
             if (state.plans.length > 0) {
                 let updated = false;
                 state.plans.forEach(p => {
-                    if (p.minGar === "0.7") {
+                    // Detecta 0.7 en número o texto
+                    if (p.minGar == 0.7 || p.minGar === "0.7") {
                         p.minGar = "70%";
                         updated = true;
                     }
@@ -596,6 +606,8 @@
                 if (updated) {
                     localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans));
                     console.log("Planes actualizados de 0.7 a 70%");
+                    // Forzar recarga de estado
+                    state.plans = JSON.parse(localStorage.getItem(KEYS.PLANS));
                 }
             }
 
@@ -894,10 +906,19 @@
             list.innerHTML = `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Arrendamiento.pdf</li><li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Servicios Suplementarios.pdf</li><li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Tarifas y Servicios.pdf</li>`;
         }
         function updatePlanSelect() { const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar Plan —</option>'; state.plans.forEach((p, idx) => { const opt = document.createElement('option'); opt.value = p.name; opt.dataset.idx = idx; opt.textContent = p.name; sel.appendChild(opt); }); }
+        
         function onPlanSelectChange(e) {
             const planName = e.target.value; const p = state.plans.find(x => x.name === planName); if (!p) return;
             if (p.name.toLowerCase().includes('pack')) setServiceType('pack'); else setServiceType('internet');
-            byId('NOM_PLAN').value = p.name; byId('MIN_GAR').value = p.minGar; byId('VEL_MAX_BAJ').value = p.vmb; byId('VEL_MIN_BAJ').value = p.vminb; byId('VEL_MAX_SUB').value = p.vms; byId('VEL_MIN_SUB').value = p.vmins; byId('TARIF_MENS').value = formatMoney(p.tarif);
+            
+            // CORRECCION ROBUSTA VISUAL: Forzar display 70% si viene 0.7 aunque la base de datos no se haya actualizado
+            let mg = p.minGar;
+            if(mg == 0.7 || mg === "0.7") mg = "70%";
+            
+            byId('NOM_PLAN').value = p.name; 
+            byId('MIN_GAR').value = mg; // Usar variable corregida
+            
+            byId('VEL_MAX_BAJ').value = p.vmb; byId('VEL_MIN_BAJ').value = p.vminb; byId('VEL_MAX_SUB').value = p.vms; byId('VEL_MIN_SUB').value = p.vmins; byId('TARIF_MENS').value = formatMoney(p.tarif);
             if (p.plazo) byId('PLAZO_CONT').value = p.plazo;
             if (p.cargoFijo) byId('CARGO_FIJO_VAL').value = formatMoney(p.cargoFijo);
         }
