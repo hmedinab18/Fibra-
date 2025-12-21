@@ -507,21 +507,22 @@
         const APISPERU_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1vYmlsZW5ldGZpamFAZ21haWwuY29tIn0.p96PEX6kNXdguiZk1jpodcUHgUaXRwLi3DzsGzkxsBY";
 
         // DATOS DE SERVICIOS SUPLEMENTARIOS DEL EXCEL
-        // La clave es que cada servicio tiene un 'cantField' específico en el PDF.
+        // Mapeo Estricto según requerimiento del usuario
         const SUP_SERVICES_DATA = [
-            { id: 'Líneas Adicionales', price: 9.92, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0 ' },
-            { id: 'Direcciones de 4 IP´s Adicionales', price: 23.60, cantField: 'CANT_IP#1', subField: 'SUB_TOT_IP#2' },
-            { id: 'Direcciones de 8 IP´s Adicionales', price: 47.20, cantField: 'CANT_IP#2', subField: 'SUB_TOT IP#1' },
-            { id: 'Direcciones de 8 IP´s Adicionales Satelital', price: 23.60, cantField: 'CANT_IP#3', subField: 'SUB_TOT_IP#3' },
-            { id: 'Detalle de Facturación en Medio Impreso', price: 24.79, cantField: 'CANT_IP#4', subField: 'SUB_TOT_IP#4' },
+            { id: 'Líneas Adicionales', price: 9.92, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0' },
+            { id: 'Direcciones de 4 IP´s Adicionales', price: 23.60, cantField: 'CANT_IP#1', subField: 'SUB TOT IP#1' },
+            { id: 'Direcciones de 8 IP´s Adicionales', price: 47.20, cantField: 'CANT_IP#2', subField: 'SUB TOT IP#2' },
+            { id: 'Direcciones de 8 IP´s Adicionales Satelital', price: 23.60, cantField: 'CANT_IP#3', subField: 'SUB TOT IP#3' },
+            { id: 'Detalle de Facturación en Medio Impreso', price: 24.79, cantField: 'CANT_IP#4', subField: 'SUB TOT IP#4' },
             { id: 'Número de Páginas Adicionales', price: 0.69, cantField: 'CANT_IP#5', subField: 'SUB TOT IP#5' },
             
-            // Hoja 2: Tarifas Únicas
-            { id: 'No publicar en Páginas Blancas', price: 10.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0 ' }, 
-            { id: 'Bloqueo LDN', price: 10.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0 ' },
-            { id: 'Bloqueo LDI', price: 10.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0 ' },
-            { id: 'Bloqueo a Móviles', price: 10.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0 ' },
-            { id: 'SD WAN Entel', price: 0.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0 ' }
+            // Hoja 2: Tarifas Únicas - Mapeados a #0 por defecto o según lógica adicional si se requiere
+            // Por seguridad, estos se dejan con un mapeo base, pero el usuario especificó la lista superior.
+            { id: 'No publicar en Páginas Blancas', price: 10.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0' }, 
+            { id: 'Bloqueo LDN', price: 10.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0' },
+            { id: 'Bloqueo LDI', price: 10.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0' },
+            { id: 'Bloqueo a Móviles', price: 10.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0' },
+            { id: 'SD WAN Entel', price: 0.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0' }
         ];
 
         const LIST_TIPO_VIA = [" ","ALAMEDA","AVENIDA","BAJADA","BOULEVARD","CALLE","CAMPAMENTO","CARRETERA","COORDENADA","GRANJA 1","JIRON","MALECON","PASAJE","PASEO","PLAZA","PROLONGACION"];
