@@ -386,6 +386,15 @@
                             <div class="bg-gray-50 p-2 rounded border border-gray-100"><label class="input-label text-xs">Vel. Subida (Max/Min)</label><div class="flex gap-2"><input id="VEL_MAX_SUB" class="input text-xs h-8" readonly><input id="VEL_MIN_SUB" class="input text-xs h-8" readonly></div></div>
                             <div><label class="input-label">Cargo Fijo</label><input id="CARGO_FIJO_VAL" class="input font-semibold" readonly></div>
                         </div>
+
+                        <!-- CAMPOS ADICIONALES PARA PACK (INICIALMENTE OCULTOS) -->
+                        <div id="packFields" class="hidden mt-4 p-3 bg-orange-50 rounded border border-orange-100">
+                            <h4 class="text-xs font-bold text-entel-orange uppercase mb-2">Detalles del Pack (Telefonía)</h4>
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div><label class="input-label">N° Teléfono Asignado</label><input id="NUM_TELF" class="input" placeholder="Ej: 1234567"></div>
+                                <div><label class="input-label">Cargo Teléfono</label><input id="CARGO_TELF" class="input font-semibold" value="S/ 9.90" readonly></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card">
@@ -553,7 +562,29 @@
         // CORRECCIÓN CLAVE: En Servicios Suplementarios, 'DIRECCION' se llena con DIRECCION (Fiscal) y 'DIREC_INST' con DIREC_INST.
         const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'TOTAL': 'TOTAL_SUP_HIDDEN', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
         
-        const MAP_TAR = { 'CARGO FIJO': 'CARGO_FIJO_VAL', 'CARGO': 'CARGO_FIRM', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'NOM_PLAN': 'NOM_PLAN', 'MIN_GAR': 'MIN_GAR', 'VEL_MAX_BAJ': 'VEL_MAX_BAJ', 'VEL_MIN_BAJ': 'VEL_MIN_BAJ', 'VEL_MAX_SUB': 'VEL_MAX_SUB', 'VEL_MIN_SUB': 'VEL_MIN_SUB', 'TARIF_MENS': 'TARIF_MENS', 'DIREC_INST': 'DIREC_INST', 'PLAZO_INST': 'PLAZO_CONT', 'PLAZO_CONT': 'PLAZO_CONT' };
+        // --- MAPEO TARIFAS Y SERVICIOS (Updated) ---
+        // Added: NUM_TELF and CARGO_TELF for PACK contracts
+        const MAP_TAR = { 
+            'CARGO FIJO': 'CARGO_FIJO_VAL', 
+            'CARGO': 'CARGO_FIRM', 
+            'CORREO': 'CORREO', 
+            'DIA': 'DIA', 
+            'MES': 'MES', 
+            'AÑO': 'ANO', 
+            'RL': 'RL', 
+            'NOM_PLAN': 'NOM_PLAN', 
+            'MIN_GAR': 'MIN_GAR', 
+            'VEL_MAX_BAJ': 'VEL_MAX_BAJ', 
+            'VEL_MIN_BAJ': 'VEL_MIN_BAJ', 
+            'VEL_MAX_SUB': 'VEL_MAX_SUB', 
+            'VEL_MIN_SUB': 'VEL_MIN_SUB', 
+            'TARIF_MENS': 'TARIF_MENS', 
+            'DIREC_INST': 'DIREC_INST', 
+            'PLAZO_INST': 'PLAZO_CONT', 
+            'PLAZO_CONT': 'PLAZO_CONT',
+            'NUM_TELF': 'NUM_TELF',
+            'CARGO_TELF': 'CARGO_TELF'
+        };
 
         let state = { currentUser: null, users: [], plans: [], ip: null, serviceType: 'internet', activeSupRows: [] };
         const byId = id => document.getElementById(id);
@@ -916,8 +947,17 @@
         }
         function setServiceType(type) {
             state.serviceType = type; const btnInt = byId('btnTypeInternet'); const btnPack = byId('btnTypePack');
-            if (type === 'internet') { btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"; btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900"; }
-            else { btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"; btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900"; }
+            const packFields = byId('packFields');
+            if (type === 'internet') { 
+                btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"; 
+                btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900";
+                packFields.classList.add('hidden'); // Hide PACK fields
+            }
+            else { 
+                btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"; 
+                btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900";
+                packFields.classList.remove('hidden'); // Show PACK fields
+            }
             updateFileListPreview();
         }
         function updateFileListPreview() {
@@ -985,38 +1025,45 @@
                 return alert('ERROR: La Dirección de Instalación NO puede ser idéntica a la Dirección Fiscal. Por favor verifique.');
             }
             
+            // --- NUEVO: FORZAR SINCRONIZACIÓN DE ESTADO ANTES DE EXPORTAR ---
+            // Recorre los elementos DOM para actualizar state.activeSupRows en caso de que algún evento no se haya disparado
+            const rows = state.activeSupRows; // referencia
+            rows.forEach(row => {
+                // Forzar lectura de valores actuales del DOM
+                const domQty = byId('qty_' + row.id);
+                const domPrice = byId('price_' + row.id);
+                const domSel = byId('sel_' + row.id);
+                
+                if (domQty && domPrice && domSel) {
+                    const rawQty = domQty.value.replace(/\D/g, '');
+                    const qty = parseInt(rawQty) || 0;
+                    
+                    const priceStr = domPrice.value;
+                    const price = parseMoney(priceStr);
+                    
+                    const sub = qty * price;
+                    const subFormatted = formatMoney(sub);
+                    
+                    // Actualizar el objeto en el array de estado directamente
+                    row.service = domSel.value;
+                    row.qty = qty;
+                    row.price = priceStr;
+                    row.sub = subFormatted; // String para PDF
+                    row.subValue = sub;     // Number para suma total
+                }
+            });
+            // Recalcular total global por si acaso
+            updateGlobalSupTotal();
+            // ---------------------------------------------------------------
+
             const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' '); const suffix = nro ? ` - ${nro}.pdf` : '.pdf'; const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
             const st = byId('exportStatus'); st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3"; st.innerHTML = "<span>Generando archivos...</span>"; st.classList.remove('hidden');
             try {
                 // Generar PDF
                 await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix);
                 
-                // Mapear dinámicamente las filas de Servicios Suplementarios para el PDF
-                // Cada fila activa se mapea a los índices #0, #1, #2...
-                const rows = state.activeSupRows;
                 let supValues = {};
-                rows.forEach((row, i) => {
-                    // Ahora se llena el campo en el PDF de acuerdo a la fila en la que está
-                    // Pero la información se toma del servicio que el usuario seleccionó.
-                    // SUP_SERVICES_DATA contiene la info del servicio, incluyendo cantField y subField,
-                    // PERO, como tenemos múltiples filas dinámicas, debemos llenar el PDF en ORDEN.
-                    // Si el PDF tiene campos fijos (CANT_IP#0, CANT_IP#1, etc.), debemos usar esos campos 
-                    // en orden (fila 1 -> #0, fila 2 -> #1, etc.) independientemente de qué servicio sea.
-                    
-                    // La lógica correcta es:
-                    // Fila 1 de la tabla -> Llenar CANT_IP#0 y SUB TOT IP#0
-                    // Fila 2 de la tabla -> Llenar CANT_IP#1 y SUB TOT IP#1
-                    // ... etc.
-                    
-                    // Para lograr esto, necesitamos conocer los nombres de los campos en el PDF para cada "posición".
-                    // Asumiremos que los campos en el PDF se llaman CANT_IP#0, CANT_IP#1... y SUB TOT IP#0, SUB TOT IP#1...
-                    // (Los nombres específicos como 'SUB_TOT_IP#2' en tu lista original sugieren que el PDF tiene nombres inconsistentes,
-                    // así que usaremos tu lista `SUP_SERVICES_DATA` para saber qué campo llenar SEGÚN EL SERVICIO, no según la posición).
-                    
-                    // CORRECCIÓN: Tu requerimiento dice: "CANT_IP#0 Líneas Adicionales = SUB TOT IP#0".
-                    // Esto significa que si selecciono "Líneas Adicionales", debo llenar EL CAMPO ESPECÍFICO de ese servicio.
-                    // No es posicional (fila 1, fila 2), sino por TIPO de servicio.
-                    
+                state.activeSupRows.forEach((row, i) => {
                     const serviceInfo = SUP_SERVICES_DATA.find(s => s.id === row.service);
                     if (serviceInfo) {
                         const qtyVal = String(row.qty).padStart(2, '0');
@@ -1045,26 +1092,48 @@
                 
                 const form = pdfDoc.getForm();
                 
+                // Helper robusto para setear texto
+                const safeSetText = (key, val) => {
+                    const strVal = String(val || '');
+                    try {
+                        // Intento 1: Nombre exacto
+                        const f = form.getTextField(key);
+                        f.setText(strVal);
+                    } catch(e1) {
+                        try {
+                            // Intento 2: Con espacio al final (muy común en PDFs viejos)
+                            const f2 = form.getTextField(key + ' ');
+                            f2.setText(strVal);
+                        } catch(e2) {
+                            try {
+                                // Intento 3: Trimmed (por si el key del map tiene espacio y el PDF no)
+                                const f3 = form.getTextField(key.trim());
+                                f3.setText(strVal);
+                            } catch(e3) {
+                                // Silent fail final
+                            }
+                        }
+                    }
+                };
+
                 // Standard fill from DOM
                 for (const [pdfField, domId] of Object.entries(map)) { 
                     try { 
                         const el = byId(domId); 
-                        if (el) form.getTextField(pdfField).setText(el.value || ''); 
+                        if (el) safeSetText(pdfField, el.value); 
                     } catch(e) {} 
                 }
 
                 // Extra values injection (for dynamic rows)
                 if (extraValues) {
                     for (const [key, val] of Object.entries(extraValues)) {
-                        try { form.getTextField(key).setText(val || ''); } catch(e) {}
+                        safeSetText(key, val);
                     }
                 }
 
                 form.flatten();
             } catch (err) {
-                // FALLBACK PARA MODO PREVIEW:
-                // Si falla la carga del PDF (porque las plantillas .pdf no existen en este entorno),
-                // generamos un PDF en blanco con los datos listados para demostrar funcionalidad.
+                // FALLBACK PARA MODO PREVIEW
                 console.warn("Usando Fallback PDF Generator para Preview");
                 pdfDoc = await PDFLib.PDFDocument.create();
                 const page = pdfDoc.addPage([600, 800]);
