@@ -301,11 +301,14 @@
             <div class="grid lg:grid-cols-12 gap-8 items-start">
                 
                 <div class="lg:col-span-8 space-y-6">
-                    <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <h2 class="font-bold text-gray-700 uppercase text-xs tracking-wide flex items-center gap-2"><i data-lucide="layers" class="text-entel-blue w-4 h-4"></i> Tipo de Servicio</h2>
-                        <div class="flex bg-gray-100 p-1 rounded-md">
-                            <button onclick="setServiceType('internet')" id="btnTypeInternet" class="px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"><i data-lucide="wifi" class="w-3 h-3"></i> INTERNET</button>
-                            <button onclick="setServiceType('pack')" id="btnTypePack" class="px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900"><i data-lucide="layers" class="w-3 h-3"></i> PACK</button>
+                    <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col items-center justify-between gap-4">
+                        <div class="w-full flex justify-between items-center mb-2">
+                            <h2 class="font-bold text-gray-700 uppercase text-xs tracking-wide flex items-center gap-2"><i data-lucide="layers" class="text-entel-blue w-4 h-4"></i> Tipo de Servicio</h2>
+                        </div>
+                        <div class="flex bg-gray-100 p-1 rounded-md w-full">
+                            <button onclick="setServiceType('internet')" id="btnTypeInternet" class="flex-1 px-3 py-2 rounded text-xs font-bold transition-all flex items-center justify-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"><i data-lucide="wifi" class="w-3 h-3"></i> INTERNET</button>
+                            <button onclick="setServiceType('pack')" id="btnTypePack" class="flex-1 px-3 py-2 rounded text-xs font-bold transition-all flex items-center justify-center gap-2 text-gray-500 hover:text-gray-900"><i data-lucide="layers" class="w-3 h-3"></i> PACK</button>
+                            <button onclick="setServiceType('dedicado')" id="btnTypeDedicado" class="flex-1 px-3 py-2 rounded text-xs font-bold transition-all flex items-center justify-center gap-2 text-gray-500 hover:text-gray-900"><i data-lucide="server" class="w-3 h-3"></i> DEDICADO</button>
                         </div>
                     </div>
 
@@ -542,6 +545,7 @@
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
         
         const SEED_PLANS = [
+            // INTERNET
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "160", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "210", plazo: "24", type: "internet" },
             { name: "INTERNET FIBRA + 100 MBPS", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "250", tarif: "250", plazo: "12", type: "internet" },
@@ -553,7 +557,29 @@
             { name: "INTERNET FIBRA + 500 MBPS", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "460", tarif: "460", plazo: "12", type: "internet" },
             { name: "INTERNET FIBRA + 1000 MBPS", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "550", tarif: "550", plazo: "36", type: "internet" },
             { name: "INTERNET FIBRA + 1000 MBPS", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "610", tarif: "610", plazo: "24", type: "internet" },
-            { name: "INTERNET FIBRA + 1000 MBPS", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "670", tarif: "670", plazo: "12", type: "internet" },
+            { name: "INTERNET FIBRA + 1000 MBPS", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "660", tarif: "660", plazo: "12", type: "internet" },
+
+            // PACK
+            { name: "PACK FIBRA + 100 MBPS", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "160", tarif: "169.90", plazo: "36", type: "pack" },
+            { name: "PACK FIBRA + 100 MBPS", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "210", tarif: "219.90", plazo: "24", type: "pack" },
+            { name: "PACK FIBRA + 100 MBPS", minGar: "70%", vmb: 100, vminb: 70, vms: 100, vmins: 70, cargoFijo: "250", tarif: "259.90", plazo: "12", type: "pack" },
+            { name: "PACK FIBRA + 200 MBPS", minGar: "70%", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "230", tarif: "239.90", plazo: "36", type: "pack" },
+            { name: "PACK FIBRA + 200 MBPS", minGar: "70%", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "300", tarif: "309.90", plazo: "24", type: "pack" },
+            { name: "PACK FIBRA + 200 MBPS", minGar: "70%", vmb: 200, vminb: 140, vms: 200, vmins: 140, cargoFijo: "340", tarif: "349.90", plazo: "12", type: "pack" },
+            { name: "PACK FIBRA + 500 MBPS", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "370", tarif: "379.90", plazo: "36", type: "pack" },
+            { name: "PACK FIBRA + 500 MBPS", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "420", tarif: "429.90", plazo: "24", type: "pack" },
+            { name: "PACK FIBRA + 500 MBPS", minGar: "70%", vmb: 500, vminb: 350, vms: 500, vmins: 350, cargoFijo: "460", tarif: "469.90", plazo: "12", type: "pack" },
+            { name: "PACK FIBRA + 1000 MBPS", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "550", tarif: "559.90", plazo: "36", type: "pack" },
+            { name: "PACK FIBRA + 1000 MBPS", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "610", tarif: "619.90", plazo: "24", type: "pack" },
+            { name: "PACK FIBRA + 1000 MBPS", minGar: "70%", vmb: 1000, vminb: 700, vms: 1000, vmins: 700, cargoFijo: "660", tarif: "669.90", plazo: "12", type: "pack" },
+
+            // DEDICADO (EJEMPLOS PARA CATEGORÍA 3)
+            { name: "INTERNET DEDICADO 10 MBPS", minGar: "100%", vmb: 10, vminb: 10, vms: 10, vmins: 10, cargoFijo: "500", tarif: "500", plazo: "36", type: "dedicado" },
+            { name: "INTERNET DEDICADO 20 MBPS", minGar: "100%", vmb: 20, vminb: 20, vms: 20, vmins: 20, cargoFijo: "550", tarif: "550", plazo: "36", type: "dedicado" },
+            { name: "INTERNET DEDICADO 50 MBPS", minGar: "100%", vmb: 50, vminb: 50, vms: 50, vmins: 50, cargoFijo: "590", tarif: "590", plazo: "36", type: "dedicado" },
+            { name: "INTERNET DEDICADO 100 MBPS", minGar: "100%", vmb: 100, vminb: 100, vms: 100, vmins: 100, cargoFijo: "690", tarif: "690", plazo: "36", type: "dedicado" },
+            { name: "INTERNET DEDICADO 50 MBPS", minGar: "100%", vmb: 200, vminb: 200, vms: 200, vmins: 200, cargoFijo: "1100", tarif: "1100", plazo: "36", type: "dedicado" },
+            { name: "INTERNET DEDICADO 200 MBPS", minGar: "100%", vmb: 250, vminb: 250, vms: 250, vmins: 250, cargoFijo: "1400", tarif: "1400", plazo: "36", type: "dedicado" }
         ];
 
         // Mapeo PDF
@@ -946,36 +972,79 @@
             updatePlanSelect(); byId('planSelect').addEventListener('change', onPlanSelectChange); byId('btnExport').onclick = handleExportAll; setServiceType('internet');
         }
         function setServiceType(type) {
-            state.serviceType = type; const btnInt = byId('btnTypeInternet'); const btnPack = byId('btnTypePack');
+            state.serviceType = type; 
+            const btnInt = byId('btnTypeInternet'); 
+            const btnPack = byId('btnTypePack');
+            const btnDed = byId('btnTypeDedicado');
             const packFields = byId('packFields');
-            if (type === 'internet') { 
-                btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"; 
-                btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900";
-                packFields.classList.add('hidden'); // Hide PACK fields
+            
+            // Reset base styles
+            const baseClass = "flex-1 px-3 py-2 rounded text-xs font-bold transition-all flex items-center justify-center gap-2 border shadow-sm";
+            const activeClass = "bg-white text-entel-blue border-gray-200";
+            const inactiveClass = "text-gray-500 hover:text-gray-900 border-transparent shadow-none";
+
+            btnInt.className = baseClass + " " + (type === 'internet' ? activeClass : inactiveClass);
+            btnPack.className = baseClass + " " + (type === 'pack' ? activeClass : inactiveClass);
+            btnDed.className = baseClass + " " + (type === 'dedicado' ? activeClass : inactiveClass);
+
+            // Logic for Pack fields
+            if (type === 'pack') {
+                packFields.classList.remove('hidden');
+            } else {
+                packFields.classList.add('hidden');
             }
-            else { 
-                btnPack.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 bg-white text-entel-blue shadow-sm border border-gray-200"; 
-                btnInt.className = "px-6 py-2 rounded text-xs font-bold transition-all flex items-center gap-2 text-gray-500 hover:text-gray-900";
-                packFields.classList.remove('hidden'); // Show PACK fields
-            }
+            
+            // Refresh plan list based on category
+            updatePlanSelect();
             updateFileListPreview();
         }
+        
         function updateFileListPreview() {
-            const list = byId('fileListPreview'); const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
+            const list = byId('fileListPreview'); 
+            let prefix = '';
+            if (state.serviceType === 'pack') prefix = 'Pack ';
+            // Dedicado uses standard templates (same as Internet) per requirement
+            
             list.innerHTML = `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Arrendamiento.pdf</li><li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Servicios Suplementarios.pdf</li><li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-entel-blue"></div> ${prefix}Tarifas y Servicios.pdf</li>`;
         }
-        function updatePlanSelect() { const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar Plan —</option>'; state.plans.forEach((p, idx) => { const opt = document.createElement('option'); opt.value = p.name; opt.dataset.idx = idx; opt.textContent = p.name; sel.appendChild(opt); }); }
+        
+        function updatePlanSelect() { 
+            const sel = byId('planSelect'); 
+            sel.innerHTML = '<option value="">— Seleccionar Plan —</option>'; 
+            
+            // Filter plans by current category
+            const filteredPlans = state.plans.filter(p => p.type === state.serviceType);
+            
+            filteredPlans.forEach((p) => { 
+                const opt = document.createElement('option'); 
+                opt.value = p.name; 
+                opt.textContent = p.name; 
+                sel.appendChild(opt); 
+            }); 
+            
+            // Reset fields
+            byId('NOM_PLAN').value = '';
+            byId('MIN_GAR').value = '';
+            byId('VEL_MAX_BAJ').value = '';
+            byId('VEL_MIN_BAJ').value = '';
+            byId('VEL_MAX_SUB').value = '';
+            byId('VEL_MIN_SUB').value = '';
+            byId('TARIF_MENS').value = '';
+            byId('PLAZO_CONT').value = '';
+            byId('CARGO_FIJO_VAL').value = '';
+        }
         
         function onPlanSelectChange(e) {
-            const planName = e.target.value; const p = state.plans.find(x => x.name === planName); if (!p) return;
-            if (p.name.toLowerCase().includes('pack')) setServiceType('pack'); else setServiceType('internet');
+            const planName = e.target.value; 
+            const p = state.plans.find(x => x.name === planName); 
+            if (!p) return;
             
             // CORRECCION ROBUSTA VISUAL: Forzar display 70% si viene 0.7 aunque la base de datos no se haya actualizado
             let mg = p.minGar;
             if(mg == 0.7 || mg === "0.7") mg = "70%";
             
             byId('NOM_PLAN').value = p.name; 
-            byId('MIN_GAR').value = mg; // Usar variable corregida
+            byId('MIN_GAR').value = mg; 
             
             byId('VEL_MAX_BAJ').value = p.vmb; byId('VEL_MIN_BAJ').value = p.vminb; byId('VEL_MAX_SUB').value = p.vms; byId('VEL_MIN_SUB').value = p.vmins; byId('TARIF_MENS').value = formatMoney(p.tarif);
             if (p.plazo) byId('PLAZO_CONT').value = p.plazo;
