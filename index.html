@@ -281,7 +281,10 @@
                 </div>
                 <div>
                     <label class="input-label">Contraseña</label>
-                    <input id="loginPass" class="input" type="password" autocomplete="current-password" placeholder="••••••••">
+                    <div class="relative">
+                        <input id="loginPass" class="input pr-10" type="password" autocomplete="current-password" placeholder="••••••••">
+                        <button onclick="togglePass()" class="absolute right-2 top-2 text-gray-400 hover:text-brand-500 p-1"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                    </div>
                 </div>
                 <button id="btnLogin" class="btn w-full h-10 mt-2">Ingresar al Sistema</button>
                 <div class="flex justify-center mt-4 pt-4 border-t border-gray-100">
@@ -508,13 +511,51 @@
                     <!-- STEP 3: CONTACTO -->
                     <div id="step-content-3" class="space-y-6 animate-fade-in hidden-vis">
                         <div class="card">
-                            <h2 class="card-header text-brand-600"><i data-lucide="hard-hat" class="w-5 h-5"></i> Contacto de Instalación</h2>
+                            <h2 class="card-header text-brand-600"><i data-lucide="map-pin" class="w-5 h-5"></i> Datos de Instalación</h2>
+                            
                             <div class="grid sm:grid-cols-12 gap-4">
+                                <!-- CONTACTO -->
+                                <div class="sm:col-span-12 border-b border-gray-100 pb-2 mb-2">
+                                    <h3 class="text-xs font-bold text-gray-500 uppercase">Contacto en Sitio</h3>
+                                </div>
                                 <div class="sm:col-span-6"><label class="input-label">Nombre Completo <span class="text-red-500">*</span></label><input id="CONT_NOMB" class="input"></div>
                                 <div class="sm:col-span-6"><label class="input-label">Cargo <span class="text-red-500">*</span></label><input id="CONT_CARGO" class="input"></div>
                                 <div class="sm:col-span-4"><label class="input-label">DNI <span class="text-red-500">*</span></label><input id="CONT_DNI" class="input" maxlength="8"></div>
                                 <div class="sm:col-span-4"><label class="input-label">Teléfono <span class="text-red-500">*</span></label><input id="CONT_TELEF" class="input"></div>
                                 <div class="sm:col-span-4"><label class="input-label">Correo <span class="text-red-500">*</span></label><input id="CONT_CORREO" class="input" type="email"></div>
+
+                                <!-- DIRECCION -->
+                                <div class="sm:col-span-12 border-b border-gray-100 pb-2 mb-2 mt-4">
+                                    <h3 class="text-xs font-bold text-gray-500 uppercase">Dirección de Instalación</h3>
+                                </div>
+                                <div class="sm:col-span-12">
+                                    <label class="input-label flex items-center gap-2">
+                                        Dirección Completa <span class="text-red-500">*</span> 
+                                        <span class="text-xs text-brand-600 font-normal ml-auto flex items-center gap-1 cursor-pointer hover:underline" onclick="openAddressModal()"><i data-lucide="edit-2" class="w-3 h-3"></i> Editar con Asistente</span>
+                                    </label>
+                                    <div class="relative cursor-pointer" onclick="openAddressModal()">
+                                        <input id="DIREC_INST" class="input cursor-pointer bg-gray-50 border-gray-300 pl-10" placeholder="Haga clic aquí para generar la dirección..." readonly>
+                                        <i data-lucide="map-pin" class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 pointer-events-none"></i>
+                                    </div>
+                                </div>
+
+                                <!-- SERVICIOS SUPLEMENTARIOS -->
+                                <div class="sm:col-span-12 border-b border-gray-100 pb-2 mb-2 mt-4 flex justify-between items-center">
+                                    <h3 class="text-xs font-bold text-gray-500 uppercase">Servicios Suplementarios</h3>
+                                    <button onclick="addSupRow()" class="btn text-xs px-3 py-1.5 bg-green-600 hover:bg-green-700 border-transparent h-8">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar
+                                    </button>
+                                </div>
+                                <div class="sm:col-span-12 space-y-3" id="supServicesContainer">
+                                    <!-- Dynamic rows -->
+                                </div>
+                                <div class="sm:col-span-12 mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 flex justify-between items-center">
+                                    <span class="text-sm font-bold text-gray-300 uppercase tracking-wide flex items-center gap-2"><i data-lucide="calculator" class="w-4 h-4"></i> Total Servicios:</span>
+                                    <span id="txtSupTotalGlobal" class="text-lg font-bold text-white tracking-tight">S/. 0.00</span>
+                                    <input type="hidden" id="TOTAL_SUP_HIDDEN" value="0.00">
+                                </div>
+                                <div class="hidden"><input id="NOMB_PROMOCION" value="30% por 4 – Fibra +"></div>
+
                             </div>
                         </div>
                         <div class="flex justify-between pt-2">
@@ -582,15 +623,35 @@
                             <div id="packFields" class="hidden mt-6 animate-slide-down overflow-hidden">
                                 <div class="p-6 bg-orange-50 rounded-lg border border-orange-100">
                                     <h4 class="text-xs font-bold text-orange-600 uppercase mb-3 flex items-center gap-2"><i data-lucide="phone" class="w-3 h-3"></i> Detalles del Pack (Telefonía)</h4>
+                                    
+                                    <div class="mb-4">
+                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg border border-orange-200 shadow-sm">
+                                            <input type="checkbox" id="checkPortabilidad" class="w-5 h-5 text-accent-orange rounded focus:ring-accent-orange border-gray-300 cursor-pointer" onchange="togglePortability()">
+                                            <label for="checkPortabilidad" class="text-sm font-bold text-gray-700 select-none cursor-pointer">Solicitar Portabilidad Numérica</label>
+                                        </div>
+                                    </div>
+
                                     <div class="grid sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label class="input-label text-orange-800">N° Teléfono Asignado</label>
+                                            <label class="input-label text-orange-800" id="lblPhoneNum">N° Teléfono Asignado</label>
                                             <div class="relative">
                                                 <i data-lucide="smartphone" class="absolute left-3 top-2.5 text-orange-400 w-4 h-4"></i>
                                                 <input id="NUM_TELF" class="input border-orange-200 focus:border-orange-500 pl-10" placeholder="Ej: 1234567">
                                             </div>
                                         </div>
                                         <div><label class="input-label text-orange-800">Cargo Teléfono</label><input id="CARGO_TELF" class="input font-bold text-orange-700 border-orange-200 bg-white" value="S/ 9.90" readonly></div>
+                                        
+                                        <!-- PORTABILIDAD EXTRA FIELDS -->
+                                        <div id="portabilityFields" class="hidden sm:col-span-2 mt-2 pl-4 border-l-4 border-orange-300 bg-white p-3 rounded-r-lg">
+                                            <label class="input-label text-orange-800">Operador Donante</label>
+                                            <select id="selOperador" class="input border-orange-200">
+                                                <option value="">-- Seleccione Operador --</option>
+                                                <option value="AMERICA_MOVIL">America Movil Peru SAC (Claro)</option>
+                                                <option value="TELEFONICA">Telefonica del Peru SAA (Movistar)</option>
+                                                <option value="VIETTEL">Viettel Peru SAC (Bitel)</option>
+                                                <option value="OTRO">Otro</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -604,11 +665,11 @@
                     <!-- STEP 5: CIERRE -->
                     <div id="step-content-5" class="space-y-6 animate-fade-in hidden-vis">
                         <div class="card">
-                            <h2 class="card-header text-brand-600"><i data-lucide="file-signature" class="w-5 h-5"></i> Información Adicional y Firmante</h2>
+                            <h2 class="card-header text-brand-600"><i data-lucide="file-signature" class="w-5 h-5"></i> Formalización de Firma</h2>
                             <div class="grid sm:grid-cols-12 gap-6">
                                 <div class="sm:col-span-12 md:col-span-4 bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
                                     <label class="input-label mb-2 justify-center">Fecha de Firma</label>
-                                    <div class="flex gap-2 justify-center"><input id="DIA" class="input text-center font-mono font-bold text-gray-600 w-12" readonly><input id="MES" class="input text-center font-mono font-bold text-gray-600 w-24" readonly><input id="ANO" class="input text-center font-mono font-bold text-gray-600 w-16" readonly></div>
+                                    <input type="date" id="FECHA_FIRMA" class="input text-center font-bold text-gray-700 h-11 cursor-pointer">
                                 </div>
                                 <div class="sm:col-span-12 md:col-span-8">
                                     <div class="grid sm:grid-cols-2 gap-4">
@@ -616,43 +677,9 @@
                                         <div><label class="input-label">Cargo Firmante <span class="text-red-500">*</span></label><input id="CARGO_FIRM" class="input"></div>
                                     </div>
                                 </div>
-                                
-                                <div class="sm:col-span-12">
-                                    <label class="input-label flex items-center gap-2">
-                                        Dirección de Instalación <span class="text-red-500">*</span> 
-                                        <span class="text-xs text-brand-600 font-normal ml-auto flex items-center gap-1 cursor-pointer hover:underline" onclick="openAddressModal()"><i data-lucide="edit-2" class="w-3 h-3"></i> Editar dirección</span>
-                                    </label>
-                                    <div class="relative cursor-pointer" onclick="openAddressModal()">
-                                        <input id="DIREC_INST" class="input cursor-pointer bg-gray-50 border-gray-300 pl-10" placeholder="Haga clic aquí para generar la dirección..." readonly>
-                                        <i data-lucide="map-pin" class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 pointer-events-none"></i>
-                                    </div>
-                                </div>
-
-                                <div class="sm:col-span-12 border-t border-gray-100 my-4 pt-4">
-                                    <div class="flex justify-between items-center mb-3">
-                                        <h3 class="font-bold text-gray-700 uppercase text-xs tracking-wide flex items-center gap-2">
-                                            <i data-lucide="package-plus" class="text-brand-500 w-4 h-4"></i> Servicios Suplementarios
-                                        </h3>
-                                        <button onclick="addSupRow()" class="btn text-xs px-3 py-1.5 bg-green-600 hover:bg-green-700 border-transparent h-8">
-                                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar
-                                        </button>
-                                    </div>
-                                    
-                                    <div id="supServicesContainer" class="space-y-3">
-                                        <!-- Dynamic rows -->
-                                    </div>
-
-                                    <div class="mt-5 p-4 bg-gray-800 rounded-lg border border-gray-700 flex justify-between items-center">
-                                        <span class="text-sm font-bold text-gray-300 uppercase tracking-wide flex items-center gap-2"><i data-lucide="calculator" class="w-4 h-4"></i> Total Servicios:</span>
-                                        <span id="txtSupTotalGlobal" class="text-xl font-bold text-white tracking-tight">S/. 0.00</span>
-                                    </div>
-                                    <input type="hidden" id="TOTAL_SUP_HIDDEN" value="0.00">
-                                </div>
-
-                                <div class="hidden"><input id="NOMB_PROMOCION" value="30% por 4 – Fibra +"></div>
                             </div>
                         </div>
-                        <div class="flex justify-between pt-4">
+                        <div class="flex justify-between pt-2">
                              <button onclick="showStep(4)" class="btn alt px-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
                         </div>
                     </div>
@@ -794,13 +821,19 @@
         <div id="view-logs" class="fade-in hidden-vis">
             <div class="card p-0 overflow-hidden shadow-card border border-gray-200 rounded-xl">
                 <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-                    <div><h2 class="text-base font-bold text-gray-800">Historial</h2><p class="text-xs text-gray-500 mt-0.5">Registro de auditoría.</p></div>
+                    <div><h2 class="text-base font-bold text-gray-800">Historial de Contratos</h2><p class="text-xs text-gray-500 mt-0.5">Registro de operaciones realizadas.</p></div>
                     <button onclick="clearAllLogs()" class="btn alt text-red-600 border-gray-300 hover:bg-red-50 text-xs h-8 px-3"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Limpiar</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
                         <thead class="bg-gray-50 text-gray-600 font-bold border-b border-gray-200 uppercase text-xs tracking-wider">
-                            <tr><th class="p-4 pl-6 whitespace-nowrap">Fecha</th><th class="p-4 whitespace-nowrap">Usuario</th><th class="p-4 whitespace-nowrap">RUC</th><th class="p-4 whitespace-nowrap">Razón Social</th><th class="p-4 whitespace-nowrap">Teléfono</th></tr>
+                            <tr>
+                                <th class="p-4 pl-6 whitespace-nowrap">Nro. Oportunidad</th>
+                                <th class="p-4 whitespace-nowrap">RUC</th>
+                                <th class="p-4 whitespace-nowrap">Razón Social</th>
+                                <th class="p-4 whitespace-nowrap">Plan Contratado</th>
+                                <th class="p-4 whitespace-nowrap">Usuario</th>
+                            </tr>
                         </thead>
                         <tbody id="logsTableBody" class="divide-y divide-gray-100"></tbody>
                     </table>
@@ -836,7 +869,7 @@
         const LIST_DISTRITOS = [" ","ASIA","ATE","BARRANCO","BELLAVISTA","BREÑA","CALLAO","CARMEN DE LA LEGUA REYNOSO","CHORRILLOS","COMAS","INDEPENDENCIA","JESUS MARIA","LA MOLINA","LA VICTORIA","LIMA","LINCE","LURIN","MAGDALENA DEL MAR","MIRAFLORES","PUEBLO LIBRE","PUENTE PIEDRA","SAN BORJA","SAN ISIDRO","SAN LUIS","SAN MARTIN DE PORRES","SAN MIGUEL","SANTA ANITA","SANTIAGO DE SURCO","SURQUILLO","VENTANILLA","EL AGUSTINO"];
         const CALLAO_DISTRITOS = ["BELLAVISTA", "CALLAO", "CARMEN DE LA LEGUA REYNOSO", "VENTANILLA"];
 
-        const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: true }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: true }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: true }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: true }];
+        const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }];
         
         const SEED_PLANS = [
             // INTERNET
@@ -876,15 +909,15 @@
             { name: "INTERNET DEDICADO 200 MBPS", minGar: "100%", vmb: 250, vminb: 250, vms: 250, vmins: 250, cargoFijo: "1400", tarif: "1400", plazo: "36", type: "dedicado" }
         ];
 
-        const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_RL', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO' };
-        const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'TOTAL': 'TOTAL_SUP_HIDDEN', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'DIA': 'DIA', 'MES': 'MES', 'AÑO': 'ANO', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
+        // Mapeo PDF (Eliminados DIA, MES, AÑO, ANO de aquí para gestionarlos dinámicamente)
+        const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'RL': 'RL', 'CARGO': 'CARGO_RL', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO' };
+        
+        const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'TOTAL': 'TOTAL_SUP_HIDDEN', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
+        
         const MAP_TAR = { 
             'CARGO FIJO': 'CARGO_FIJO_VAL', 
             'CARGO': 'CARGO_FIRM', 
             'CORREO': 'CORREO', 
-            'DIA': 'DIA', 
-            'MES': 'MES', 
-            'AÑO': 'ANO', 
             'RL': 'RL', 
             'NOM_PLAN': 'NOM_PLAN', 
             'MIN_GAR': 'MIN_GAR', 
@@ -970,6 +1003,15 @@
             addressInputs.forEach(inp => inp.addEventListener('change', buildAddressPreview));
         }
 
+        function togglePass() {
+            const passInput = byId('loginPass');
+            if (passInput.type === "password") {
+                passInput.type = "text";
+            } else {
+                passInput.type = "password";
+            }
+        }
+
         function showStep(stepNumber) {
             for (let i = 1; i <= 5; i++) {
                 const content = byId(`step-content-${i}`);
@@ -985,6 +1027,22 @@
             byId(`step-content-${stepNumber}`).classList.remove('hidden-vis');
             byId(`step-tab-${stepNumber}`).classList.add('active');
             lucide.createIcons();
+        }
+        
+        function togglePortability() {
+            const isChecked = byId('checkPortabilidad').checked;
+            const container = byId('portabilityFields');
+            const lblPhone = byId('lblPhoneNum');
+            
+            if(isChecked) {
+                container.classList.remove('hidden');
+                lblPhone.textContent = 'N° Teléfono a Portar';
+                updateFileListPreview();
+            } else {
+                container.classList.add('hidden');
+                lblPhone.textContent = 'N° Teléfono Asignado';
+                updateFileListPreview();
+            }
         }
 
         function addSupRow() {
@@ -1184,7 +1242,8 @@
             const found = state.users.find(x => x.uid === uKey && x.p === pInput);
             const errDiv = byId('loginError');
             if (!found) { errDiv.textContent = 'Credenciales incorrectas.'; return; }
-            if (found.role !== 'admin' && found.restrictIp && state.ip && !ALLOWED_IPS.includes(state.ip)) { errDiv.textContent = `IP no autorizada: ${state.ip}`; return; }
+            // Deshabilitada restriccion IP por solicitud de usuario
+            // if (found.role !== 'admin' && found.restrictIp && state.ip && !ALLOWED_IPS.includes(state.ip)) { errDiv.textContent = `IP no autorizada: ${state.ip}`; return; }
             loginSuccess({ u: found.u, role: found.role });
         }
         function loginSuccess(user) {
@@ -1225,8 +1284,17 @@
         }
 
         function initGeneratorLogic() {
-            const d = new Date(); byId('DIA').value = String(d.getDate()).padStart(2,'0'); byId('MES').value = getMonthName(d.getMonth()); byId('ANO').value = d.getFullYear();
-            updatePlanSelect(); byId('planSelect').addEventListener('change', onPlanSelectChange); byId('btnExport').onclick = handleExportAll; setServiceType('internet');
+            // Set date input to today
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            byId('FECHA_FIRMA').value = `${yyyy}-${mm}-${dd}`;
+
+            updatePlanSelect(); 
+            byId('planSelect').addEventListener('change', onPlanSelectChange); 
+            byId('btnExport').onclick = handleExportAll; 
+            setServiceType('internet');
         }
         function setServiceType(type) {
             state.serviceType = type; 
@@ -1234,21 +1302,44 @@
             const btnPack = byId('btnTypePack');
             const btnDed = byId('btnTypeDedicado');
             const packFields = byId('packFields');
+            const isPack = type === 'pack';
             
             const baseClass = "flex-1 flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-lg border transition-all duration-200";
             const activeClass = "bg-white border-brand-500 text-brand-600 shadow-sm ring-1 ring-brand-500";
             const inactiveClass = "bg-white border-gray-200 text-gray-500 hover:border-gray-300 hover:bg-gray-50";
 
             btnInt.className = baseClass + " " + (type === 'internet' ? activeClass : inactiveClass);
-            btnPack.className = baseClass + " " + (type === 'pack' ? activeClass : inactiveClass);
+            btnPack.className = baseClass + " " + (isPack ? activeClass : inactiveClass);
             btnDed.className = baseClass + " " + (type === 'dedicado' ? activeClass : inactiveClass);
 
-            if (type === 'pack') packFields.classList.remove('hidden'); else packFields.classList.add('hidden');
-            updatePlanSelect(); updateFileListPreview();
+            if (isPack) {
+                packFields.classList.remove('hidden');
+                // Reset portability check when switching back to pack
+                byId('checkPortabilidad').checked = false;
+                togglePortability();
+            } else {
+                packFields.classList.add('hidden');
+                byId('checkPortabilidad').checked = false; // Uncheck if not pack
+                togglePortability(); // Hide fields
+            }
+            
+            updatePlanSelect(); 
+            updateFileListPreview();
         }
         function updateFileListPreview() {
             const list = byId('fileListPreview'); const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
-            list.innerHTML = `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Arrendamiento.pdf</li><li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Servicios Suplementarios.pdf</li><li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Tarifas y Servicios.pdf</li>`;
+            const isPortability = byId('checkPortabilidad').checked;
+            let filesHtml = `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Arrendamiento.pdf</li>`;
+            
+            if(isPortability) {
+                // Actualizado: Ahora muestra el prefijo "Pack" si corresponde
+                filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Portabilidad.pdf</li>`;
+            }
+
+            filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Servicios Suplementarios.pdf</li>`;
+            filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Tarifas y Servicios.pdf</li>`;
+            
+            list.innerHTML = filesHtml;
         }
         function updatePlanSelect() { const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar Plan —</option>'; const filteredPlans = state.plans.filter(p => p.type === state.serviceType); filteredPlans.forEach((p) => { const opt = document.createElement('option'); opt.value = p.name; opt.textContent = p.name; sel.appendChild(opt); }); byId('NOM_PLAN').value = ''; byId('MIN_GAR').value = ''; byId('VEL_MAX_BAJ').value = ''; byId('VEL_MIN_BAJ').value = ''; byId('VEL_MAX_SUB').value = ''; byId('VEL_MIN_SUB').value = ''; byId('TARIF_MENS').value = ''; byId('PLAZO_CONT').value = ''; byId('CARGO_FIJO_VAL').value = ''; }
         
@@ -1275,7 +1366,7 @@
 
         async function handleExportAll() {
             if (!byId('RUC').value || !byId('RAZON_SOCIAL').value) return showToast('Faltan datos del Cliente.', 'error');
-            const req = ['APELLIDO_PATERNO','APELLIDO_MATERNO','NOMBRES','DNI','TELEFONO','CORREO','CONT_NOMB','CONT_CARGO','CONT_DNI','CONT_TELEF','CONT_CORREO','RL','CARGO_FIRM','DIREC_INST'];
+            const req = ['APELLIDO_PATERNO','APELLIDO_MATERNO','NOMBRES','DNI','TELEFONO','CORREO','CONT_NOMB','CONT_CARGO','CONT_DNI','CONT_TELEF','CONT_CORREO','RL','CARGO_FIRM','DIREC_INST', 'FECHA_FIRMA'];
             const missing = req.filter(id => !byId(id).value); if (missing.length > 0) return showToast('Faltan campos obligatorios.', 'error');
             if (!isValidEmail(byId('CORREO').value)) return showToast('Correo RL inválido.', 'error'); if (!isValidEmail(byId('CONT_CORREO').value)) return showToast('Correo Contacto inválido.', 'error');
             const fiscal = byId('DIRECCION').value.trim().toUpperCase(); 
@@ -1283,6 +1374,7 @@
             if (!fiscal) return showToast('Falta Dirección Fiscal.', 'error');
             if (fiscal === inst) return showToast('Direcciones no pueden ser iguales.', 'warning');
             
+            // Logic to sync sup rows (omitted for brevity, same as before)
             const rows = state.activeSupRows;
             rows.forEach(row => {
                 const domQty = byId('qty_' + row.id); const domPrice = byId('price_' + row.id); const domSel = byId('sel_' + row.id);
@@ -1295,11 +1387,26 @@
             });
             updateGlobalSupTotal();
 
+            // Prepare Date Parts
+            const dateVal = byId('FECHA_FIRMA').value;
+            let dateExtras = {};
+            if(dateVal) {
+                const [y, m, d] = dateVal.split('-'); // 2025-01-25 -> y=2025, m=01, d=25
+                const dateObj = new Date(y, parseInt(m)-1, d); // Construct date safely
+                dateExtras = {
+                    'DIA': d,
+                    'MES': getMonthName(dateObj.getMonth()),
+                    'AÑO': y,
+                    'ANO': y
+                };
+            }
+
             const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' '); const suffix = nro ? ` - ${nro}.pdf` : '.pdf'; const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
             const st = byId('exportStatus'); st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3 font-medium"; st.innerHTML = "<span>Generando...</span>"; st.classList.remove('hidden');
             try {
-                await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix);
-                let supValues = {};
+                await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix, dateExtras);
+                
+                let supValues = { ...dateExtras }; // Include date in sup values
                 state.activeSupRows.forEach((row, i) => {
                     const serviceInfo = SUP_SERVICES_DATA.find(s => s.id === row.service);
                     if (serviceInfo) {
@@ -1309,10 +1416,36 @@
                     }
                 });
                 await generatePdf(prefix + 'Servicios Suplementarios.pdf', MAP_SUP, prefix + 'Servicios Suplementarios' + suffix, supValues);
-                await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix);
+                
+                await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix, dateExtras);
+
+                // Portabilidad PDF Generation
+                if(byId('checkPortabilidad').checked) {
+                     const op = byId('selOperador').value;
+                     const portMap = { ...MAP_ARR, ...dateExtras };
+                     if(op === 'AMERICA_MOVIL') portMap['CHECK_AMERICA_MOVIL'] = 'X';
+                     if(op === 'TELEFONICA') portMap['CHECK_TELEFONICA'] = 'X';
+                     if(op === 'VIETTEL') portMap['CHECK_VIETTEL'] = 'X';
+                     if(op === 'OTRO') portMap['CHECK_OTRO'] = 'X';
+                     // Use NUM_TELF as the number to port
+                     portMap['NUM_PORTAR'] = byId('NUM_TELF').value;
+
+                     // Actualizado: El nombre del archivo de salida ahora incluye el prefijo (Pack Portabilidad...)
+                     await generatePdf('Portabilidad.pdf', portMap, prefix + 'Portabilidad' + suffix, dateExtras);
+                }
+                
+                // --- ACTUALIZACIÓN DE LOGS (NUEVOS CAMPOS) ---
                 const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
-                logs.unshift({ date: new Date().toLocaleString(), user: state.currentUser.u, RUC: byId('RUC').value, RAZON_SOCIAL: byId('RAZON_SOCIAL').value, TELEFONO: byId('TELEFONO').value });
+                logs.unshift({ 
+                    date: new Date().toLocaleString(), // Guardamos fecha para referencia interna
+                    nroOport: byId('NRO_OPORT').value || 'S/N',
+                    ruc: byId('RUC').value || '-',
+                    razonSocial: byId('RAZON_SOCIAL').value || '-',
+                    plan: byId('NOM_PLAN').value || '-',
+                    user: state.currentUser.u
+                });
                 localStorage.setItem(KEYS.LOGS, JSON.stringify(logs));
+                
                 st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-green-50 text-green-700 border-green-100 block mt-3 font-medium"; st.innerHTML = "<span>¡Completado!</span>";
                 showToast('Archivos generados.', 'success');
             } catch (e) { st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-red-50 text-red-700 border-red-100 block mt-3 font-medium"; st.innerHTML = `<span>Error: ${e.message}</span>`; }
@@ -1330,7 +1463,7 @@
                     const strVal = String(val || '');
                     try { const f = form.getTextField(key); f.setText(strVal); } catch(e1) { try { const f2 = form.getTextField(key + ' '); f2.setText(strVal); } catch(e2) { try { const f3 = form.getTextField(key.trim()); f3.setText(strVal); } catch(e3) { } } }
                 };
-                for (const [pdfField, domId] of Object.entries(map)) { try { const el = byId(domId); if (el) safeSetText(pdfField, el.value); } catch(e) {} }
+                for (const [pdfField, domId] of Object.entries(map)) { try { const el = byId(domId); if (el) safeSetText(pdfField, el.value); else safeSetText(pdfField, map[pdfField]); } catch(e) {} }
                 if (extraValues) { for (const [key, val] of Object.entries(extraValues)) { safeSetText(key, val); } }
                 form.flatten();
             } catch (err) {
@@ -1354,7 +1487,11 @@
                 };
                 page.drawText("DATOS PRINCIPALES", { x: 50, y, size: 11, font: fontBold, color: PDFLib.rgb(0.2, 0.2, 0.2) });
                 y -= 20;
-                for (const [pdfField, domId] of Object.entries(map)) { const el = byId(domId); if(el) drawField(pdfField, el.value); }
+                for (const [pdfField, domId] of Object.entries(map)) { 
+                    const el = byId(domId); 
+                    if(el) drawField(pdfField, el.value);
+                    else drawField(pdfField, map[pdfField]); // Handle direct values in map
+                }
                 if (extraValues) {
                     y -= 20;
                     page.drawText("SERVICIOS SUPLEMENTARIOS", { x: 50, y, size: 11, font: fontBold, color: PDFLib.rgb(0.2, 0.2, 0.2) });
@@ -1430,7 +1567,43 @@
         function generateUserPass() { const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"; let pass = ""; for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random()*chars.length)); byId('newUserPass').value = pass; }
         function createNewUser() { const u = byId('newUserName').value; const p = byId('newUserPass').value; const role = byId('newUserRole').value; const restrict = byId('newUserRestrict').checked; if(!u || !p) return showToast('Completa los campos.', 'warning'); if(state.users.some(x=>x.uid === userId(u))) return showToast('El usuario ya existe.', 'warning'); state.users.push({ u, p, role, uLower: norm(u), uid: userId(u), restrictIp: role==='admin'?false:restrict }); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); byId('newUserName').value=''; byId('newUserPass').value=''; showToast('Usuario creado correctamente.', 'success'); }
         function deleteUser(username) { if(!confirm(`¿Eliminar ${username}?`)) return; state.users = state.users.filter(x => x.u !== username); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); showToast('Usuario eliminado.', 'info'); }
-        function renderLogs() { const tbody = byId('logsTableBody'); const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; tbody.innerHTML = ''; if (logs.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No hay registros aún.</td></tr>'; return; } logs.forEach(l => { const tr = document.createElement('tr'); tr.className = "hover:bg-gray-50 transition-colors"; tr.innerHTML = `<td class="p-4 text-gray-500 whitespace-nowrap text-xs">${l.date}</td><td class="p-4 font-bold text-brand-600">${l.user}</td><td class="p-4 font-mono text-gray-600 text-xs">${l.RUC || '-'}</td><td class="p-4 max-w-[250px] truncate font-medium text-gray-800 text-xs">${l.RAZON_SOCIAL || '-'}</td><td class="p-4 text-gray-500 text-xs">${l.TELEFONO || '-'}</td>`; tbody.appendChild(tr); }); }
+        
+        function renderLogs() { 
+            const tbody = byId('logsTableBody'); 
+            const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; 
+            tbody.innerHTML = ''; 
+            
+            if (logs.length === 0) { 
+                tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No hay registros aún.</td></tr>'; 
+                return; 
+            } 
+            
+            logs.forEach(l => { 
+                const tr = document.createElement('tr'); 
+                tr.className = "hover:bg-gray-50 transition-colors"; 
+                
+                // Mapeo seguro para registros antiguos (retrocompatibilidad)
+                const nro = l.nroOport || l.NRO_OPORT || 'S/N';
+                const ruc = l.ruc || l.RUC || '-';
+                const social = l.razonSocial || l.RAZON_SOCIAL || '-';
+                const plan = l.plan || '-'; // Registros viejos no tenian plan, saldrá guion
+                const user = l.user || l.usuario || '-';
+
+                tr.innerHTML = `
+                    <td class="p-4 pl-6 whitespace-nowrap">
+                        <div class="font-bold text-brand-700 text-sm">${nro}</div>
+                        <div class="text-[10px] text-gray-400 font-mono">${l.date}</div>
+                    </td>
+                    <td class="p-4 font-mono text-gray-600 text-xs font-semibold bg-gray-50/50 rounded">${ruc}</td>
+                    <td class="p-4 max-w-[200px] truncate text-gray-800 text-xs font-medium" title="${social}">${social}</td>
+                    <td class="p-4 max-w-[150px] truncate text-gray-600 text-xs" title="${plan}">
+                        <span class="bg-blue-50 text-blue-700 px-2 py-1 rounded border border-blue-100 font-medium">${plan}</span>
+                    </td>
+                    <td class="p-4 text-gray-500 text-xs font-bold uppercase">${user}</td>
+                `; 
+                tbody.appendChild(tr); 
+            }); 
+        }
         function clearAllLogs() { if(!confirm('¿Borrar todo el historial?')) return; localStorage.setItem(KEYS.LOGS, '[]'); renderLogs(); showToast('Historial borrado.', 'info'); }
     </script>
 </body>
