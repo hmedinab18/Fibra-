@@ -1441,8 +1441,10 @@
                      
                      // Formato Hora: HH:MM:SS (Automática)
                      const now = new Date();
-                     const timeStr = now.toLocaleTimeString('es-PE', { hour12: false });
-                     portMap['HORA CONT'] = timeStr;
+                     const h = String(now.getHours()).padStart(2, '0');
+                     const min = String(now.getMinutes()).padStart(2, '0');
+                     const sec = String(now.getSeconds()).padStart(2, '0');
+                     portMap['HORA CONT'] = `${h}:${min}:${sec}`;
 
                      // Checks de Operador (Marcado con X)
                      if(op === 'AMERICA_MOVIL') portMap['CLARO'] = 'X';
