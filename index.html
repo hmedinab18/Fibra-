@@ -305,20 +305,20 @@
             </div>
             <div class="p-6 overflow-y-auto space-y-6 bg-white">
                 <div class="grid grid-cols-12 gap-4">
-                    <div class="col-span-12 sm:col-span-4"><label class="input-label">Tipo Vía</label><select id="TIPO_VIA" class="input"></select></div>
-                    <div class="col-span-12 sm:col-span-8"><label class="input-label">Nombre Vía</label><input id="NOM_VIA" class="input" placeholder="Ej: JAVIER PRADO ESTE"></div>
+                    <div class="col-span-12 sm:col-span-4"><label class="input-label">Tipo Vía</label><select id="TIPO_VIA" class="input address-part"></select></div>
+                    <div class="col-span-12 sm:col-span-8"><label class="input-label">Nombre Vía</label><input id="NOM_VIA" class="input address-part" placeholder="Ej: JAVIER PRADO ESTE"></div>
                     
-                    <div class="col-span-4"><label class="input-label">Número</label><input id="NRO" class="input" placeholder="123"></div>
-                    <div class="col-span-4"><label class="input-label">Manzana</label><input id="MZA" class="input" placeholder="A"></div>
-                    <div class="col-span-4"><label class="input-label">Lote</label><input id="LTE" class="input" placeholder="5"></div>
+                    <div class="col-span-4"><label class="input-label">Número</label><input id="NRO" class="input address-part" placeholder="123"></div>
+                    <div class="col-span-4"><label class="input-label">Manzana</label><input id="MZA" class="input address-part" placeholder="A"></div>
+                    <div class="col-span-4"><label class="input-label">Lote</label><input id="LTE" class="input address-part" placeholder="5"></div>
 
-                    <div class="col-span-12 sm:col-span-3"><label class="input-label">Tipo Int.</label><select id="TIP_INT" class="input"></select></div>
-                    <div class="col-span-12 sm:col-span-3"><label class="input-label">Nro Int.</label><input id="NRO_INT" class="input"></div>
-                    <div class="col-span-12 sm:col-span-3"><label class="input-label">Tipo Edif.</label><select id="TIP_EDIF" class="input"></select></div>
-                    <div class="col-span-12 sm:col-span-3"><label class="input-label">Nom Edif.</label><input id="NOM_EDIF" class="input"></div>
+                    <div class="col-span-12 sm:col-span-3"><label class="input-label">Tipo Int.</label><select id="TIP_INT" class="input address-part"></select></div>
+                    <div class="col-span-12 sm:col-span-3"><label class="input-label">Nro Int.</label><input id="NRO_INT" class="input address-part"></div>
+                    <div class="col-span-12 sm:col-span-3"><label class="input-label">Tipo Edif.</label><select id="TIP_EDIF" class="input address-part"></select></div>
+                    <div class="col-span-12 sm:col-span-3"><label class="input-label">Nom Edif.</label><input id="NOM_EDIF" class="input address-part"></div>
 
-                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Urbanización</label><input id="URB_ADDR" class="input" placeholder="Ej: LOS FICUS"></div>
-                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Distrito <span class="text-red-500">*</span></label><select id="DISTRITO_SEL" class="input"></select></div>
+                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Urbanización</label><input id="URB_ADDR" class="input address-part" placeholder="Ej: LOS FICUS"></div>
+                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Distrito <span class="text-red-500">*</span></label><select id="DISTRITO_SEL" class="input address-part"></select></div>
                 </div>
                 
                 <div class="bg-brand-50 p-4 rounded-lg border border-brand-100">
@@ -869,7 +869,7 @@
         const LIST_DISTRITOS = [" ","ASIA","ATE","BARRANCO","BELLAVISTA","BREÑA","CALLAO","CARMEN DE LA LEGUA REYNOSO","CHORRILLOS","COMAS","INDEPENDENCIA","JESUS MARIA","LA MOLINA","LA VICTORIA","LIMA","LINCE","LURIN","MAGDALENA DEL MAR","MIRAFLORES","PUEBLO LIBRE","PUENTE PIEDRA","SAN BORJA","SAN ISIDRO","SAN LUIS","SAN MARTIN DE PORRES","SAN MIGUEL","SANTA ANITA","SANTIAGO DE SURCO","SURQUILLO","VENTANILLA","EL AGUSTINO"];
         const CALLAO_DISTRITOS = ["BELLAVISTA", "CALLAO", "CARMEN DE LA LEGUA REYNOSO", "VENTANILLA"];
 
-        const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }];
+        const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: false }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: false }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: false }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: false }];
         
         const SEED_PLANS = [
             // INTERNET
@@ -909,7 +909,7 @@
             { name: "INTERNET DEDICADO 200 MBPS", minGar: "100%", vmb: 250, vminb: 250, vms: 250, vmins: 250, cargoFijo: "1400", tarif: "1400", plazo: "36", type: "dedicado" }
         ];
 
-        // Mapeo PDF (Eliminados DIA, MES, AÑO, ANO de aquí para gestionarlos dinámicamente)
+        // Mapeo PDF
         const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'RL': 'RL', 'CARGO': 'CARGO_RL', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO' };
         
         const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'TOTAL': 'TOTAL_SUP_HIDDEN', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
@@ -1332,8 +1332,8 @@
             let filesHtml = `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Arrendamiento.pdf</li>`;
             
             if(isPortability) {
-                // Actualizado: Ahora muestra el prefijo "Pack" si corresponde
-                filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Portabilidad.pdf</li>`;
+                // Corrección: Siempre "Pack Portabilidad.pdf"
+                filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> Pack Portabilidad.pdf</li>`;
             }
 
             filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Servicios Suplementarios.pdf</li>`;
@@ -1419,22 +1419,41 @@
                 
                 await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix, dateExtras);
 
-                // Portabilidad PDF Generation
+                // Portabilidad PDF Generation (Lógica Específica para Formulario Adobe)
                 if(byId('checkPortabilidad').checked) {
                      const op = byId('selOperador').value;
-                     const portMap = { ...MAP_ARR, ...dateExtras };
-                     if(op === 'AMERICA_MOVIL') portMap['CHECK_AMERICA_MOVIL'] = 'X';
-                     if(op === 'TELEFONICA') portMap['CHECK_TELEFONICA'] = 'X';
-                     if(op === 'VIETTEL') portMap['CHECK_VIETTEL'] = 'X';
-                     if(op === 'OTRO') portMap['CHECK_OTRO'] = 'X';
-                     // Use NUM_TELF as the number to port
-                     portMap['NUM_PORTAR'] = byId('NUM_TELF').value;
+                     
+                     // Mapeo específico solicitado para Pack Portabilidad
+                     const portMap = {
+                         'RAZON SOCIAL': byId('RAZON_SOCIAL').value,
+                         'RL': byId('RL').value,
+                         'RUC': byId('RUC').value,
+                         'CONT_TELEF': byId('CONT_TELEF').value,
+                         'CONT_CORREO': byId('CONT_CORREO').value,
+                         'NUM_TELF': byId('NUM_TELF').value
+                     };
 
-                     // Actualizado: El nombre del archivo de salida ahora incluye el prefijo (Pack Portabilidad...)
-                     await generatePdf('Portabilidad.pdf', portMap, prefix + 'Portabilidad' + suffix, dateExtras);
+                     // Formato Fecha: DD/MM/AAAA (Desde el calendario)
+                     if (dateVal) {
+                        const [y, m, d] = dateVal.split('-');
+                        portMap['FECHA CONT1'] = `${d}/${m}/${y}`;
+                     }
+                     
+                     // Formato Hora: HH:MM:SS (Automática)
+                     const now = new Date();
+                     const timeStr = now.toLocaleTimeString('es-PE', { hour12: false });
+                     portMap['HORA CONT'] = timeStr;
+
+                     // Checks de Operador (Marcado con X)
+                     if(op === 'AMERICA_MOVIL') portMap['CLARO'] = 'X';
+                     if(op === 'TELEFONICA') portMap['MOVISTAR'] = 'X';
+                     if(op === 'VIETTEL') portMap['BITEL'] = 'X';
+                     if(op === 'OTRO') portMap['OTRO'] = 'X';
+
+                     // Fuente fija: Pack Portabilidad.pdf
+                     await generatePdf('Pack Portabilidad.pdf', portMap, 'Pack Portabilidad' + suffix);
                 }
                 
-                // --- ACTUALIZACIÓN DE LOGS (NUEVOS CAMPOS) ---
                 const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
                 logs.unshift({ 
                     date: new Date().toLocaleString(), // Guardamos fecha para referencia interna
@@ -1567,43 +1586,7 @@
         function generateUserPass() { const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"; let pass = ""; for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random()*chars.length)); byId('newUserPass').value = pass; }
         function createNewUser() { const u = byId('newUserName').value; const p = byId('newUserPass').value; const role = byId('newUserRole').value; const restrict = byId('newUserRestrict').checked; if(!u || !p) return showToast('Completa los campos.', 'warning'); if(state.users.some(x=>x.uid === userId(u))) return showToast('El usuario ya existe.', 'warning'); state.users.push({ u, p, role, uLower: norm(u), uid: userId(u), restrictIp: role==='admin'?false:restrict }); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); byId('newUserName').value=''; byId('newUserPass').value=''; showToast('Usuario creado correctamente.', 'success'); }
         function deleteUser(username) { if(!confirm(`¿Eliminar ${username}?`)) return; state.users = state.users.filter(x => x.u !== username); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); showToast('Usuario eliminado.', 'info'); }
-        
-        function renderLogs() { 
-            const tbody = byId('logsTableBody'); 
-            const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; 
-            tbody.innerHTML = ''; 
-            
-            if (logs.length === 0) { 
-                tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No hay registros aún.</td></tr>'; 
-                return; 
-            } 
-            
-            logs.forEach(l => { 
-                const tr = document.createElement('tr'); 
-                tr.className = "hover:bg-gray-50 transition-colors"; 
-                
-                // Mapeo seguro para registros antiguos (retrocompatibilidad)
-                const nro = l.nroOport || l.NRO_OPORT || 'S/N';
-                const ruc = l.ruc || l.RUC || '-';
-                const social = l.razonSocial || l.RAZON_SOCIAL || '-';
-                const plan = l.plan || '-'; // Registros viejos no tenian plan, saldrá guion
-                const user = l.user || l.usuario || '-';
-
-                tr.innerHTML = `
-                    <td class="p-4 pl-6 whitespace-nowrap">
-                        <div class="font-bold text-brand-700 text-sm">${nro}</div>
-                        <div class="text-[10px] text-gray-400 font-mono">${l.date}</div>
-                    </td>
-                    <td class="p-4 font-mono text-gray-600 text-xs font-semibold bg-gray-50/50 rounded">${ruc}</td>
-                    <td class="p-4 max-w-[200px] truncate text-gray-800 text-xs font-medium" title="${social}">${social}</td>
-                    <td class="p-4 max-w-[150px] truncate text-gray-600 text-xs" title="${plan}">
-                        <span class="bg-blue-50 text-blue-700 px-2 py-1 rounded border border-blue-100 font-medium">${plan}</span>
-                    </td>
-                    <td class="p-4 text-gray-500 text-xs font-bold uppercase">${user}</td>
-                `; 
-                tbody.appendChild(tr); 
-            }); 
-        }
+        function renderLogs() { const tbody = byId('logsTableBody'); const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; tbody.innerHTML = ''; if (logs.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No hay registros aún.</td></tr>'; return; } logs.forEach(l => { const tr = document.createElement('tr'); tr.className = "hover:bg-gray-50 transition-colors"; tr.innerHTML = `<td class="p-4 text-gray-500 whitespace-nowrap text-xs">${l.date}</td><td class="p-4 font-bold text-brand-600">${l.user}</td><td class="p-4 font-mono text-gray-600 text-xs">${l.RUC || '-'}</td><td class="p-4 max-w-[250px] truncate font-medium text-gray-800 text-xs">${l.RAZON_SOCIAL || '-'}</td><td class="p-4 text-gray-500 text-xs">${l.TELEFONO || '-'}</td>`; tbody.appendChild(tr); }); }
         function clearAllLogs() { if(!confirm('¿Borrar todo el historial?')) return; localStorage.setItem(KEYS.LOGS, '[]'); renderLogs(); showToast('Historial borrado.', 'info'); }
     </script>
 </body>
