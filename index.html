@@ -1374,7 +1374,7 @@
             if (!fiscal) return showToast('Falta Dirección Fiscal.', 'error');
             if (fiscal === inst) return showToast('Direcciones no pueden ser iguales.', 'warning');
             
-            // Logic to sync sup rows (omitted for brevity, same as before)
+            // Logic to sync sup rows
             const rows = state.activeSupRows;
             rows.forEach(row => {
                 const domQty = byId('qty_' + row.id); const domPrice = byId('price_' + row.id); const domSel = byId('sel_' + row.id);
@@ -1387,12 +1387,12 @@
             });
             updateGlobalSupTotal();
 
-            // Prepare Date Parts
+            // Prepare Date Parts (Datos generales)
             const dateVal = byId('FECHA_FIRMA').value;
             let dateExtras = {};
             if(dateVal) {
-                const [y, m, d] = dateVal.split('-'); // 2025-01-25 -> y=2025, m=01, d=25
-                const dateObj = new Date(y, parseInt(m)-1, d); // Construct date safely
+                const [y, m, d] = dateVal.split('-'); 
+                const dateObj = new Date(y, parseInt(m)-1, d); 
                 dateExtras = {
                     'DIA': d,
                     'MES': getMonthName(dateObj.getMonth()),
@@ -1406,7 +1406,7 @@
             try {
                 await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix, dateExtras);
                 
-                let supValues = { ...dateExtras }; // Include date in sup values
+                let supValues = { ...dateExtras }; 
                 state.activeSupRows.forEach((row, i) => {
                     const serviceInfo = SUP_SERVICES_DATA.find(s => s.id === row.service);
                     if (serviceInfo) {
@@ -1419,46 +1419,49 @@
                 
                 await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix, dateExtras);
 
-                // Portabilidad PDF Generation (Lógica Específica para Formulario Adobe)
+                // --- PORTABILIDAD PDF (PACK) ---
                 if(byId('checkPortabilidad').checked) {
                      const op = byId('selOperador').value;
                      
-                     // Mapeo específico solicitado para Pack Portabilidad
-                     const portMap = {
-                         'RAZON SOCIAL': byId('RAZON_SOCIAL').value,
-                         'RL': byId('RL').value,
-                         'RUC': byId('RUC').value,
-                         'CONT_TELEF': byId('CONT_TELEF').value,
-                         'CONT_CORREO': byId('CONT_CORREO').value,
-                         'NUM_TELF': byId('NUM_TELF').value
+                     // 1. Mapeo de IDs (Campos que existen en el DOM)
+                     const portMapIds = {
+                         'RAZON SOCIAL': 'RAZON_SOCIAL',
+                         'RL': 'RL',
+                         'RUC': 'RUC',
+                         'CONT_TELEF': 'CONT_TELEF',
+                         'CONT_CORREO': 'CONT_CORREO',
+                         'NUM_TELF': 'NUM_TELF' // Mapea NUM_TELF al campo NUM_TELF del PDF (o NUM_PORTAR si así se llama en el PDF)
                      };
 
-                     // Formato Fecha: DD/MM/AAAA (Desde el calendario)
+                     // 2. Valores Calculados (Extras)
+                     const portExtras = {};
+
+                     // Fecha DD/MM/AAAA
                      if (dateVal) {
                         const [y, m, d] = dateVal.split('-');
-                        portMap['FECHA CONT1'] = `${d}/${m}/${y}`;
+                        portExtras['FECHA CONT1'] = `${d}/${m}/${y}`;
                      }
                      
-                     // Formato Hora: HH:MM:SS (Automática)
+                     // Hora HH:MM:SS
                      const now = new Date();
                      const h = String(now.getHours()).padStart(2, '0');
                      const min = String(now.getMinutes()).padStart(2, '0');
                      const sec = String(now.getSeconds()).padStart(2, '0');
-                     portMap['HORA CONT'] = `${h}:${min}:${sec}`;
+                     portExtras['HORA CONT'] = `${h}:${min}:${sec}`;
 
-                     // Checks de Operador (Marcado con X)
-                     if(op === 'AMERICA_MOVIL') portMap['CLARO'] = 'X';
-                     if(op === 'TELEFONICA') portMap['MOVISTAR'] = 'X';
-                     if(op === 'VIETTEL') portMap['BITEL'] = 'X';
-                     if(op === 'OTRO') portMap['OTRO'] = 'X';
+                     // Checks de Operador
+                     if(op === 'AMERICA_MOVIL') portExtras['CLARO'] = 'X';
+                     if(op === 'TELEFONICA') portExtras['MOVISTAR'] = 'X';
+                     if(op === 'VIETTEL') portExtras['BITEL'] = 'X';
+                     if(op === 'OTRO') portExtras['OTRO'] = 'X';
 
-                     // Fuente fija: Pack Portabilidad.pdf
-                     await generatePdf('Pack Portabilidad.pdf', portMap, 'Pack Portabilidad' + suffix);
+                     // Generar usando la nueva estrategia (IDs + Extras)
+                     await generatePdf('Pack Portabilidad.pdf', portMapIds, 'Pack Portabilidad' + suffix, portExtras);
                 }
                 
                 const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
                 logs.unshift({ 
-                    date: new Date().toLocaleString(), // Guardamos fecha para referencia interna
+                    date: new Date().toLocaleString(), 
                     nroOport: byId('NRO_OPORT').value || 'S/N',
                     ruc: byId('RUC').value || '-',
                     razonSocial: byId('RAZON_SOCIAL').value || '-',
