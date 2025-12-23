@@ -1387,7 +1387,7 @@
             });
             updateGlobalSupTotal();
 
-            // Prepare Date Parts (Datos generales)
+            // Prepare Date Parts (Datos generales para otros docs)
             const dateVal = byId('FECHA_FIRMA').value;
             let dateExtras = {};
             if(dateVal) {
@@ -1419,44 +1419,41 @@
                 
                 await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix, dateExtras);
 
-                // --- PORTABILIDAD PDF (PACK) ---
+                // --- PORTABILIDAD PDF (Lógica Corregida y Consolidada) ---
                 if(byId('checkPortabilidad').checked) {
                      const op = byId('selOperador').value;
                      
-                     // 1. Mapeo de IDs (Campos que existen en el DOM)
-                     const portMapIds = {
-                         'RAZON SOCIAL': 'RAZON_SOCIAL',
-                         'RL': 'RL',
-                         'RUC': 'RUC',
-                         'CONT_TELEF': 'CONT_TELEF',
-                         'CONT_CORREO': 'CONT_CORREO',
-                         'NUM_TELF': 'NUM_TELF' // Mapea NUM_TELF al campo NUM_TELF del PDF (o NUM_PORTAR si así se llama en el PDF)
+                     // Creamos un objeto MAPA único con TODOS los valores directos
+                     const portMapFinal = {
+                         'RAZON SOCIAL': byId('RAZON_SOCIAL').value,
+                         'RL': byId('RL').value,
+                         'RUC': byId('RUC').value,
+                         'CONT_TELEF': byId('CONT_TELEF').value,
+                         'CONT_CORREO': byId('CONT_CORREO').value,
+                         'NUM_TELF': byId('NUM_TELF').value
                      };
 
-                     // 2. Valores Calculados (Extras)
-                     const portExtras = {};
-
-                     // Fecha DD/MM/AAAA
+                     // Inyectar Fecha Formateada DD/MM/AAAA
                      if (dateVal) {
                         const [y, m, d] = dateVal.split('-');
-                        portExtras['FECHA CONT1'] = `${d}/${m}/${y}`;
+                        portMapFinal['FECHA CONT1'] = `${d}/${m}/${y}`;
                      }
                      
-                     // Hora HH:MM:SS
+                     // Inyectar Hora Automática HH:MM:SS
                      const now = new Date();
                      const h = String(now.getHours()).padStart(2, '0');
                      const min = String(now.getMinutes()).padStart(2, '0');
                      const sec = String(now.getSeconds()).padStart(2, '0');
-                     portExtras['HORA CONT'] = `${h}:${min}:${sec}`;
+                     portMapFinal['HORA CONT'] = `${h}:${min}:${sec}`;
 
-                     // Checks de Operador
-                     if(op === 'AMERICA_MOVIL') portExtras['CLARO'] = 'X';
-                     if(op === 'TELEFONICA') portExtras['MOVISTAR'] = 'X';
-                     if(op === 'VIETTEL') portExtras['BITEL'] = 'X';
-                     if(op === 'OTRO') portExtras['OTRO'] = 'X';
+                     // Inyectar Checks de Operador
+                     if(op === 'AMERICA_MOVIL') portMapFinal['CLARO'] = 'X';
+                     if(op === 'TELEFONICA') portMapFinal['MOVISTAR'] = 'X';
+                     if(op === 'VIETTEL') portMapFinal['BITEL'] = 'X';
+                     if(op === 'OTRO') portMapFinal['OTRO'] = 'X';
 
-                     // Generar usando la nueva estrategia (IDs + Extras)
-                     await generatePdf('Pack Portabilidad.pdf', portMapIds, 'Pack Portabilidad' + suffix, portExtras);
+                     // Llamada simplificada: Todo va en el primer objeto de mapeo
+                     await generatePdf('Pack Portabilidad.pdf', portMapFinal, 'Pack Portabilidad' + suffix);
                 }
                 
                 const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
@@ -1487,7 +1484,14 @@
                     const strVal = String(val || '');
                     try { const f = form.getTextField(key); f.setText(strVal); } catch(e1) { try { const f2 = form.getTextField(key + ' '); f2.setText(strVal); } catch(e2) { try { const f3 = form.getTextField(key.trim()); f3.setText(strVal); } catch(e3) { } } }
                 };
-                for (const [pdfField, domId] of Object.entries(map)) { try { const el = byId(domId); if (el) safeSetText(pdfField, el.value); else safeSetText(pdfField, map[pdfField]); } catch(e) {} }
+                for (const [pdfField, domId] of Object.entries(map)) { 
+                    try { 
+                        // Intenta obtener por ID de elemento, si falla o no existe, usa el valor directo del mapa
+                        const el = byId(domId); 
+                        if (el) safeSetText(pdfField, el.value); 
+                        else safeSetText(pdfField, map[pdfField]); 
+                    } catch(e) {} 
+                }
                 if (extraValues) { for (const [key, val] of Object.entries(extraValues)) { safeSetText(key, val); } }
                 form.flatten();
             } catch (err) {
