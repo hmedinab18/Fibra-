@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NetCom 2.0 | Mobilenet Solutions</title>
+    <title>NetCom | Mobilenet Solutions</title>
     
-    <!-- Fuentes: Inter para máxima legibilidad en interfaces -->
+    <!-- Fuentes: Inter para máxima legibilidad en interfaces corporativas -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -25,13 +25,24 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
+                        slate: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
                         brand: {
                             50: '#eff6ff',
                             100: '#dbeafe',
                             200: '#bfdbfe',
                             300: '#93c5fd',
                             400: '#60a5fa',
-                            500: '#005CB9', /* Azul Entel Principal */
+                            500: '#005CB9', /* Azul Entel Corporativo */
                             600: '#004a94',
                             700: '#1d4ed8',
                             800: '#1e40af',
@@ -42,8 +53,9 @@
                         }
                     },
                     boxShadow: {
-                        'soft': '0 2px 10px rgba(0, 0, 0, 0.03)',
-                        'card': '0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.06)'
+                        'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02)',
+                        'floating': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025)',
                     }
                 }
             }
@@ -52,49 +64,51 @@
 
     <style>
         /* Base */
-        body { background-color: #F3F4F6; color: #111827; font-size: 0.9rem; -webkit-font-smoothing: antialiased; }
+        body { background-color: #f8fafc; color: #334155; font-size: 0.925rem; -webkit-font-smoothing: antialiased; }
         
-        /* Inputs Profesionales */
+        /* Inputs Profesionales Estilo SaaS */
         .input-label {
             display: block;
             font-size: 0.75rem;
             font-weight: 600;
-            color: #4B5563;
+            color: #64748b;
             margin-bottom: 0.35rem;
             text-transform: uppercase;
-            letter-spacing: 0.025em;
+            letter-spacing: 0.03em;
         }
         .input {
-            background: #FFFFFF;
-            border: 1px solid #D1D5DB;
-            border-radius: 0.5rem; /* rounded-lg */
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
             padding: 0.625rem 0.875rem;
             width: 100%;
-            color: #111827;
+            color: #1e293b;
             font-weight: 500;
             font-size: 0.9rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-            height: 42px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 44px;
         }
         .input:focus { 
             outline: none; 
             border-color: #005CB9; 
-            box-shadow: 0 0 0 3px rgba(0, 92, 185, 0.1); 
+            box-shadow: 0 0 0 4px rgba(0, 92, 185, 0.1); 
         }
-        .input::placeholder { color: #9CA3AF; font-weight: 400; }
+        .input::placeholder { color: #cbd5e1; font-weight: 400; }
         .input:disabled, .input:read-only { 
-            background-color: #F9FAFB; 
-            color: #6B7280; 
-            border-color: #E5E7EB;
+            background-color: #f8fafc; 
+            color: #64748b; 
+            border-color: #f1f5f9;
+            cursor: not-allowed;
         }
+        .input:read-only { cursor: default; }
         
         /* Botones Corporativos */
         .btn {
             background-color: #005CB9;
             color: white; 
             font-weight: 600;
-            border-radius: 0.5rem; /* rounded-lg */
-            padding: 0 1.25rem; 
+            border-radius: 0.5rem;
+            padding: 0 1.5rem; 
             transition: all 0.2s;
             display: inline-flex; 
             align-items: center; 
@@ -103,38 +117,39 @@
             cursor: pointer;
             font-size: 0.875rem;
             border: 1px solid transparent;
-            height: 42px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            height: 44px;
+            box-shadow: 0 2px 4px rgba(0, 92, 185, 0.15);
         }
-        .btn:hover { background-color: #004a94; }
-        .btn:active { transform: translateY(1px); }
-        .btn:disabled { background-color: #E5E7EB; color: #9CA3AF; cursor: not-allowed; }
+        .btn:hover { background-color: #004a94; transform: translateY(-1px); shadow: 0 4px 6px rgba(0, 92, 185, 0.2); }
+        .btn:active { transform: translateY(0); }
+        .btn:disabled { background-color: #e2e8f0; color: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none;}
         
         .btn.alt { 
             background-color: white; 
-            color: #374151; 
-            border-color: #D1D5DB; 
+            color: #475569; 
+            border-color: #e2e8f0; 
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-        .btn.alt:hover { background-color: #F9FAFB; border-color: #9CA3AF; }
+        .btn.alt:hover { background-color: #f8fafc; border-color: #cbd5e1; color: #1e293b; }
         
-        .btn.danger { background-color: #DC2626; color: white; border-color: transparent; }
-        .btn.danger:hover { background-color: #B91C1C; }
+        .btn.danger { background-color: #ef4444; color: white; border-color: transparent; }
+        .btn.danger:hover { background-color: #dc2626; }
 
         /* Tarjetas Limpias */
         .card { 
             background: white; 
-            padding: 1.5rem; 
-            border-radius: 0.75rem; /* rounded-xl */
-            border: 1px solid #E5E7EB; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 2rem; 
+            border-radius: 1rem; 
+            border: 1px solid #f1f5f9; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
         }
         .card-header { 
-            font-size: 1rem; 
+            font-size: 1.125rem; 
             font-weight: 700; 
-            margin-bottom: 1.25rem; 
-            color: #111827; 
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid #F3F4F6;
+            margin-bottom: 1.5rem; 
+            color: #0f172a; 
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -142,171 +157,213 @@
         
         /* Navegación Principal */
         .nav-btn {
-            color: #9CA3AF;
-            padding: 0.75rem 1rem;
-            font-weight: 600;
+            color: #64748b;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
             font-size: 0.875rem;
             transition: all 0.2s;
-            border-bottom: 2px solid transparent;
+            border-radius: 0.5rem;
         }
-        .nav-btn:hover { color: #111827; }
-        .nav-btn.active { color: #005CB9; border-bottom-color: #005CB9; }
+        .nav-btn:hover { color: #1e293b; background-color: #f1f5f9; }
+        .nav-btn.active { color: #005CB9; background-color: #eff6ff; font-weight: 600; }
 
-        /* STEPPER - Diseño Profesional de Bloques */
+        /* STEPPER - Diseño Lineal Moderno */
         .step-container {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 1px;
-            background-color: #E5E7EB; /* Bordes entre celdas */
-            border: 1px solid #E5E7EB;
-            border-radius: 0.75rem;
-            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            background-color: transparent;
+            margin-bottom: 2rem;
+            position: relative;
         }
-        
+        /* Línea conectora de fondo */
+        .step-container::before {
+            content: '';
+            position: absolute;
+            top: 14px; /* mitad del icono */
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background-color: #e2e8f0;
+            z-index: 0;
+        }
+
         .step-tab {
-            background-color: #FFFFFF;
-            padding: 1rem 0.75rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
-            height: 100%;
             position: relative;
+            z-index: 10;
+            flex: 1;
         }
         
-        .step-tab:hover:not(.active) { background-color: #F9FAFB; }
-        
-        /* Estado Activo: Barra superior de color + texto destacado */
-        .step-tab.active {
-            background-color: #EFF6FF; /* brand-50 */
-            color: #005CB9;
-        }
-        .step-tab.active::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background-color: #005CB9;
-        }
-        
-        /* Estado Completado */
-        .step-tab.completed {
-            color: #059669; /* emerald-600 */
-        }
-        .step-tab.completed .step-icon {
-            background-color: #D1FAE5;
-            color: #059669;
-        }
-
         .step-icon {
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             border-radius: 9999px;
-            background-color: #F3F4F6;
-            color: #9CA3AF;
+            background-color: white;
+            border: 2px solid #cbd5e1;
+            color: #64748b;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 0.5rem;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-size: 0.75rem;
             font-weight: 700;
         }
         
+        .step-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            transition: color 0.3s;
+        }
+        
+        .step-tab:hover .step-icon { border-color: #005CB9; color: #005CB9; }
+        
+        /* Activo */
         .step-tab.active .step-icon {
             background-color: #005CB9;
+            border-color: #005CB9;
+            color: white;
+            box-shadow: 0 0 0 4px rgba(0, 92, 185, 0.15);
+        }
+        .step-tab.active .step-title { color: #005CB9; }
+        
+        /* Completado */
+        .step-tab.completed .step-icon {
+            background-color: #10b981; /* green-500 */
+            border-color: #10b981;
             color: white;
         }
+        .step-tab.completed .step-title { color: #10b981; }
 
-        .step-title {
-            font-size: 0.75rem;
-            font-weight: 600;
-            line-height: 1.2;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-        }
 
         /* Utilidades */
         .hidden-vis { display: none !important; }
-        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-down { animation: slideDown 0.3s ease-out forwards; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); height: 0; } to { opacity: 1; transform: translateY(0); height: auto; } }
         
         /* Scrollbar Fina */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Estilos Pestañas Sistema */
+        .config-tab {
+            border-bottom-width: 2px;
+            border-color: transparent;
+            color: #64748b;
+            font-weight: 500;
+            padding: 1rem 0.5rem;
+            margin-right: 2rem;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+        .config-tab:hover { color: #1e293b; border-color: #cbd5e1; }
+        .config-tab.active {
+            border-color: #005CB9;
+            color: #005CB9;
+            font-weight: 600;
+        }
+
+        /* Tabla DB */
+        .db-table th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .db-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            font-size: 0.875rem;
+        }
+        .db-table tr:hover td { background-color: #f8fafc; }
+        .db-table tr:last-child td { border-bottom: none; }
 
         /* Toast Notifications */
         #toast-container { position: fixed; top: 1.5rem; right: 1.5rem; z-index: 100; display: flex; flex-direction: column; gap: 0.75rem; }
         .toast {
-            min-width: 320px;
+            min-width: 340px;
             background: white;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            border-left: 4px solid #3B82F6;
-            border: 1px solid #E5E7EB;
-            border-left-width: 4px;
+            gap: 1rem;
+            border: 1px solid #f1f5f9;
         }
-        .toast-success { border-left-color: #10B981; }
-        .toast-error { border-left-color: #EF4444; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans">
+<body class="min-h-screen flex flex-col font-sans bg-slate-50">
 
     <!-- TOAST CONTAINER -->
     <div id="toast-container"></div>
 
     <!-- LOGIN SCREEN -->
-    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm p-4">
-        <div class="w-full max-w-sm bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
-            <div class="text-center mb-8">
-                <div class="w-14 h-14 bg-brand-500 text-white rounded-lg flex items-center justify-center text-2xl font-bold mx-auto mb-4 shadow-lg">N</div>
-                <h2 class="text-xl font-bold text-gray-900">NetCom 2.0</h2>
-                <p class="text-xs text-gray-500 mt-1 uppercase tracking-wide font-medium">Mobilenet Solutions</p>
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 p-4">
+        <div class="w-full max-w-sm bg-white p-8 rounded-2xl shadow-floating border border-white/50">
+            <div class="text-center mb-10">
+                <div class="w-16 h-16 bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-xl flex items-center justify-center text-3xl font-bold mx-auto mb-4 shadow-lg shadow-brand-500/30">N</div>
+                <h2 class="text-2xl font-bold text-slate-900">NetCom</h2>
+                <p class="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Mobilenet Solutions</p>
             </div>
-            <div class="space-y-5">
+            <div class="space-y-6">
                 <div>
-                    <label class="input-label">Usuario</label>
-                    <input id="loginUser" class="input" autocomplete="username" placeholder="jperez">
-                </div>
-                <div>
-                    <label class="input-label">Contraseña</label>
+                    <label class="input-label">Identificador</label>
                     <div class="relative">
-                        <input id="loginPass" class="input pr-10" type="password" autocomplete="current-password" placeholder="••••••••">
-                        <button onclick="togglePass()" class="absolute right-2 top-2 text-gray-400 hover:text-brand-500 p-1"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                        <input id="loginUser" class="input pl-10" autocomplete="username" placeholder="Usuario corporativo">
+                        <i data-lucide="user" class="absolute left-3 top-3 text-slate-400 w-5 h-5"></i>
                     </div>
                 </div>
-                <button id="btnLogin" class="btn w-full h-10 mt-2">Ingresar al Sistema</button>
-                <div class="flex justify-center mt-4 pt-4 border-t border-gray-100">
-                    <button id="btnReset" class="text-xs text-gray-400 hover:text-brand-500 hover:underline transition-colors flex items-center gap-1"><i data-lucide="database" class="w-3 h-3"></i> Restablecer DB</button>
+                <div>
+                    <label class="input-label">Credencial</label>
+                    <div class="relative">
+                        <input id="loginPass" class="input pl-10 pr-10" type="password" autocomplete="current-password" placeholder="••••••••">
+                        <i data-lucide="lock" class="absolute left-3 top-3 text-slate-400 w-5 h-5"></i>
+                        <button onclick="togglePass()" class="absolute right-2 top-2 text-slate-400 hover:text-brand-500 p-1"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                    </div>
                 </div>
-                <div id="loginError" class="min-h-[20px] text-xs text-red-600 font-medium text-center mt-2"></div>
-                <div class="text-[10px] text-gray-300 text-center font-mono mt-2" id="ipDisplay">IP Check...</div>
+                <button id="btnLogin" class="btn w-full h-12 text-base shadow-lg shadow-brand-500/20">Iniciar Sesión Segura</button>
+                
+                <div class="flex justify-center pt-6">
+                    <button id="btnReset" class="text-xs text-slate-400 hover:text-brand-600 transition-colors flex items-center gap-1.5 font-medium"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Restablecer Base de Datos</button>
+                </div>
+                <div id="loginError" class="min-h-[20px] text-xs text-red-500 font-medium text-center mt-2"></div>
+                <div class="text-[10px] text-slate-300 text-center font-mono mt-2" id="ipDisplay">Verificando conexión...</div>
             </div>
         </div>
     </div>
 
     <!-- MODAL DE DIRECCIÓN -->
-    <div id="addressModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/50 backdrop-blur-sm hidden-vis p-4">
-        <div class="w-full max-w-3xl bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden flex flex-col max-h-[90vh] animate-fade-in">
-            <div class="bg-gray-50 px-6 py-4 flex justify-between items-center border-b border-gray-200">
-                <h3 class="font-bold text-gray-800 flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-brand-500"></i> Construir Dirección</h3>
-                <button onclick="closeAddressModal()" class="text-gray-400 hover:text-gray-700 hover:bg-gray-200 p-1 rounded transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+    <div id="addressModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden-vis p-4">
+        <div class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh] animate-fade-in">
+            <div class="bg-white px-8 py-5 flex justify-between items-center border-b border-slate-100">
+                <div>
+                    <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i data-lucide="map" class="w-5 h-5 text-brand-500"></i> Asistente de Dirección</h3>
+                    <p class="text-xs text-slate-500">Estandarización de formato geográfico</p>
+                </div>
+                <button onclick="closeAddressModal()" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-lg transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto space-y-6 bg-white">
-                <div class="grid grid-cols-12 gap-4">
-                    <div class="col-span-12 sm:col-span-4"><label class="input-label">Tipo Vía</label><select id="TIPO_VIA" class="input address-part"></select></div>
-                    <div class="col-span-12 sm:col-span-8"><label class="input-label">Nombre Vía</label><input id="NOM_VIA" class="input address-part" placeholder="Ej: JAVIER PRADO ESTE"></div>
+            <div class="p-8 overflow-y-auto space-y-8 bg-slate-50/50">
+                <div class="grid grid-cols-12 gap-6">
+                    <div class="col-span-12 sm:col-span-3"><label class="input-label">Tipo Vía</label><select id="TIPO_VIA" class="input address-part"></select></div>
+                    <div class="col-span-12 sm:col-span-9"><label class="input-label">Nombre de la Vía</label><input id="NOM_VIA" class="input address-part" placeholder="Ej: JAVIER PRADO ESTE"></div>
                     
                     <div class="col-span-4"><label class="input-label">Número</label><input id="NRO" class="input address-part" placeholder="123"></div>
                     <div class="col-span-4"><label class="input-label">Manzana</label><input id="MZA" class="input address-part" placeholder="A"></div>
@@ -317,126 +374,124 @@
                     <div class="col-span-12 sm:col-span-3"><label class="input-label">Tipo Edif.</label><select id="TIP_EDIF" class="input address-part"></select></div>
                     <div class="col-span-12 sm:col-span-3"><label class="input-label">Nom Edif.</label><input id="NOM_EDIF" class="input address-part"></div>
 
-                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Urbanización</label><input id="URB_ADDR" class="input address-part" placeholder="Ej: LOS FICUS"></div>
-                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Distrito <span class="text-red-500">*</span></label><select id="DISTRITO_SEL" class="input address-part"></select></div>
+                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Urbanización / Sector</label><input id="URB_ADDR" class="input address-part" placeholder="Ej: LOS FICUS"></div>
+                    <div class="col-span-12 sm:col-span-6"><label class="input-label">Distrito / Zona <span class="text-red-500">*</span></label><select id="DISTRITO_SEL" class="input address-part"></select></div>
                 </div>
                 
-                <div class="bg-brand-50 p-4 rounded-lg border border-brand-100">
-                    <label class="input-label text-brand-600 mb-1">Vista Previa:</label>
-                    <p id="addressPreview" class="text-sm font-mono font-medium text-gray-800 min-h-[1.25em]">---</p>
+                <div class="bg-white p-6 rounded-xl border border-brand-100 shadow-sm">
+                    <label class="input-label text-brand-600 mb-2 flex items-center gap-2"><i data-lucide="eye" class="w-3 h-3"></i> Vista Previa Normalizada:</label>
+                    <p id="addressPreview" class="text-base font-mono font-medium text-slate-800 min-h-[1.5em] bg-slate-50 p-3 rounded border border-slate-200">---</p>
                 </div>
             </div>
-            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
-                <button onclick="closeAddressModal()" class="btn alt">Cancelar</button>
-                <button onclick="confirmAddress()" class="btn">Confirmar</button>
+            <div class="px-8 py-5 bg-white border-t border-slate-100 flex justify-end gap-3">
+                <button onclick="closeAddressModal()" class="btn alt h-10">Descartar</button>
+                <button onclick="confirmAddress()" class="btn h-10">Confirmar Dirección</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL DE PLANES -->
-    <div id="planModal" class="fixed inset-0 z-[70] flex items-center justify-center bg-gray-900/50 backdrop-blur-sm hidden-vis p-4">
-        <div class="w-full max-w-lg bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden flex flex-col max-h-[90vh] animate-fade-in">
-            <div class="bg-gray-50 px-6 py-4 flex justify-between items-center border-b border-gray-200">
-                <h3 id="planModalTitle" class="font-bold text-gray-800 flex items-center gap-2"><i data-lucide="settings-2" class="w-4 h-4 text-brand-500"></i> Gestionar Plan</h3>
-                <button onclick="closePlanModal()" class="text-gray-400 hover:text-gray-700 hover:bg-gray-200 p-1 rounded transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+    <div id="planModal" class="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden-vis p-4">
+        <div class="w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh] animate-fade-in">
+            <div class="bg-white px-6 py-4 flex justify-between items-center border-b border-slate-100">
+                <h3 id="planModalTitle" class="font-bold text-slate-800 flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4 text-brand-500"></i> Gestión de Catálogo</h3>
+                <button onclick="closePlanModal()" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-lg transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto space-y-4 bg-white">
+            <div class="p-6 overflow-y-auto space-y-5 bg-white">
                 <input type="hidden" id="planOriginalName">
-                <div><label class="input-label">Nombre del Plan</label><input id="planName" class="input" placeholder="Ej: INTERNET FIBRA + 100 MBPS"></div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div><label class="input-label">Tarifa</label><input id="planTarif" class="input" placeholder="S/ 0.00"></div>
-                    <div><label class="input-label">Cargo Fijo</label><input id="planCargoFijo" class="input" placeholder="S/ 0.00"></div>
+                <div><label class="input-label">Nombre Comercial del Plan</label><input id="planName" class="input" placeholder="Ej: INTERNET FIBRA + 100 MBPS"></div>
+                <div class="grid grid-cols-2 gap-5">
+                    <div><label class="input-label">Tarifa (PEN)</label><input id="planTarif" class="input" placeholder="S/ 0.00"></div>
+                    <div><label class="input-label">Cargo Fijo (PEN)</label><input id="planCargoFijo" class="input" placeholder="S/ 0.00"></div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-5">
                     <div><label class="input-label">Plazo (Meses)</label><input id="planPlazo" class="input" placeholder="36"></div>
-                    <div><label class="input-label">Garantía</label><input id="planGar" class="input" placeholder="70%"></div>
+                    <div><label class="input-label">Garantía SLA</label><input id="planGar" class="input" placeholder="70%"></div>
                 </div>
-                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <label class="input-label mb-2 text-gray-600">Velocidades (Mbps)</label>
-                    <div class="grid grid-cols-2 gap-4 mb-3">
-                        <div><span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Bajada Max</span><input id="planVmb" class="input h-9 mt-1 text-sm" type="number"></div>
-                        <div><span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Bajada Min</span><input id="planVminb" class="input h-9 mt-1 text-sm" type="number"></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div><span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Subida Max</span><input id="planVms" class="input h-9 mt-1 text-sm" type="number"></div>
-                        <div><span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Subida Min</span><input id="planVmins" class="input h-9 mt-1 text-sm" type="number"></div>
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+                    <label class="input-label mb-3 text-slate-600 flex items-center gap-2"><i data-lucide="activity" class="w-3 h-3"></i> Parámetros de Velocidad (Mbps)</label>
+                    <div class="grid grid-cols-2 gap-x-5 gap-y-3">
+                        <div><span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1 block">Bajada Max</span><input id="planVmb" class="input h-9 text-sm" type="number"></div>
+                        <div><span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1 block">Bajada Min</span><input id="planVminb" class="input h-9 text-sm" type="number"></div>
+                        <div><span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1 block">Subida Max</span><input id="planVms" class="input h-9 text-sm" type="number"></div>
+                        <div><span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1 block">Subida Min</span><input id="planVmins" class="input h-9 text-sm" type="number"></div>
                     </div>
                 </div>
                 <p id="planMsg" class="text-center text-xs font-medium py-2 hidden"></p>
             </div>
-            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-between gap-3">
-                <button id="btnDeletePlan" onclick="deleteCurrentPlan()" class="btn danger hidden">Eliminar</button>
+            <div class="px-6 py-4 bg-white border-t border-slate-100 flex justify-between gap-3">
+                <button id="btnDeletePlan" onclick="deleteCurrentPlan()" class="btn danger h-10 hidden">Eliminar</button>
                 <div class="flex gap-3 ml-auto">
-                    <button onclick="closePlanModal()" class="btn alt">Cancelar</button>
-                    <button onclick="savePlan()" class="btn">Guardar</button>
+                    <button onclick="closePlanModal()" class="btn alt h-10">Cancelar</button>
+                    <button onclick="savePlan()" class="btn h-10">Guardar Cambios</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- APP HEADER -->
-    <header id="appHeader" class="bg-white border-b border-gray-200 sticky top-0 z-40 hidden-vis">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-brand-500 text-white w-8 h-8 rounded flex items-center justify-center font-bold text-lg">N</div>
+    <header id="appHeader" class="bg-white border-b border-slate-200 sticky top-0 z-40 hidden-vis shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="bg-gradient-to-br from-brand-500 to-brand-700 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xl shadow-md">N</div>
                 <div class="leading-tight">
-                    <h1 class="text-lg font-bold text-gray-800 tracking-tight">NetCom 2.0</h1>
-                    <p class="text-[10px] text-gray-500 uppercase font-semibold">Mobilenet Solutions</p>
+                    <h1 class="text-lg font-bold text-slate-800 tracking-tight">NetCom</h1>
+                    <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Mobilenet Solutions</p>
                 </div>
             </div>
             
-            <div class="flex-1 flex justify-center">
-                <div id="adminTabs" class="flex gap-1 bg-gray-100 p-1 rounded-lg">
-                    <button onclick="switchTab('generator')" class="nav-btn active" id="tab-generator">Contratos Dedicado</button>
-                    <button onclick="switchTab('logs')" class="nav-btn" id="tab-logs">Historial</button>
-                    <button onclick="switchTab('config')" class="nav-btn" id="tab-config">Configuración</button>
+            <div class="hidden md:flex flex-1 justify-center px-8">
+                <div id="adminTabs" class="flex gap-1 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+                    <button onclick="switchTab('generator')" class="nav-btn active" id="tab-generator"><i data-lucide="file-plus" class="w-4 h-4 inline mr-2"></i> Contratos Dedicado</button>
+                    <button onclick="switchTab('logs')" class="nav-btn" id="tab-logs"><i data-lucide="history" class="w-4 h-4 inline mr-2"></i> Historial</button>
+                    <button onclick="switchTab('config')" class="nav-btn" id="tab-config"><i data-lucide="settings" class="w-4 h-4 inline mr-2"></i> Sistema</button>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <div class="hidden md:flex flex-col items-end">
-                    <span id="headerUser" class="text-sm font-semibold text-gray-700 leading-none">Usuario</span>
-                    <span id="headerRole" class="text-[10px] uppercase text-gray-400 font-bold mt-0.5">Rol</span>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex flex-col items-end border-r border-slate-100 pr-4 mr-1">
+                    <span id="headerUser" class="text-sm font-bold text-slate-700 leading-none">Usuario</span>
+                    <span id="headerRole" class="text-[10px] uppercase text-brand-500 font-bold mt-1 bg-brand-50 px-2 py-0.5 rounded-full">Rol</span>
                 </div>
-                <button id="btnLogout" class="text-gray-400 hover:text-red-600 p-2 rounded hover:bg-gray-100 transition-colors" title="Cerrar Sesión"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+                <button id="btnLogout" class="text-slate-400 hover:text-red-500 p-2.5 rounded-lg hover:bg-red-50 transition-colors border border-transparent hover:border-red-100" title="Cerrar Sesión"><i data-lucide="log-out" class="w-5 h-5"></i></button>
             </div>
         </div>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main id="mainContent" class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full hidden-vis flex-1">
+    <main id="mainContent" class="max-w-7xl mx-auto px-4 sm:px-6 py-10 w-full hidden-vis flex-1">
         
         <!-- === VISTA GENERADOR === -->
         <div id="view-generator" class="fade-in hidden-vis animate-fade-in">
             <div class="grid lg:grid-cols-12 gap-8 items-start">
                 
-                <div class="lg:col-span-8 space-y-6">
+                <div class="lg:col-span-8 space-y-8">
                     
-                    <!-- STEPPER NAVIGATION (PROFESIONAL Y ESTRUCTURADO) -->
-                    <div class="step-container mb-6 shadow-sm">
+                    <!-- STEPPER MODERNIZADO -->
+                    <div class="step-container">
                         <!-- Step 1 -->
                         <div onclick="showStep(1)" id="step-tab-1" class="step-tab active">
-                            <div class="step-icon">1</div>
-                            <span class="step-title">Oportunidad</span>
+                            <div class="step-icon"><i data-lucide="home" class="w-3.5 h-3.5"></i></div>
+                            <span class="step-title">Inicio</span>
                         </div>
                         <!-- Step 2 -->
                         <div onclick="showStep(2)" id="step-tab-2" class="step-tab">
-                            <div class="step-icon">2</div>
-                            <span class="step-title">Rep. Legal</span>
+                            <div class="step-icon"><i data-lucide="user" class="w-3.5 h-3.5"></i></div>
+                            <span class="step-title">Cliente</span>
                         </div>
                         <!-- Step 3 -->
                         <div onclick="showStep(3)" id="step-tab-3" class="step-tab">
-                            <div class="step-icon">3</div>
+                            <div class="step-icon"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i></div>
                             <span class="step-title">Instalación</span>
                         </div>
                         <!-- Step 4 -->
                         <div onclick="showStep(4)" id="step-tab-4" class="step-tab">
-                            <div class="step-icon">4</div>
-                            <span class="step-title">Planes</span>
+                            <div class="step-icon"><i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i></div>
+                            <span class="step-title">Servicios</span>
                         </div>
                         <!-- Step 5 -->
                         <div onclick="showStep(5)" id="step-tab-5" class="step-tab">
-                            <div class="step-icon">5</div>
+                            <div class="step-icon"><i data-lucide="pen-tool" class="w-3.5 h-3.5"></i></div>
                             <span class="step-title">Firma</span>
                         </div>
                     </div>
@@ -444,36 +499,37 @@
                     <!-- STEP 1: OPORTUNIDAD -->
                     <div id="step-content-1" class="space-y-6 animate-fade-in">
                         <div class="card">
-                            <h2 class="card-header text-brand-600"><i data-lucide="hash" class="w-5 h-5"></i> Información de Oportunidad</h2>
+                            <h2 class="card-header"><i data-lucide="briefcase" class="w-5 h-5 text-brand-500"></i> Oportunidad Comercial</h2>
                             <div>
                                 <label class="input-label">Nro. de Oportunidad</label>
                                 <input id="NRO_OPORT" class="input" placeholder="Ej: OP-2023-56789">
                             </div>
                         </div>
                         <div class="flex justify-end pt-2">
-                            <button onclick="showStep(2)" class="btn px-6">Siguiente <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                            <button onclick="showStep(2)" class="btn px-8">Continuar <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                         </div>
                     </div>
 
                     <!-- STEP 2: DATOS RL -->
                     <div id="step-content-2" class="space-y-6 animate-fade-in hidden-vis">
                         <div class="card">
-                            <h2 class="card-header text-brand-600"><i data-lucide="building-2" class="w-5 h-5"></i> Datos del Representante Legal</h2>
-                            <div class="grid sm:grid-cols-12 gap-4">
+                            <h2 class="card-header"><i data-lucide="building" class="w-5 h-5 text-brand-500"></i> Datos Legales y Representante</h2>
+                            <div class="grid sm:grid-cols-12 gap-5">
                                 <div class="sm:col-span-4">
                                     <label class="input-label">RUC <span class="text-red-500">*</span></label>
-                                    <div class="flex gap-2"><input id="RUC" class="input" placeholder="11 dígitos" maxlength="11"><button id="btnSearchRuc" class="btn alt px-3" title="Buscar en Sunat"><i data-lucide="search" class="w-4 h-4"></i></button></div>
+                                    <div class="flex gap-2"><input id="RUC" class="input font-mono" placeholder="11 dígitos" maxlength="11"><button id="btnSearchRuc" class="btn alt px-3 border-slate-200" title="Consultar SUNAT"><i data-lucide="search" class="w-4 h-4"></i></button></div>
                                 </div>
                                 <div class="sm:col-span-8">
                                     <label class="input-label">Razón Social <span class="text-red-500">*</span></label>
-                                    <input id="RAZON_SOCIAL" class="input bg-gray-50" readonly>
+                                    <input id="RAZON_SOCIAL" class="input bg-slate-50 border-slate-200" readonly>
                                 </div>
                                 
                                 <div class="sm:col-span-12">
                                     <label class="input-label">Dirección Fiscal <span class="text-red-500">*</span></label>
-                                    <input id="DIRECCION" class="input" placeholder="Ingrese Dirección Fiscal Manualmente">
+                                    <input id="DIRECCION" class="input" placeholder="Dirección completa según Ficha RUC">
                                 </div>
 
+                                <!-- Hidden/Technical fields used for PDF mapping but maybe not direct input unless needed, keeping them visible as per original logic -->
                                 <div class="sm:col-span-4"><label class="input-label">N° Calle</label><input id="NUMERO_DE_CALLE" class="input"></div>
                                 <div class="sm:col-span-4"><label class="input-label">Dpto / Int</label><input id="DPTO_INT" class="input"></div>
                                 <div class="sm:col-span-4"><label class="input-label">Urbanización</label><input id="URB" class="input"></div>
@@ -481,15 +537,15 @@
                                 <div class="sm:col-span-6"><label class="input-label">Distrito <span class="text-red-500">*</span></label><input id="DISTRITO" class="input"></div>
                                 <div class="sm:col-span-6"><label class="input-label">Ciudad <span class="text-red-500">*</span></label><input id="CIUDAD" class="input"></div>
 
-                                <div class="sm:col-span-12 border-t border-gray-100 mt-4 pt-4">
-                                    <p class="text-xs font-bold text-gray-400 uppercase mb-3">Datos Personales del RL</p>
+                                <div class="sm:col-span-12 mt-6 pt-6 border-t border-slate-100">
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2"><i data-lucide="user-check" class="w-4 h-4"></i> Representante Legal</p>
                                 </div>
                                 
                                 <div class="sm:col-span-6">
                                     <label class="input-label">DNI <span class="text-red-500">*</span></label>
                                     <div class="flex gap-2">
-                                        <input id="DNI" class="input" maxlength="8" placeholder="8 dígitos">
-                                        <button id="btnSearchDni" class="btn alt px-3" title="Buscar Reniec"><i data-lucide="search" class="w-4 h-4"></i></button>
+                                        <input id="DNI" class="input font-mono" maxlength="8" placeholder="8 dígitos">
+                                        <button id="btnSearchDni" class="btn alt px-3 border-slate-200" title="Consultar RENIEC"><i data-lucide="search" class="w-4 h-4"></i></button>
                                     </div>
                                 </div>
                                 <div class="sm:col-span-6"><label class="input-label">Cargo <span class="text-red-500">*</span></label><input id="CARGO_RL" class="input" placeholder="Ej: Gerente General"></div>
@@ -503,55 +559,58 @@
                             </div>
                         </div>
                         <div class="flex justify-between pt-2">
-                            <button onclick="showStep(1)" class="btn alt px-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                            <button onclick="showStep(1)" class="btn alt px-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> Atrás</button>
                             <button onclick="showStep(3)" class="btn px-6">Siguiente <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                         </div>
                     </div>
 
-                    <!-- STEP 3: CONTACTO -->
+                    <!-- STEP 3: CONTACTO E INSTALACIÓN -->
                     <div id="step-content-3" class="space-y-6 animate-fade-in hidden-vis">
                         <div class="card">
-                            <h2 class="card-header text-brand-600"><i data-lucide="map-pin" class="w-5 h-5"></i> Datos de Instalación</h2>
+                            <h2 class="card-header"><i data-lucide="map-pin" class="w-5 h-5 text-brand-500"></i> Instalación y Contacto Técnico</h2>
                             
-                            <div class="grid sm:grid-cols-12 gap-4">
+                            <div class="grid sm:grid-cols-12 gap-5">
                                 <!-- CONTACTO -->
-                                <div class="sm:col-span-12 border-b border-gray-100 pb-2 mb-2">
-                                    <h3 class="text-xs font-bold text-gray-500 uppercase">Contacto en Sitio</h3>
+                                <div class="sm:col-span-12 mb-2">
+                                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-2">Contacto en Sitio</h3>
                                 </div>
                                 <div class="sm:col-span-6"><label class="input-label">Nombre Completo <span class="text-red-500">*</span></label><input id="CONT_NOMB" class="input"></div>
                                 <div class="sm:col-span-6"><label class="input-label">Cargo <span class="text-red-500">*</span></label><input id="CONT_CARGO" class="input"></div>
-                                <div class="sm:col-span-4"><label class="input-label">DNI <span class="text-red-500">*</span></label><input id="CONT_DNI" class="input" maxlength="8"></div>
+                                <div class="sm:col-span-4"><label class="input-label">DNI <span class="text-red-500">*</span></label><input id="CONT_DNI" class="input font-mono" maxlength="8"></div>
                                 <div class="sm:col-span-4"><label class="input-label">Teléfono <span class="text-red-500">*</span></label><input id="CONT_TELEF" class="input"></div>
                                 <div class="sm:col-span-4"><label class="input-label">Correo <span class="text-red-500">*</span></label><input id="CONT_CORREO" class="input" type="email"></div>
 
                                 <!-- DIRECCION -->
-                                <div class="sm:col-span-12 border-b border-gray-100 pb-2 mb-2 mt-4">
-                                    <h3 class="text-xs font-bold text-gray-500 uppercase">Dirección de Instalación</h3>
+                                <div class="sm:col-span-12 mt-6 mb-2">
+                                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-2">Sede de Instalación</h3>
                                 </div>
                                 <div class="sm:col-span-12">
                                     <label class="input-label flex items-center gap-2">
-                                        Dirección Completa <span class="text-red-500">*</span> 
-                                        <span class="text-xs text-brand-600 font-normal ml-auto flex items-center gap-1 cursor-pointer hover:underline" onclick="openAddressModal()"><i data-lucide="edit-2" class="w-3 h-3"></i> Editar con Asistente</span>
+                                        Dirección Normalizada <span class="text-red-500">*</span> 
+                                        <span class="text-xs text-brand-600 font-semibold ml-auto flex items-center gap-1 cursor-pointer hover:bg-brand-50 px-2 py-0.5 rounded transition-colors" onclick="openAddressModal()"><i data-lucide="wand-2" class="w-3 h-3"></i> Asistente</span>
                                     </label>
-                                    <div class="relative cursor-pointer" onclick="openAddressModal()">
-                                        <input id="DIREC_INST" class="input cursor-pointer bg-gray-50 border-gray-300 pl-10" placeholder="Haga clic aquí para generar la dirección..." readonly>
-                                        <i data-lucide="map-pin" class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 pointer-events-none"></i>
+                                    <div class="relative cursor-pointer group" onclick="openAddressModal()">
+                                        <input id="DIREC_INST" class="input cursor-pointer bg-slate-50 border-slate-300 pl-10 group-hover:border-brand-300 group-hover:bg-white transition-colors" placeholder="Clic para usar el asistente de direcciones..." readonly>
+                                        <i data-lucide="map-pin" class="absolute left-3 top-2.5 text-slate-400 w-5 h-5 pointer-events-none group-hover:text-brand-500 transition-colors"></i>
                                     </div>
                                 </div>
 
                                 <!-- SERVICIOS SUPLEMENTARIOS -->
-                                <div class="sm:col-span-12 border-b border-gray-100 pb-2 mb-2 mt-4 flex justify-between items-center">
-                                    <h3 class="text-xs font-bold text-gray-500 uppercase">Servicios Suplementarios</h3>
-                                    <button onclick="addSupRow()" class="btn text-xs px-3 py-1.5 bg-green-600 hover:bg-green-700 border-transparent h-8">
-                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar
+                                <div class="sm:col-span-12 mt-6 mb-2 flex justify-between items-center border-b border-slate-100 pb-2">
+                                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Servicios Adicionales / Suplementarios</h3>
+                                    <button onclick="addSupRow()" class="btn text-xs px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 border-transparent h-8 shadow-sm">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar Item
                                     </button>
                                 </div>
                                 <div class="sm:col-span-12 space-y-3" id="supServicesContainer">
-                                    <!-- Dynamic rows -->
+                                    <!-- Dynamic rows will appear here -->
+                                    <div class="text-center py-6 text-slate-400 text-sm border border-dashed border-slate-200 rounded-lg italic bg-slate-50/50">
+                                        No hay servicios adicionales seleccionados.
+                                    </div>
                                 </div>
-                                <div class="sm:col-span-12 mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 flex justify-between items-center">
-                                    <span class="text-sm font-bold text-gray-300 uppercase tracking-wide flex items-center gap-2"><i data-lucide="calculator" class="w-4 h-4"></i> Total Servicios:</span>
-                                    <span id="txtSupTotalGlobal" class="text-lg font-bold text-white tracking-tight">S/. 0.00</span>
+                                <div class="sm:col-span-12 mt-4 p-4 bg-slate-900 rounded-xl flex justify-between items-center shadow-lg">
+                                    <span class="text-sm font-bold text-slate-300 uppercase tracking-wide flex items-center gap-2"><i data-lucide="calculator" class="w-4 h-4"></i> Subtotal Adicionales:</span>
+                                    <span id="txtSupTotalGlobal" class="text-xl font-bold text-white tracking-tight">S/ 0.00</span>
                                     <input type="hidden" id="TOTAL_SUP_HIDDEN" value="0.00">
                                 </div>
                                 <div class="hidden"><input id="NOMB_PROMOCION" value="30% por 4 – Fibra +"></div>
@@ -559,7 +618,7 @@
                             </div>
                         </div>
                         <div class="flex justify-between pt-2">
-                            <button onclick="showStep(2)" class="btn alt px-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                            <button onclick="showStep(2)" class="btn alt px-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> Atrás</button>
                             <button onclick="showStep(4)" class="btn px-6">Siguiente <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                         </div>
                     </div>
@@ -567,88 +626,94 @@
                     <!-- STEP 4: SERVICIOS -->
                     <div id="step-content-4" class="space-y-6 animate-fade-in hidden-vis">
                         <!-- SELECTOR TIPO DE SERVICIO -->
-                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-card">
-                             <div class="flex items-center gap-2 mb-4">
-                                <h2 class="font-bold text-gray-800 text-sm uppercase tracking-wide">Tipo de Servicio</h2>
-                            </div>
-                            <div class="grid grid-cols-3 gap-3">
-                                <button onclick="setServiceType('internet')" id="btnTypeInternet" class="flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-lg border transition-all duration-200 hover:bg-gray-50">
-                                    <i data-lucide="wifi" class="w-5 h-5"></i> <span class="text-xs font-bold">INTERNET</span>
-                                </button>
-                                <button onclick="setServiceType('pack')" id="btnTypePack" class="flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-lg border transition-all duration-200 hover:bg-gray-50">
-                                    <i data-lucide="package" class="w-5 h-5"></i> <span class="text-xs font-bold">PACK DUO</span>
-                                </button>
-                                <button onclick="setServiceType('dedicado')" id="btnTypeDedicado" class="flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-lg border transition-all duration-200 hover:bg-gray-50">
-                                    <i data-lucide="server" class="w-5 h-5"></i> <span class="text-xs font-bold">DEDICADO</span>
-                                </button>
-                            </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <button onclick="setServiceType('internet')" id="btnTypeInternet" class="flex flex-col items-center justify-center gap-3 py-6 px-4 rounded-xl border-2 transition-all duration-200 hover:bg-white shadow-sm hover:shadow-md">
+                                <div class="w-10 h-10 rounded-full bg-brand-50 text-brand-500 flex items-center justify-center"><i data-lucide="wifi" class="w-5 h-5"></i></div>
+                                <span class="text-xs font-bold tracking-wide">INTERNET</span>
+                            </button>
+                            <button onclick="setServiceType('pack')" id="btnTypePack" class="flex flex-col items-center justify-center gap-3 py-6 px-4 rounded-xl border-2 transition-all duration-200 hover:bg-white shadow-sm hover:shadow-md">
+                                <div class="w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center"><i data-lucide="package" class="w-5 h-5"></i></div>
+                                <span class="text-xs font-bold tracking-wide">PACK DUO</span>
+                            </button>
+                            <button onclick="setServiceType('dedicado')" id="btnTypeDedicado" class="flex flex-col items-center justify-center gap-3 py-6 px-4 rounded-xl border-2 transition-all duration-200 hover:bg-white shadow-sm hover:shadow-md">
+                                <div class="w-10 h-10 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center"><i data-lucide="server" class="w-5 h-5"></i></div>
+                                <span class="text-xs font-bold tracking-wide">DEDICADO</span>
+                            </button>
                         </div>
 
                         <div class="card">
-                            <h2 class="card-header text-brand-600"><i data-lucide="shopping-cart" class="w-5 h-5"></i> Selección de Plan y Tarifas</h2>
+                            <h2 class="card-header"><i data-lucide="shopping-bag" class="w-5 h-5 text-brand-500"></i> Configuración del Plan</h2>
                             
-                            <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
+                            <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-6">
                                 <div class="grid sm:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="input-label text-brand-700">Plan Contratado</label>
-                                        <select id="planSelect" class="input border-brand-200 focus:border-brand-500"><option value="">— Seleccionar Plan —</option></select>
+                                        <label class="input-label text-brand-700">Plan a Contratar</label>
+                                        <select id="planSelect" class="input border-brand-200 focus:border-brand-500 shadow-sm"><option value="">— Seleccionar del Catálogo —</option></select>
                                     </div>
                                     <div>
-                                        <label class="input-label text-brand-700">Tarifa Mensual</label>
+                                        <label class="input-label text-brand-700">Tarifa Mensual Recurrente</label>
                                         <div class="relative">
                                             <input id="TARIF_MENS" class="input border-brand-200 font-bold text-brand-700 text-lg pl-10" readonly>
-                                            <i data-lucide="dollar-sign" class="absolute left-3 top-2.5 text-brand-400 w-4 h-4"></i>
+                                            <span class="absolute left-3 top-2.5 text-brand-400 font-bold text-lg">S/</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="grid sm:grid-cols-3 gap-4">
-                                <div><label class="input-label">Nombre del Plan</label><input id="NOM_PLAN" class="input bg-gray-50" readonly></div>
-                                <div><label class="input-label">Min. Garantizado</label><input id="MIN_GAR" class="input bg-gray-50" readonly></div>
-                                <div><label class="input-label">Plazo (Meses)</label><input id="PLAZO_CONT" class="input bg-gray-50" readonly></div>
+                            <div class="grid sm:grid-cols-3 gap-5">
+                                <div><label class="input-label">Nombre Comercial</label><input id="NOM_PLAN" class="input bg-slate-50 border-slate-200" readonly></div>
+                                <div><label class="input-label">SLA (Min. Garantizado)</label><input id="MIN_GAR" class="input bg-slate-50 border-slate-200" readonly></div>
+                                <div><label class="input-label">Plazo Forzoso (Meses)</label><input id="PLAZO_CONT" class="input bg-slate-50 border-slate-200" readonly></div>
                                 
-                                <div class="bg-white p-3 rounded-lg border border-gray-200">
-                                    <label class="input-label text-[10px] text-gray-400">Bajada (Max/Min)</label>
-                                    <div class="flex gap-2"><input id="VEL_MAX_BAJ" class="input h-9 text-xs" readonly><input id="VEL_MIN_BAJ" class="input h-9 text-xs" readonly></div>
+                                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                    <label class="input-label text-[10px] text-slate-400 mb-2">Velocidad Bajada (Mbps)</label>
+                                    <div class="flex gap-2 items-center">
+                                        <input id="VEL_MAX_BAJ" class="input h-10 text-center font-mono text-sm" readonly placeholder="Max">
+                                        <span class="text-slate-300">/</span>
+                                        <input id="VEL_MIN_BAJ" class="input h-10 text-center font-mono text-sm" readonly placeholder="Min">
+                                    </div>
                                 </div>
-                                <div class="bg-white p-3 rounded-lg border border-gray-200">
-                                    <label class="input-label text-[10px] text-gray-400">Subida (Max/Min)</label>
-                                    <div class="flex gap-2"><input id="VEL_MAX_SUB" class="input h-9 text-xs" readonly><input id="VEL_MIN_SUB" class="input h-9 text-xs" readonly></div>
+                                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                    <label class="input-label text-[10px] text-slate-400 mb-2">Velocidad Subida (Mbps)</label>
+                                    <div class="flex gap-2 items-center">
+                                        <input id="VEL_MAX_SUB" class="input h-10 text-center font-mono text-sm" readonly placeholder="Max">
+                                        <span class="text-slate-300">/</span>
+                                        <input id="VEL_MIN_SUB" class="input h-10 text-center font-mono text-sm" readonly placeholder="Min">
+                                    </div>
                                 </div>
-                                <div><label class="input-label">Cargo Fijo</label><input id="CARGO_FIJO_VAL" class="input font-semibold bg-gray-50" readonly></div>
+                                <div><label class="input-label">Cargo Fijo Instalación</label><input id="CARGO_FIJO_VAL" class="input font-semibold bg-slate-50 border-slate-200" readonly></div>
                             </div>
 
                             <!-- CAMPOS PACK (Animados) -->
-                            <div id="packFields" class="hidden mt-6 animate-slide-down overflow-hidden">
-                                <div class="p-6 bg-orange-50 rounded-lg border border-orange-100">
-                                    <h4 class="text-xs font-bold text-orange-600 uppercase mb-3 flex items-center gap-2"><i data-lucide="phone" class="w-3 h-3"></i> Detalles del Pack (Telefonía)</h4>
+                            <div id="packFields" class="hidden mt-8 animate-slide-down overflow-hidden">
+                                <div class="p-6 bg-orange-50/50 rounded-xl border border-orange-100">
+                                    <h4 class="text-xs font-bold text-orange-600 uppercase mb-4 flex items-center gap-2 border-b border-orange-100 pb-2"><i data-lucide="phone-call" class="w-4 h-4"></i> Telefonía Fija (Pack)</h4>
                                     
-                                    <div class="mb-4">
-                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg border border-orange-200 shadow-sm">
-                                            <input type="checkbox" id="checkPortabilidad" class="w-5 h-5 text-accent-orange rounded focus:ring-accent-orange border-gray-300 cursor-pointer" onchange="togglePortability()">
-                                            <label for="checkPortabilidad" class="text-sm font-bold text-gray-700 select-none cursor-pointer">Solicitar Portabilidad Numérica</label>
-                                        </div>
+                                    <div class="mb-5">
+                                        <label class="flex items-center gap-3 bg-white p-4 rounded-xl border border-orange-200 shadow-sm cursor-pointer transition-colors hover:border-orange-300">
+                                            <input type="checkbox" id="checkPortabilidad" class="w-5 h-5 text-orange-500 rounded focus:ring-orange-500 border-slate-300" onchange="togglePortability()">
+                                            <span class="text-sm font-bold text-slate-700">Solicitar Portabilidad Numérica</span>
+                                        </label>
                                     </div>
 
-                                    <div class="grid sm:grid-cols-2 gap-4">
+                                    <div class="grid sm:grid-cols-2 gap-5">
                                         <div>
                                             <label class="input-label text-orange-800" id="lblPhoneNum">N° Teléfono Asignado</label>
                                             <div class="relative">
-                                                <i data-lucide="smartphone" class="absolute left-3 top-2.5 text-orange-400 w-4 h-4"></i>
+                                                <i data-lucide="smartphone" class="absolute left-3 top-3 text-orange-400 w-4 h-4"></i>
                                                 <input id="NUM_TELF" class="input border-orange-200 focus:border-orange-500 pl-10" placeholder="Ej: 1234567">
                                             </div>
                                         </div>
-                                        <div><label class="input-label text-orange-800">Cargo Teléfono</label><input id="CARGO_TELF" class="input font-bold text-orange-700 border-orange-200 bg-white" value="S/ 9.90" readonly></div>
+                                        <div><label class="input-label text-orange-800">Costo Línea</label><input id="CARGO_TELF" class="input font-bold text-orange-700 border-orange-200 bg-white" value="S/ 9.90" readonly></div>
                                         
                                         <!-- PORTABILIDAD EXTRA FIELDS -->
-                                        <div id="portabilityFields" class="hidden sm:col-span-2 mt-2 pl-4 border-l-4 border-orange-300 bg-white p-3 rounded-r-lg">
-                                            <label class="input-label text-orange-800">Operador Donante</label>
+                                        <div id="portabilityFields" class="hidden sm:col-span-2 mt-2 bg-white p-4 rounded-xl border border-orange-200">
+                                            <label class="input-label text-orange-800 mb-2">Operador Donante</label>
                                             <select id="selOperador" class="input border-orange-200">
                                                 <option value="">-- Seleccione Operador --</option>
-                                                <option value="AMERICA_MOVIL">America Movil Peru SAC (Claro)</option>
-                                                <option value="TELEFONICA">Telefonica del Peru SAA (Movistar)</option>
-                                                <option value="VIETTEL">Viettel Peru SAC (Bitel)</option>
+                                                <option value="AMERICA_MOVIL">Claro (America Movil Peru SAC)</option>
+                                                <option value="TELEFONICA">Movistar (Telefonica del Peru SAA)</option>
+                                                <option value="VIETTEL">Bitel (Viettel Peru SAC)</option>
                                                 <option value="OTRO">Otro</option>
                                             </select>
                                         </div>
@@ -657,7 +722,7 @@
                             </div>
                         </div>
                         <div class="flex justify-between pt-2">
-                            <button onclick="showStep(3)" class="btn alt px-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                            <button onclick="showStep(3)" class="btn alt px-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> Atrás</button>
                             <button onclick="showStep(5)" class="btn px-6">Siguiente <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                         </div>
                     </div>
@@ -665,14 +730,17 @@
                     <!-- STEP 5: CIERRE -->
                     <div id="step-content-5" class="space-y-6 animate-fade-in hidden-vis">
                         <div class="card">
-                            <h2 class="card-header text-brand-600"><i data-lucide="file-signature" class="w-5 h-5"></i> Formalización de Firma</h2>
+                            <h2 class="card-header"><i data-lucide="pen-tool" class="w-5 h-5 text-brand-500"></i> Formalización de Acuerdo</h2>
                             <div class="grid sm:grid-cols-12 gap-6">
-                                <div class="sm:col-span-12 md:col-span-4 bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
-                                    <label class="input-label mb-2 justify-center">Fecha de Firma</label>
-                                    <input type="date" id="FECHA_FIRMA" class="input text-center font-bold text-gray-700 h-11 cursor-pointer">
+                                <div class="sm:col-span-12 md:col-span-4 bg-slate-50 p-6 rounded-xl border border-slate-200 text-center flex flex-col justify-center">
+                                    <label class="input-label mb-3 justify-center">Fecha de Firma</label>
+                                    <input type="date" id="FECHA_FIRMA" class="input text-center font-bold text-slate-700 h-12 cursor-pointer border-slate-300 focus:border-brand-500">
                                 </div>
-                                <div class="sm:col-span-12 md:col-span-8">
-                                    <div class="grid sm:grid-cols-2 gap-4">
+                                <div class="sm:col-span-12 md:col-span-8 space-y-5">
+                                    <div class="p-4 bg-brand-50 rounded-lg border border-brand-100 mb-4">
+                                        <p class="text-xs text-brand-800">Confirme los datos de la persona que firmará el contrato físico o digital.</p>
+                                    </div>
+                                    <div class="grid sm:grid-cols-2 gap-5">
                                         <div><label class="input-label">Nombre Firmante <span class="text-red-500">*</span></label><input id="RL" class="input"></div>
                                         <div><label class="input-label">Cargo Firmante <span class="text-red-500">*</span></label><input id="CARGO_FIRM" class="input"></div>
                                     </div>
@@ -680,162 +748,220 @@
                             </div>
                         </div>
                         <div class="flex justify-between pt-2">
-                             <button onclick="showStep(4)" class="btn alt px-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                             <button onclick="showStep(4)" class="btn alt px-6"><i data-lucide="arrow-left" class="w-4 h-4"></i> Atrás</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- SIDEBAR EXPORT -->
-                <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
-                    <div class="bg-white rounded-xl shadow-card border border-gray-200 overflow-hidden animate-fade-in" style="animation-delay: 100ms;">
-                        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200"><h2 class="text-sm font-bold uppercase tracking-wide text-gray-600 flex items-center gap-2"><i data-lucide="file-output" class="w-4 h-4 text-brand-600"></i> Exportación</h2></div>
+                <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
+                    <div class="bg-white rounded-xl shadow-card border border-slate-200 overflow-hidden animate-fade-in" style="animation-delay: 100ms;">
+                        <div class="bg-gradient-to-r from-slate-50 to-white px-6 py-4 border-b border-slate-200">
+                            <h2 class="text-sm font-bold uppercase tracking-wide text-slate-600 flex items-center gap-2"><i data-lucide="file-output" class="w-4 h-4 text-brand-600"></i> Documentación</h2>
+                        </div>
                         <div class="p-6">
                             <div class="mb-6">
-                                <p class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wide">Archivos a Generar:</p>
-                                <ul class="space-y-3 text-sm text-gray-600" id="fileListPreview"></ul>
+                                <p class="text-xs font-bold text-slate-400 mb-4 uppercase tracking-wide">Archivos a Generar:</p>
+                                <ul class="space-y-3 text-sm text-slate-600" id="fileListPreview">
+                                    <!-- Dynamic List -->
+                                </ul>
                             </div>
-                            <button id="btnExport" class="btn w-full h-12 text-base shadow-md hover:shadow-lg transition-shadow"><i data-lucide="download" class="w-5 h-5"></i> GENERAR CONTRATOS</button>
+                            <button id="btnExport" class="btn w-full h-14 text-base shadow-lg shadow-brand-500/20 hover:shadow-brand-500/30 font-bold tracking-wide">
+                                <i data-lucide="download-cloud" class="w-5 h-5"></i> GENERAR CONTRATOS
+                            </button>
                             <div id="exportStatus" class="mt-4 hidden text-xs p-3 rounded-lg border flex items-start gap-2 animate-fade-in"></div>
                         </div>
                     </div>
-                    <div class="bg-gray-800 text-gray-300 rounded-xl p-5 text-xs shadow-md border border-gray-700 animate-fade-in" style="animation-delay: 200ms;">
-                        <div class="flex justify-between items-center mb-2 pb-2 border-b border-gray-700"><span>Sesión Activa:</span><strong class="text-white flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-green-500"></div> <span id="displaySession">...</span></strong></div>
-                        <div class="flex justify-between items-center"><span>Dirección IP:</span><strong class="text-brand-300 font-mono" id="displayIP">...</strong></div>
+                    
+                    <div class="bg-slate-800 text-slate-300 rounded-xl p-6 text-xs shadow-lg border border-slate-700 animate-fade-in" style="animation-delay: 200ms;">
+                        <div class="flex justify-between items-center mb-3 pb-3 border-b border-slate-700">
+                            <span>Usuario Activo:</span>
+                            <strong class="text-white flex items-center gap-2">
+                                <span class="relative flex h-2 w-2">
+                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                <span id="displaySession">...</span>
+                            </strong>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>IP Origen:</span>
+                            <strong class="text-brand-300 font-mono" id="displayIP">...</strong>
+                        </div>
                     </div>
                 </aside>
             </div>
         </div>
 
         <!-- CONFIG & LOGS -->
-        <div id="view-config" class="fade-in hidden-vis max-w-6xl mx-auto">
+        <div id="view-config" class="fade-in hidden-vis max-w-7xl mx-auto">
             <!-- Header & Nav -->
-            <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-8 gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Configuración</h2>
-                    <p class="text-sm text-gray-500 mt-1">Gestión administrativa.</p>
-                </div>
-                <div class="bg-white p-1 rounded-lg flex gap-1 shadow-sm border border-gray-200">
-                    <button onclick="switchConfigTab('users')" id="btnConfigUsers" class="px-4 py-2 rounded-md text-sm font-semibold transition-all bg-brand-500 text-white">
-                        <i data-lucide="users" class="w-4 h-4 inline mr-2"></i>Usuarios
-                    </button>
-                    <button onclick="switchConfigTab('plans')" id="btnConfigPlans" class="px-4 py-2 rounded-md text-sm font-semibold transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-                        <i data-lucide="package" class="w-4 h-4 inline mr-2"></i>Planes
-                    </button>
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-800 tracking-tight mb-2">Administración del Sistema</h2>
+                <p class="text-sm text-slate-500 mb-6">Gestión de base de datos de usuarios y catálogo de servicios.</p>
+                
+                <!-- Pestañas de Sistema -->
+                <div class="border-b border-slate-200">
+                    <nav class="-mb-px flex" aria-label="Tabs">
+                        <button onclick="switchConfigTab('users')" id="tab-config-users" class="config-tab active">
+                            <i data-lucide="database" class="w-4 h-4 inline mr-2 mb-0.5"></i>Base de Usuarios
+                        </button>
+                        <button onclick="switchConfigTab('plans')" id="tab-config-plans" class="config-tab">
+                            <i data-lucide="layers" class="w-4 h-4 inline mr-2 mb-0.5"></i>Catálogo de Planes
+                        </button>
+                    </nav>
                 </div>
             </div>
             
+            <!-- PANEL USUARIOS (ESTILO DB) -->
             <div id="panel-users" class="grid lg:grid-cols-12 gap-8 animate-fade-in">
-                <!-- Sidebar Form -->
-                <div class="lg:col-span-4">
-                    <div class="bg-white rounded-xl shadow-card border border-gray-200 overflow-hidden sticky top-24">
-                        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                            <h3 class="font-bold text-gray-800 flex items-center gap-2"><i data-lucide="user-plus" class="w-5 h-5 text-brand-500"></i> Nuevo Usuario</h3>
+                <!-- Formulario Lateral -->
+                <div class="lg:col-span-3">
+                    <div class="bg-white rounded-xl shadow-card border border-slate-200 overflow-hidden sticky top-28">
+                        <div class="bg-slate-50 px-5 py-3 border-b border-slate-200">
+                            <h3 class="font-bold text-slate-700 text-sm flex items-center gap-2">Nuevo Registro</h3>
                         </div>
-                        <div class="p-6 space-y-5">
-                            <div class="space-y-2">
-                                <label class="input-label">Nombre de Usuario</label>
-                                <input id="newUserName" class="input" placeholder="Ej: jperez">
+                        <div class="p-5 space-y-4">
+                            <div class="space-y-1.5">
+                                <label class="input-label">Usuario</label>
+                                <input id="newUserName" class="input h-10" placeholder="user.name">
                             </div>
-                            <div class="space-y-2">
+                            <div class="space-y-1.5">
                                 <label class="input-label">Contraseña</label>
                                 <div class="flex gap-2">
-                                    <input id="newUserPass" class="input" type="text" placeholder="Contraseña segura">
-                                    <button onclick="generateUserPass()" class="btn alt px-3" title="Generar"><i data-lucide="wand-2" class="w-4 h-4"></i></button>
+                                    <input id="newUserPass" class="input h-10" type="text" placeholder="******">
+                                    <button onclick="generateUserPass()" class="btn alt px-2 border-slate-200 h-10" title="Generar"><i data-lucide="wand-2" class="w-4 h-4"></i></button>
                                 </div>
                             </div>
-                            <div class="space-y-2">
-                                <label class="input-label">Rol de Acceso</label>
-                                <select id="newUserRole" class="input">
-                                    <option value="normal">Operador (Normal)</option>
+                            <div class="space-y-1.5">
+                                <label class="input-label">Rol</label>
+                                <select id="newUserRole" class="input h-10">
+                                    <option value="normal">Operador</option>
                                     <option value="admin">Administrador</option>
                                 </select>
                             </div>
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                                <input type="checkbox" id="newUserRestrict" checked class="w-4 h-4 text-brand-500 rounded focus:ring-brand-500 border-gray-300">
+                            <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <input type="checkbox" id="newUserRestrict" checked class="w-4 h-4 text-brand-500 rounded focus:ring-brand-500 border-slate-300">
                                 <div class="flex flex-col">
-                                    <span class="text-sm font-semibold text-gray-700">Restringir IP</span>
-                                    <span class="text-xs text-gray-500">Solo acceso desde oficina</span>
+                                    <span class="text-xs font-bold text-slate-700">IP Check</span>
                                 </div>
                             </div>
-                            <button onclick="createNewUser()" class="btn w-full mt-2">Crear Usuario</button>
+                            <button onclick="createNewUser()" class="btn w-full mt-2 shadow-sm h-10 text-sm"><i data-lucide="plus" class="w-4 h-4"></i> Agregar</button>
                         </div>
                     </div>
                 </div>
                 
-                <div class="lg:col-span-8 space-y-6">
-                     <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-xl border border-gray-200 shadow-card gap-4">
-                        <div class="relative w-full sm:max-w-md">
-                            <i data-lucide="search" class="absolute left-3 top-3 text-gray-400 w-4 h-4"></i>
-                            <input type="text" id="searchUser" oninput="renderUsers()" class="input pl-10 h-10" placeholder="Buscar usuario...">
+                <!-- Tabla de Base de Datos -->
+                <div class="lg:col-span-9 space-y-4">
+                     <div class="flex justify-between items-center bg-white p-2 rounded-lg border border-slate-200 shadow-sm">
+                        <div class="relative w-64">
+                            <i data-lucide="search" class="absolute left-3 top-2.5 text-slate-400 w-4 h-4"></i>
+                            <input type="text" id="searchUser" oninput="renderUsers()" class="input pl-9 h-9 border-transparent focus:border-transparent focus:ring-0 bg-transparent text-sm" placeholder="Filtrar base de datos...">
                         </div>
-                        <span class="text-xs font-bold text-gray-500 uppercase tracking-wide bg-gray-100 px-3 py-1.5 rounded-full" id="userCountBadge">0 Usuarios</span>
+                        <div class="flex items-center gap-3 px-4 border-l border-slate-100">
+                            <span class="text-xs font-medium text-slate-500 uppercase">Registros:</span>
+                            <span class="text-sm font-bold text-slate-800" id="userCountBadge">0</span>
+                        </div>
                     </div>
-                    <div id="usersList" class="grid sm:grid-cols-2 gap-4">
-                        <!-- User Cards -->
+
+                    <div class="bg-white rounded-xl shadow-card border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse db-table">
+                                <thead>
+                                    <tr>
+                                        <th class="w-10 text-center"><i data-lucide="hash" class="w-3 h-3 mx-auto"></i></th>
+                                        <th>Usuario / ID</th>
+                                        <th>Credencial</th>
+                                        <th>Rol de Sistema</th>
+                                        <th>Seguridad IP</th>
+                                        <th class="text-right">Control</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersListBody">
+                                    <!-- Rows generated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 text-xs text-slate-400 text-center">
+                            Fin de la lista de usuarios
+                        </div>
                     </div>
                 </div>
             </div>
             
+            <!-- PANEL PLANES -->
             <div id="panel-plans" class="hidden-vis animate-fade-in space-y-6">
                  <!-- Stats Cards -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-card flex items-center justify-between">
-                        <div><p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1">Total</p><h4 class="text-2xl font-bold text-gray-800" id="statTotal">0</h4></div>
-                        <div class="bg-gray-100 p-2 rounded-lg text-gray-500"><i data-lucide="database" class="w-5 h-5"></i></div>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-card flex items-center justify-between">
+                        <div><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Catálogo Total</p><h4 class="text-3xl font-bold text-slate-800" id="statTotal">0</h4></div>
+                        <div class="bg-brand-50 p-3 rounded-xl text-brand-500"><i data-lucide="database" class="w-6 h-6"></i></div>
                     </div>
-                    <!-- ... other stats ... -->
+                    <!-- Placeholders for more stats if needed -->
                 </div>
 
                 <!-- Table Card -->
-                <div class="bg-white rounded-xl shadow-card border border-gray-200 overflow-hidden">
-                    <div class="p-5 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50">
-                        <div class="relative w-full sm:w-80">
-                            <i data-lucide="search" class="absolute left-3 top-2.5 text-gray-400 w-4 h-4"></i>
-                            <input id="searchPlan" oninput="renderPlans()" class="input pl-10 h-10" placeholder="Buscar plan...">
+                <div class="bg-white rounded-xl shadow-card border border-slate-200 overflow-hidden">
+                    <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50/50">
+                        <div class="flex flex-1 gap-3 w-full sm:w-auto">
+                            <div class="relative flex-1 sm:max-w-xs">
+                                <i data-lucide="search" class="absolute left-3 top-2.5 text-slate-400 w-4 h-4"></i>
+                                <input id="searchPlan" oninput="renderPlans()" class="input pl-10 h-10 border-slate-200" placeholder="Buscar plan...">
+                            </div>
+                            <select id="filterPlanType" onchange="renderPlans()" class="input h-10 w-40 border-slate-200 text-sm font-medium text-slate-600 cursor-pointer">
+                                <option value="">Todos los Tipos</option>
+                                <option value="internet">Internet</option>
+                                <option value="pack">Pack Duo</option>
+                                <option value="dedicado">Dedicado</option>
+                            </select>
                         </div>
-                        <button onclick="openPlanModal()" class="btn h-10 px-4">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Plan
+                        <button onclick="openPlanModal()" class="btn h-10 px-5 shadow-sm whitespace-nowrap">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> Nuevo Plan
                         </button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
-                            <thead class="bg-gray-50 text-gray-500 font-bold uppercase text-xs tracking-wider border-b border-gray-200">
+                            <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-xs tracking-wider border-b border-slate-200">
                                 <tr>
-                                    <th class="p-4 pl-6">Nombre del Plan</th>
-                                    <th class="p-4">Tipo</th>
-                                    <th class="p-4">Tarifa / C. Fijo</th>
-                                    <th class="p-4">Velocidades (Mbps)</th>
-                                    <th class="p-4">Plazo</th>
-                                    <th class="p-4 text-center">Acciones</th>
-                                </thead>
-                            <tbody id="plansListBody" class="divide-y divide-gray-100"></tbody>
+                                    <th class="p-5 pl-6">Nombre del Plan</th>
+                                    <th class="p-5">Categoría</th>
+                                    <th class="p-5">Pricing</th>
+                                    <th class="p-5">Parámetros (Mbps)</th>
+                                    <th class="p-5">Vigencia</th>
+                                    <th class="p-5 text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="plansListBody" class="divide-y divide-slate-100"></tbody>
                         </table>
                     </div>
-                    <div class="p-4 border-t border-gray-200 bg-gray-50 text-center text-xs text-gray-400 font-medium" id="planFooterCount">
-                        Cargando planes...
+                    <div class="p-4 border-t border-slate-200 bg-slate-50 text-center text-xs text-slate-400 font-medium" id="planFooterCount">
+                        Cargando catálogo...
                     </div>
                 </div>
             </div>
         </div>
         
         <div id="view-logs" class="fade-in hidden-vis">
-            <div class="card p-0 overflow-hidden shadow-card border border-gray-200 rounded-xl">
-                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-                    <div><h2 class="text-base font-bold text-gray-800">Historial de Contratos</h2><p class="text-xs text-gray-500 mt-0.5">Registro de operaciones realizadas.</p></div>
-                    <button onclick="clearAllLogs()" class="btn alt text-red-600 border-gray-300 hover:bg-red-50 text-xs h-8 px-3"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Limpiar</button>
+            <div class="card p-0 overflow-hidden shadow-card border border-slate-200 rounded-xl">
+                <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800">Historial de Operaciones</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Registro inmutable de contratos generados localmente.</p>
+                    </div>
+                    <button onclick="clearAllLogs()" class="btn alt text-red-600 border-slate-200 hover:bg-red-50 text-xs h-9 px-4"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Purgar Historial</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
-                        <thead class="bg-gray-50 text-gray-600 font-bold border-b border-gray-200 uppercase text-xs tracking-wider">
+                        <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase text-xs tracking-wider">
                             <tr>
-                                <th class="p-4 pl-6 whitespace-nowrap">Nro. Oportunidad</th>
-                                <th class="p-4 whitespace-nowrap">RUC</th>
-                                <th class="p-4 whitespace-nowrap">Razón Social</th>
-                                <th class="p-4 whitespace-nowrap">Plan Contratado</th>
-                                <th class="p-4 whitespace-nowrap">Usuario</th>
+                                <th class="p-5 pl-6 whitespace-nowrap">Fecha / Hora</th>
+                                <th class="p-5 whitespace-nowrap">Operador</th>
+                                <th class="p-5 whitespace-nowrap">RUC Cliente</th>
+                                <th class="p-5 whitespace-nowrap">Razón Social</th>
+                                <th class="p-5 whitespace-nowrap">Oportunidad</th>
                             </tr>
                         </thead>
-                        <tbody id="logsTableBody" class="divide-y divide-gray-100"></tbody>
+                        <tbody id="logsTableBody" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
@@ -843,7 +969,7 @@
 
     </main>
 
-    <!-- LOGIC -->
+    <!-- LOGIC (UNCHANGED) -->
     <script>
         const KEYS = { USERS: 'contratos_users', PLANS: 'contratos_planes', LOG_OK: 'contratos_login_ok', LOG_USER: 'contratos_login_user', LOGS: 'contratos_registros' };
         const ALLOWED_IPS = ['148.102.51.78', '190.8.133.125'];
@@ -869,7 +995,7 @@
         const LIST_DISTRITOS = [" ","ASIA","ATE","BARRANCO","BELLAVISTA","BREÑA","CALLAO","CARMEN DE LA LEGUA REYNOSO","CHORRILLOS","COMAS","INDEPENDENCIA","JESUS MARIA","LA MOLINA","LA VICTORIA","LIMA","LINCE","LURIN","MAGDALENA DEL MAR","MIRAFLORES","PUEBLO LIBRE","PUENTE PIEDRA","SAN BORJA","SAN ISIDRO","SAN LUIS","SAN MARTIN DE PORRES","SAN MIGUEL","SANTA ANITA","SANTIAGO DE SURCO","SURQUILLO","VENTANILLA","EL AGUSTINO"];
         const CALLAO_DISTRITOS = ["BELLAVISTA", "CALLAO", "CARMEN DE LA LEGUA REYNOSO", "VENTANILLA"];
 
-        const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: false }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: false }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: false }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: false }];
+        const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }];
         
         const SEED_PLANS = [
             // INTERNET
@@ -963,10 +1089,10 @@
             if (type === 'success') icon = '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-500"></i>';
             else if (type === 'error') icon = '<i data-lucide="alert-triangle" class="w-5 h-5 text-red-500"></i>';
             else if (type === 'warning') icon = '<i data-lucide="alert-circle" class="w-5 h-5 text-amber-500"></i>';
-            else icon = '<i data-lucide="info" class="w-5 h-5 text-blue-500"></i>';
+            else icon = '<i data-lucide="info" class="w-5 h-5 text-brand-500"></i>';
 
-            toast.className = `toast animate-fade-in ${type === 'success' ? 'toast-success' : type === 'error' ? 'toast-error' : ''}`;
-            toast.innerHTML = `${icon}<div class="flex-1 text-sm font-semibold text-gray-700">${message}</div><button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-4 h-4"></i></button>`;
+            toast.className = `toast animate-fade-in ${type === 'success' ? 'border-l-4 border-l-emerald-500' : type === 'error' ? 'border-l-4 border-l-red-500' : 'border-l-4 border-l-brand-500'}`;
+            toast.innerHTML = `${icon}<div class="flex-1 text-sm font-semibold text-slate-700">${message}</div><button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>`;
             
             container.appendChild(toast);
             lucide.createIcons();
@@ -978,7 +1104,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); state.ip = d.ip; byId('ipDisplay').textContent = 'IP: ' + state.ip; } catch { byId('ipDisplay').textContent = '(IP desconocida)'; }
+            try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); state.ip = d.ip; byId('ipDisplay').textContent = 'Conectado desde: ' + state.ip; } catch { byId('ipDisplay').textContent = '(IP no detectada)'; }
             try { state.users = JSON.parse(localStorage.getItem(KEYS.USERS)) || []; } catch { state.users = []; }
             SEED_USERS.forEach(s => { if (!state.users.some(x => x.uid === userId(s.u))) state.users.push({ ...s, uLower: norm(s.u), uid: userId(s.u) }); });
             localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
@@ -1064,11 +1190,11 @@
             
             state.activeSupRows.forEach((row, idx) => {
                 const div = document.createElement('div');
-                div.className = "grid sm:grid-cols-12 gap-3 items-center bg-gray-50 p-3 rounded-lg border border-gray-200 animate-fade-in";
+                div.className = "grid sm:grid-cols-12 gap-3 items-center bg-white p-3 rounded-lg border border-slate-200 animate-fade-in shadow-sm";
                 div.innerHTML = `
                     <div class="sm:col-span-6">
                         <select onchange="onServiceChange('${row.id}')" id="sel_${row.id}" class="input h-9 text-xs py-0">
-                            <option value="">— Seleccionar —</option>
+                            <option value="">— Seleccionar Servicio —</option>
                             ${SUP_SERVICES_DATA.map(s => `<option value="${s.id}">${s.id}</option>`).join('')}
                         </select>
                     </div>
@@ -1080,7 +1206,7 @@
                     </div>
                     <div class="sm:col-span-2 flex gap-2">
                         <input id="sub_${row.id}" class="input h-9 text-xs py-0 bg-brand-50 font-bold text-brand-700 text-right border-brand-100" readonly value="${row.sub || 'S/. 0.00'}">
-                        <button onclick="removeSupRow('${row.id}')" class="text-gray-400 hover:text-red-500 transition-colors p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        <button onclick="removeSupRow('${row.id}')" class="text-slate-400 hover:text-red-500 transition-colors p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                 `;
                 container.appendChild(div);
@@ -1138,7 +1264,7 @@
             byId('btnDeletePlan').classList.add('hidden');
             if (idx !== null) {
                 const p = state.plans[idx];
-                byId('planModalTitle').innerHTML = '<i data-lucide="settings-2" class="w-4 h-4 text-brand-500"></i> Editar Plan';
+                byId('planModalTitle').innerHTML = '<i data-lucide="edit" class="w-4 h-4 text-brand-500"></i> Editar Parámetros del Plan';
                 byId('planOriginalName').value = idx;
                 byId('planName').value = p.name;
                 byId('planTarif').value = p.tarif;
@@ -1151,7 +1277,7 @@
                 byId('planVmins').value = p.vmins;
                 byId('btnDeletePlan').classList.remove('hidden');
             } else {
-                byId('planModalTitle').innerHTML = '<i data-lucide="plus" class="w-4 h-4 text-brand-500"></i> Nuevo Plan';
+                byId('planModalTitle').innerHTML = '<i data-lucide="plus-circle" class="w-4 h-4 text-brand-500"></i> Crear Nuevo Plan';
                 byId('planOriginalName').value = '';
                 byId('planName').value = '';
                 byId('planTarif').value = '';
@@ -1175,12 +1301,12 @@
             if (idx !== '') state.plans[parseInt(idx)] = newP; else state.plans.push(newP);
             localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans));
             renderPlans(); updatePlanSelect(); updateStats(); closePlanModal();
-            showToast('Plan guardado.', 'success');
+            showToast('Catálogo actualizado correctamente.', 'success');
         }
 
         function deleteCurrentPlan() {
             const idx = parseInt(byId('planOriginalName').value);
-            if(isNaN(idx) || !confirm('¿Eliminar plan?')) return;
+            if(isNaN(idx) || !confirm('¿Eliminar plan permanentemente?')) return;
             state.plans.splice(idx, 1);
             localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans));
             renderPlans(); updatePlanSelect(); closePlanModal(); showToast('Plan eliminado.', 'info');
@@ -1201,7 +1327,7 @@
             if(!addr || addr === '---') return;
             byId('DIREC_INST').value = addr;
             closeAddressModal();
-            showToast('Dirección actualizada.', 'success');
+            showToast('Dirección estandarizada correctamente.', 'success');
         }
 
         function buildAddressPreview() {
@@ -1241,9 +1367,9 @@
             const uInput = byId('loginUser').value; const pInput = byId('loginPass').value.trim(); const uKey = userId(uInput);
             const found = state.users.find(x => x.uid === uKey && x.p === pInput);
             const errDiv = byId('loginError');
-            if (!found) { errDiv.textContent = 'Credenciales incorrectas.'; return; }
+            if (!found) { errDiv.textContent = 'Credenciales no válidas.'; return; }
             // Deshabilitada restriccion IP por solicitud de usuario
-            // if (found.role !== 'admin' && found.restrictIp && state.ip && !ALLOWED_IPS.includes(state.ip)) { errDiv.textContent = `IP no autorizada: ${state.ip}`; return; }
+            // if (found.role !== 'admin' && found.restrictIp && state.ip && !ALLOWED_IPS.includes(state.ip)) { errDiv.textContent = `Acceso denegado desde IP: ${state.ip}`; return; }
             loginSuccess({ u: found.u, role: found.role });
         }
         function loginSuccess(user) {
@@ -1253,13 +1379,13 @@
             byId('displaySession').textContent = user.u; byId('displayIP').textContent = state.ip || '...';
             byId('adminTabs').classList.toggle('hidden-vis', user.role !== 'admin');
             switchTab('generator');
-            showToast(`Bienvenido ${user.u}`, 'success');
+            showToast(`Bienvenido de nuevo, ${user.u}`, 'success');
         }
         function logout() { localStorage.removeItem(KEYS.LOG_OK); localStorage.removeItem(KEYS.LOG_USER); location.reload(); }
         function handleResetAccess() {
             const seeded = SEED_USERS.map(s => ({ ...s, uLower: norm(s.u), uid: userId(s.u) }));
             localStorage.setItem(KEYS.USERS, JSON.stringify(seeded)); state.users = seeded;
-            byId('loginError').textContent = 'Base de datos restablecida.'; setTimeout(() => byId('loginError').textContent = '', 3000);
+            byId('loginError').textContent = 'Base de datos de usuarios restaurada.'; setTimeout(() => byId('loginError').textContent = '', 3000);
         }
 
         function switchTab(tabId) {
@@ -1267,18 +1393,25 @@
             byId(`view-${tabId}`).classList.remove('hidden-vis'); if(byId(`tab-${tabId}`)) byId(`tab-${tabId}`).classList.add('active', 'border-brand-500', 'text-brand-600');
             if (tabId === 'config') initConfigView(); if (tabId === 'logs') renderLogs();
         }
+        
         function switchConfigTab(subTab) {
-            const btnUsers = byId('btnConfigUsers'); const btnPlans = byId('btnConfigPlans'); const pUsers = byId('panel-users'); const pPlans = byId('panel-plans');
+            const tabUsers = byId('tab-config-users'); 
+            const tabPlans = byId('tab-config-plans'); 
+            const pUsers = byId('panel-users'); 
+            const pPlans = byId('panel-plans');
+            
             if (subTab === 'users') { 
-                btnUsers.className = "px-4 py-2 rounded-md text-sm font-semibold transition-all bg-brand-500 text-white shadow-sm"; 
-                btnPlans.className = "px-4 py-2 rounded-md text-sm font-semibold transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-50"; 
-                pUsers.classList.remove('hidden-vis'); pPlans.classList.add('hidden-vis'); 
+                tabUsers.classList.add('active');
+                tabPlans.classList.remove('active');
+                pUsers.classList.remove('hidden-vis'); 
+                pPlans.classList.add('hidden-vis'); 
                 renderUsers();
             }
             else { 
-                btnPlans.className = "px-4 py-2 rounded-md text-sm font-semibold transition-all bg-brand-500 text-white shadow-sm"; 
-                btnUsers.className = "px-4 py-2 rounded-md text-sm font-semibold transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-50"; 
-                pPlans.classList.remove('hidden-vis'); pUsers.classList.add('hidden-vis'); 
+                tabPlans.classList.add('active');
+                tabUsers.classList.remove('active');
+                pPlans.classList.remove('hidden-vis'); 
+                pUsers.classList.add('hidden-vis'); 
                 renderPlans();
             }
         }
@@ -1304,9 +1437,9 @@
             const packFields = byId('packFields');
             const isPack = type === 'pack';
             
-            const baseClass = "flex-1 flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-lg border transition-all duration-200";
-            const activeClass = "bg-white border-brand-500 text-brand-600 shadow-sm ring-1 ring-brand-500";
-            const inactiveClass = "bg-white border-gray-200 text-gray-500 hover:border-gray-300 hover:bg-gray-50";
+            const baseClass = "flex-1 flex flex-col items-center justify-center gap-3 py-6 px-4 rounded-xl border-2 transition-all duration-200 shadow-sm";
+            const activeClass = "bg-white border-brand-500 ring-4 ring-brand-500/10 shadow-lg transform -translate-y-1";
+            const inactiveClass = "bg-white border-slate-100 text-slate-400 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-600";
 
             btnInt.className = baseClass + " " + (type === 'internet' ? activeClass : inactiveClass);
             btnPack.className = baseClass + " " + (isPack ? activeClass : inactiveClass);
@@ -1329,19 +1462,18 @@
         function updateFileListPreview() {
             const list = byId('fileListPreview'); const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
             const isPortability = byId('checkPortabilidad').checked;
-            let filesHtml = `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Arrendamiento.pdf</li>`;
+            let filesHtml = `<li class="flex items-center gap-3 bg-slate-50 p-2 rounded-lg border border-slate-100"><div class="w-2 h-2 rounded-full bg-brand-500"></div> ${prefix}Arrendamiento.pdf</li>`;
             
             if(isPortability) {
-                // Corrección: Siempre "Pack Portabilidad.pdf"
-                filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> Pack Portabilidad.pdf</li>`;
+                filesHtml += `<li class="flex items-center gap-3 bg-slate-50 p-2 rounded-lg border border-slate-100"><div class="w-2 h-2 rounded-full bg-orange-500"></div> Pack Portabilidad.pdf</li>`;
             }
 
-            filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Servicios Suplementarios.pdf</li>`;
-            filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> ${prefix}Tarifas y Servicios.pdf</li>`;
+            filesHtml += `<li class="flex items-center gap-3 bg-slate-50 p-2 rounded-lg border border-slate-100"><div class="w-2 h-2 rounded-full bg-brand-500"></div> ${prefix}Servicios Suplementarios.pdf</li>`;
+            filesHtml += `<li class="flex items-center gap-3 bg-slate-50 p-2 rounded-lg border border-slate-100"><div class="w-2 h-2 rounded-full bg-brand-500"></div> ${prefix}Tarifas y Servicios.pdf</li>`;
             
             list.innerHTML = filesHtml;
         }
-        function updatePlanSelect() { const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar Plan —</option>'; const filteredPlans = state.plans.filter(p => p.type === state.serviceType); filteredPlans.forEach((p) => { const opt = document.createElement('option'); opt.value = p.name; opt.textContent = p.name; sel.appendChild(opt); }); byId('NOM_PLAN').value = ''; byId('MIN_GAR').value = ''; byId('VEL_MAX_BAJ').value = ''; byId('VEL_MIN_BAJ').value = ''; byId('VEL_MAX_SUB').value = ''; byId('VEL_MIN_SUB').value = ''; byId('TARIF_MENS').value = ''; byId('PLAZO_CONT').value = ''; byId('CARGO_FIJO_VAL').value = ''; }
+        function updatePlanSelect() { const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar del Catálogo —</option>'; const filteredPlans = state.plans.filter(p => p.type === state.serviceType); filteredPlans.forEach((p) => { const opt = document.createElement('option'); opt.value = p.name; opt.textContent = p.name; sel.appendChild(opt); }); byId('NOM_PLAN').value = ''; byId('MIN_GAR').value = ''; byId('VEL_MAX_BAJ').value = ''; byId('VEL_MIN_BAJ').value = ''; byId('VEL_MAX_SUB').value = ''; byId('VEL_MIN_SUB').value = ''; byId('TARIF_MENS').value = ''; byId('PLAZO_CONT').value = ''; byId('CARGO_FIJO_VAL').value = ''; }
         
         function onPlanSelectChange(e) {
             const planName = e.target.value; const p = state.plans.find(x => x.name === planName); if (!p) return;
@@ -1355,19 +1487,19 @@
         async function fetchRucData() {
             const ruc = byId('RUC').value; if (!ruc || ruc.length !== 11) return showToast('RUC inválido.', 'error');
             const btn = byId('btnSearchRuc'); btn.disabled = true; 
-            try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`); if(!res.ok) throw new Error(); const d = await res.json(); if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; showToast('Datos obtenidos.', 'success'); } catch { showToast('Error consultando RUC.', 'error'); } finally { btn.disabled = false; }
+            try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`); if(!res.ok) throw new Error(); const d = await res.json(); if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; showToast('Datos recuperados de SUNAT.', 'success'); } catch { showToast('Error al consultar RUC.', 'error'); } finally { btn.disabled = false; }
         }
 
         async function fetchDniData() {
             const dni = byId('DNI').value; if (!dni || dni.length !== 8) return showToast('DNI inválido.', 'error');
             const btn = byId('btnSearchDni'); btn.disabled = true; 
-            try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/dni/${dni}?token=${APISPERU_TOKEN}`); if (!res.ok) throw new Error(); const d = await res.json(); if (d && d.success !== false) { byId('APELLIDO_PATERNO').value = d.apellidoPaterno || ''; byId('APELLIDO_MATERNO').value = d.apellidoMaterno || ''; byId('NOMBRES').value = d.nombres || ''; showToast('Datos obtenidos.', 'success'); } else { showToast('No encontrado.', 'warning'); } } catch (e) { showToast('Error consultando DNI.', 'error'); } finally { btn.disabled = false; }
+            try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/dni/${dni}?token=${APISPERU_TOKEN}`); if (!res.ok) throw new Error(); const d = await res.json(); if (d && d.success !== false) { byId('APELLIDO_PATERNO').value = d.apellidoPaterno || ''; byId('APELLIDO_MATERNO').value = d.apellidoMaterno || ''; byId('NOMBRES').value = d.nombres || ''; showToast('Datos recuperados de RENIEC.', 'success'); } else { showToast('DNI no encontrado.', 'warning'); } } catch (e) { showToast('Error al consultar DNI.', 'error'); } finally { btn.disabled = false; }
         }
 
         async function handleExportAll() {
             if (!byId('RUC').value || !byId('RAZON_SOCIAL').value) return showToast('Faltan datos del Cliente.', 'error');
             const req = ['APELLIDO_PATERNO','APELLIDO_MATERNO','NOMBRES','DNI','TELEFONO','CORREO','CONT_NOMB','CONT_CARGO','CONT_DNI','CONT_TELEF','CONT_CORREO','RL','CARGO_FIRM','DIREC_INST', 'FECHA_FIRMA'];
-            const missing = req.filter(id => !byId(id).value); if (missing.length > 0) return showToast('Faltan campos obligatorios.', 'error');
+            const missing = req.filter(id => !byId(id).value); if (missing.length > 0) return showToast('Complete todos los campos obligatorios.', 'error');
             if (!isValidEmail(byId('CORREO').value)) return showToast('Correo RL inválido.', 'error'); if (!isValidEmail(byId('CONT_CORREO').value)) return showToast('Correo Contacto inválido.', 'error');
             const fiscal = byId('DIRECCION').value.trim().toUpperCase(); 
             const inst = byId('DIREC_INST').value.trim().toUpperCase();
@@ -1402,7 +1534,7 @@
             }
 
             const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' '); const suffix = nro ? ` - ${nro}.pdf` : '.pdf'; const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
-            const st = byId('exportStatus'); st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3 font-medium"; st.innerHTML = "<span>Generando...</span>"; st.classList.remove('hidden');
+            const st = byId('exportStatus'); st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-blue-50 text-blue-700 border-blue-100 block mt-3 font-medium"; st.innerHTML = `<span class="flex items-center gap-2"><div class="w-3 h-3 rounded-full border-2 border-blue-600 border-t-transparent animate-spin"></div> Generando documentos...</span>`; st.classList.remove('hidden');
             try {
                 await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix, dateExtras);
                 
@@ -1421,39 +1553,34 @@
 
                 // --- PORTABILIDAD PDF (Lógica Corregida y Consolidada) ---
                 if(byId('checkPortabilidad').checked) {
-                     const op = byId('selOperador').value;
-                     
-                     // Creamos un objeto MAPA único con TODOS los valores directos
-                     const portMapFinal = {
-                         'RAZON SOCIAL': byId('RAZON_SOCIAL').value,
-                         'RL': byId('RL').value,
-                         'RUC': byId('RUC').value,
-                         'CONT_TELEF': byId('CONT_TELEF').value,
-                         'CONT_CORREO': byId('CONT_CORREO').value,
-                         'NUM_TELF': byId('NUM_TELF').value
-                     };
+                      const op = byId('selOperador').value;
+                      
+                      const portMapFinal = {
+                          'RAZON SOCIAL': byId('RAZON_SOCIAL').value,
+                          'RL': byId('RL').value,
+                          'RUC': byId('RUC').value,
+                          'CONT_TELEF': byId('CONT_TELEF').value,
+                          'CONT_CORREO': byId('CONT_CORREO').value,
+                          'NUM_TELF': byId('NUM_TELF').value
+                      };
 
-                     // Inyectar Fecha Formateada DD/MM/AAAA
-                     if (dateVal) {
+                      if (dateVal) {
                         const [y, m, d] = dateVal.split('-');
                         portMapFinal['FECHA CONT1'] = `${d}/${m}/${y}`;
-                     }
-                     
-                     // Inyectar Hora Automática HH:MM:SS
-                     const now = new Date();
-                     const h = String(now.getHours()).padStart(2, '0');
-                     const min = String(now.getMinutes()).padStart(2, '0');
-                     const sec = String(now.getSeconds()).padStart(2, '0');
-                     portMapFinal['HORA CONT'] = `${h}:${min}:${sec}`;
+                      }
+                      
+                      const now = new Date();
+                      const h = String(now.getHours()).padStart(2, '0');
+                      const min = String(now.getMinutes()).padStart(2, '0');
+                      const sec = String(now.getSeconds()).padStart(2, '0');
+                      portMapFinal['HORA CONT'] = `${h}:${min}:${sec}`;
 
-                     // Inyectar Checks de Operador
-                     if(op === 'AMERICA_MOVIL') portMapFinal['CLARO'] = 'X';
-                     if(op === 'TELEFONICA') portMapFinal['MOVISTAR'] = 'X';
-                     if(op === 'VIETTEL') portMapFinal['BITEL'] = 'X';
-                     if(op === 'OTRO') portMapFinal['OTRO'] = 'X';
+                      if(op === 'AMERICA_MOVIL') portMapFinal['CLARO'] = 'X';
+                      if(op === 'TELEFONICA') portMapFinal['MOVISTAR'] = 'X';
+                      if(op === 'VIETTEL') portMapFinal['BITEL'] = 'X';
+                      if(op === 'OTRO') portMapFinal['OTRO'] = 'X';
 
-                     // Llamada simplificada: Todo va en el primer objeto de mapeo
-                     await generatePdf('Pack Portabilidad.pdf', portMapFinal, 'Pack Portabilidad' + suffix);
+                      await generatePdf('Pack Portabilidad.pdf', portMapFinal, 'Pack Portabilidad' + suffix);
                 }
                 
                 const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
@@ -1467,8 +1594,9 @@
                 });
                 localStorage.setItem(KEYS.LOGS, JSON.stringify(logs));
                 
-                st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-green-50 text-green-700 border-green-100 block mt-3 font-medium"; st.innerHTML = "<span>¡Completado!</span>";
-                showToast('Archivos generados.', 'success');
+                st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-emerald-50 text-emerald-700 border-emerald-100 block mt-3 font-medium"; st.innerHTML = `<span class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Generación completada</span>`;
+                showToast('Contratos generados y descargados.', 'success');
+                lucide.createIcons();
             } catch (e) { st.className = "text-xs p-3 rounded-lg border flex items-start gap-2 bg-red-50 text-red-700 border-red-100 block mt-3 font-medium"; st.innerHTML = `<span>Error: ${e.message}</span>`; }
         }
         
@@ -1505,7 +1633,7 @@
                 let y = height - 50;
                 page.drawText(`CONTRATO GENERADO: ${outName}`, { x: 50, y, size: 16, font: fontBold, color: PDFLib.rgb(0, 0.36, 0.72) });
                 y -= 20;
-                page.drawText(`NetCom 2.0 - Mobilenet Solutions`, { x: 50, y, size: 10, font: font, color: PDFLib.rgb(0.5, 0.5, 0.5) });
+                page.drawText(`NetCom / Mobilenet Solutions`, { x: 50, y, size: 10, font: font, color: PDFLib.rgb(0.5, 0.5, 0.5) });
                 y -= 30;
                 const drawField = (label, value) => {
                     if (y < 50) { page = pdfDoc.addPage([595.28, 841.89]); y = height - 50; }
@@ -1536,53 +1664,101 @@
         function initConfigView() { renderUsers(); renderPlans(); updateStats(); }
         
         function renderUsers() {
-            const cont = byId('usersList'); cont.innerHTML = ''; 
+            const tbody = byId('usersListBody'); tbody.innerHTML = ''; 
             const search = (byId('searchUser').value || '').toLowerCase();
             const filteredUsers = state.users.filter(u => u.u.toLowerCase().includes(search));
-            byId('userCountBadge').textContent = `${filteredUsers.length} Usuarios`;
-            filteredUsers.forEach(u => { 
-                const initials = u.u.substring(0, 2).toUpperCase();
+            byId('userCountBadge').textContent = filteredUsers.length;
+            
+            filteredUsers.forEach((u, index) => { 
                 const isAdmin = u.role === 'admin';
-                const div = document.createElement('div'); 
-                div.className = "bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between"; 
-                div.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-sm border border-brand-100">${initials}</div>
-                        <div>
-                            <div class="font-bold text-gray-800 text-sm flex items-center gap-2">${u.u} ${isAdmin ? '<i data-lucide="shield-check" class="w-3 h-3 text-purple-500"></i>' : ''}</div>
-                            <div class="flex items-center gap-2 mt-0.5"><span class="text-[10px] px-2 py-0.5 rounded font-bold uppercase ${isAdmin?'bg-purple-50 text-purple-700':'bg-gray-100 text-gray-600'}">${u.role}</span></div>
+                const tr = document.createElement('tr'); 
+                tr.innerHTML = `
+                    <td class="text-center text-slate-300 font-mono text-xs">${String(index + 1).padStart(2, '0')}</td>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">${u.u.substring(0, 2)}</div>
+                            <span class="font-bold text-slate-700">${u.u}</span>
                         </div>
-                    </div>
-                    <button onclick="deleteUser('${u.u}')" class="text-gray-400 hover:text-red-500 p-2 rounded hover:bg-gray-50"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </td>
+                    <td class="font-mono text-xs text-slate-400">•••••••</td>
+                    <td>
+                        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium ${isAdmin ? 'bg-purple-50 text-purple-700 border border-purple-100' : 'bg-slate-100 text-slate-600 border border-slate-200'}">
+                            ${isAdmin ? '<i data-lucide="shield" class="w-3 h-3 mr-1"></i> Admin' : '<i data-lucide="user" class="w-3 h-3 mr-1"></i> Operador'}
+                        </span>
+                    </td>
+                    <td>
+                        ${u.restrictIp 
+                            ? '<span class="text-emerald-600 text-xs flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Activado</span>' 
+                            : '<span class="text-slate-400 text-xs flex items-center gap-1"><i data-lucide="unlock" class="w-3 h-3"></i> Libre</span>'}
+                    </td>
+                    <td class="text-right">
+                        <button onclick="deleteUser('${u.u}')" class="text-slate-400 hover:text-red-600 transition-colors p-1" title="Eliminar Usuario">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </td>
                 `; 
-                cont.appendChild(div); 
+                tbody.appendChild(tr); 
             }); 
+            if(filteredUsers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-slate-400 italic">No se encontraron usuarios</td></tr>';
+            }
             lucide.createIcons();
         }
         
         function renderPlans() {
             const tbody = byId('plansListBody'); tbody.innerHTML = ''; 
             const search = (byId('searchPlan').value || '').toLowerCase();
-            const filteredPlans = state.plans.filter(p => p.name.toLowerCase().includes(search));
+            const filterType = (byId('filterPlanType').value || '').toLowerCase();
+
+            const filteredPlans = state.plans.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(search);
+                const matchesType = filterType === '' || p.type === filterType;
+                return matchesSearch && matchesType;
+            });
+
             byId('planFooterCount').textContent = `Mostrando ${filteredPlans.length} planes`;
+            
+            if (filteredPlans.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-400 italic">No se encontraron planes con los filtros actuales.</td></tr>';
+                return;
+            }
+
             filteredPlans.forEach((p, idx) => {
-                const tr = document.createElement('tr'); tr.className = "hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-pointer";
-                tr.onclick = () => openPlanModal(idx);
+                // Encontrar el índice original en el array principal para la edición correcta
+                const originalIndex = state.plans.indexOf(p);
+                
+                const tr = document.createElement('tr'); 
+                tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-50 cursor-pointer group";
+                tr.onclick = () => openPlanModal(originalIndex);
+                
                 let icon = 'wifi', iconColor = 'text-brand-500', bgIcon = 'bg-brand-50';
-                if (p.type === 'pack') { icon = 'layers'; iconColor = 'text-orange-500'; bgIcon = 'bg-orange-50'; }
+                if (p.type === 'pack') { icon = 'package'; iconColor = 'text-orange-500'; bgIcon = 'bg-orange-50'; }
                 if (p.type === 'dedicado') { icon = 'server'; iconColor = 'text-purple-500'; bgIcon = 'bg-purple-50'; }
+                
                 tr.innerHTML = `
                     <td class="p-4 pl-6">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg ${bgIcon} flex items-center justify-center ${iconColor}"><i data-lucide="${icon}" class="w-4 h-4"></i></div>
-                            <div><div class="font-bold text-gray-700 text-sm">${p.name}</div></div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-lg ${bgIcon} flex items-center justify-center ${iconColor} border border-white shadow-sm"><i data-lucide="${icon}" class="w-5 h-5"></i></div>
+                            <div><div class="font-bold text-slate-700 text-sm group-hover:text-brand-600 transition-colors">${p.name}</div></div>
                         </div>
                     </td>
-                    <td class="p-4"><span class="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-md ${bgIcon} ${iconColor}">${p.type || 'INTERNET'}</span></td>
-                    <td class="p-4"><div class="font-bold text-gray-700 text-sm">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td>
-                    <td class="p-4 text-xs text-gray-500"><div class="flex gap-4"><div><span class="text-gray-300 text-[9px] uppercase block">Bajada</span><span class="font-mono font-bold">${p.vmb}/${p.vminb}</span></div><div><span class="text-gray-300 text-[9px] uppercase block">Subida</span><span class="font-mono font-bold">${p.vms}/${p.vmins}</span></div></div></td>
-                    <td class="p-4 font-mono text-xs font-bold text-gray-600">${p.plazo} m</td>
-                    <td class="p-4 text-center"><button class="text-brand-400 hover:text-brand-600 p-1.5 rounded hover:bg-brand-50"><i data-lucide="edit-3" class="w-4 h-4"></i></button></td>`;
+                    <td class="p-4"><span class="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-md ${bgIcon} ${iconColor} border border-white shadow-sm">${p.type || 'INTERNET'}</span></td>
+                    <td class="p-4">
+                        <div class="font-bold text-slate-700 text-sm">${formatMoney(p.tarif)}</div>
+                        <div class="text-[10px] text-slate-400">CF: ${formatMoney(p.cargoFijo) || '-'}</div>
+                    </td>
+                    <td class="p-4 text-xs text-slate-500">
+                        <div class="flex gap-4">
+                            <div class="bg-slate-50 px-2 py-1 rounded border border-slate-100"><span class="text-slate-400 text-[9px] uppercase block">Bajada</span><span class="font-mono font-bold">${p.vmb}/${p.vminb}</span></div>
+                            <div class="bg-slate-50 px-2 py-1 rounded border border-slate-100"><span class="text-slate-400 text-[9px] uppercase block">Subida</span><span class="font-mono font-bold">${p.vms}/${p.vmins}</span></div>
+                        </div>
+                    </td>
+                    <td class="p-4 font-mono text-xs font-bold text-slate-600">${p.plazo} meses</td>
+                    <td class="p-4 text-center">
+                        <button class="text-slate-300 hover:text-brand-500 p-2 rounded-lg hover:bg-brand-50 transition-colors" title="Editar Plan">
+                            <i data-lucide="edit-3" class="w-4 h-4"></i>
+                        </button>
+                    </td>`;
                 tbody.appendChild(tr);
             });
             lucide.createIcons(); updateStats();
@@ -1594,9 +1770,9 @@
 
         function generateUserPass() { const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"; let pass = ""; for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random()*chars.length)); byId('newUserPass').value = pass; }
         function createNewUser() { const u = byId('newUserName').value; const p = byId('newUserPass').value; const role = byId('newUserRole').value; const restrict = byId('newUserRestrict').checked; if(!u || !p) return showToast('Completa los campos.', 'warning'); if(state.users.some(x=>x.uid === userId(u))) return showToast('El usuario ya existe.', 'warning'); state.users.push({ u, p, role, uLower: norm(u), uid: userId(u), restrictIp: role==='admin'?false:restrict }); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); byId('newUserName').value=''; byId('newUserPass').value=''; showToast('Usuario creado correctamente.', 'success'); }
-        function deleteUser(username) { if(!confirm(`¿Eliminar ${username}?`)) return; state.users = state.users.filter(x => x.u !== username); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); showToast('Usuario eliminado.', 'info'); }
-        function renderLogs() { const tbody = byId('logsTableBody'); const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; tbody.innerHTML = ''; if (logs.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No hay registros aún.</td></tr>'; return; } logs.forEach(l => { const tr = document.createElement('tr'); tr.className = "hover:bg-gray-50 transition-colors"; tr.innerHTML = `<td class="p-4 text-gray-500 whitespace-nowrap text-xs">${l.date}</td><td class="p-4 font-bold text-brand-600">${l.user}</td><td class="p-4 font-mono text-gray-600 text-xs">${l.RUC || '-'}</td><td class="p-4 max-w-[250px] truncate font-medium text-gray-800 text-xs">${l.RAZON_SOCIAL || '-'}</td><td class="p-4 text-gray-500 text-xs">${l.TELEFONO || '-'}</td>`; tbody.appendChild(tr); }); }
-        function clearAllLogs() { if(!confirm('¿Borrar todo el historial?')) return; localStorage.setItem(KEYS.LOGS, '[]'); renderLogs(); showToast('Historial borrado.', 'info'); }
+        function deleteUser(username) { if(!confirm(`¿Revocar acceso a ${username}?`)) return; state.users = state.users.filter(x => x.u !== username); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); showToast('Usuario eliminado.', 'info'); }
+        function renderLogs() { const tbody = byId('logsTableBody'); const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; tbody.innerHTML = ''; if (logs.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-10 text-center text-slate-400 italic bg-slate-50/50">No hay operaciones registradas.</td></tr>'; return; } logs.forEach(l => { const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-50"; tr.innerHTML = `<td class="p-4 text-slate-500 whitespace-nowrap text-xs font-mono">${l.date}</td><td class="p-4 font-bold text-brand-600 text-xs">${l.user}</td><td class="p-4 font-mono text-slate-600 text-xs">${l.RUC || '-'}</td><td class="p-4 max-w-[250px] truncate font-medium text-slate-800 text-xs">${l.RAZON_SOCIAL || '-'}</td><td class="p-4 text-slate-500 text-xs font-mono bg-slate-50">${l.nroOport || '-'}</td>`; tbody.appendChild(tr); }); }
+        function clearAllLogs() { if(!confirm('¿Esta acción eliminará todo el historial de auditoría local. Continuar?')) return; localStorage.setItem(KEYS.LOGS, '[]'); renderLogs(); showToast('Historial purgado.', 'info'); }
     </script>
 </body>
 </html>
