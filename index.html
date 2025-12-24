@@ -502,7 +502,7 @@
                             <h2 class="card-header"><i data-lucide="briefcase" class="w-5 h-5 text-brand-500"></i> Oportunidad Comercial</h2>
                             <div>
                                 <label class="input-label">Nro. de Oportunidad</label>
-                                <input id="NRO_OPORT" class="input" placeholder="Ej: OP-2023-56789">
+                                <input id="NRO_OPORT" class="input" placeholder="Ej: 123456">
                             </div>
                         </div>
                         <div class="flex justify-end pt-2">
@@ -571,12 +571,26 @@
                             
                             <div class="grid sm:grid-cols-12 gap-5">
                                 <!-- CONTACTO -->
-                                <div class="sm:col-span-12 mb-2">
-                                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-2">Contacto en Sitio</h3>
+                                <div class="sm:col-span-12 mb-2 flex justify-between items-end border-b border-slate-100 pb-2">
+                                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Contacto en Sitio</h3>
+                                    <label class="flex items-center gap-2 cursor-pointer select-none hover:bg-slate-50 px-2 py-1 rounded transition-colors">
+                                        <input type="checkbox" id="checkSameAsRL" onchange="copyRLData()" class="w-4 h-4 text-brand-500 rounded border-slate-300 focus:ring-brand-500">
+                                        <span class="text-xs text-brand-600 font-bold">Mismo que Rep. Legal</span>
+                                    </label>
                                 </div>
                                 <div class="sm:col-span-6"><label class="input-label">Nombre Completo <span class="text-red-500">*</span></label><input id="CONT_NOMB" class="input"></div>
                                 <div class="sm:col-span-6"><label class="input-label">Cargo <span class="text-red-500">*</span></label><input id="CONT_CARGO" class="input"></div>
-                                <div class="sm:col-span-4"><label class="input-label">DNI <span class="text-red-500">*</span></label><input id="CONT_DNI" class="input font-mono" maxlength="8"></div>
+                                <div class="sm:col-span-4">
+                                    <label class="input-label">Doc. Identidad <span class="text-red-500">*</span></label>
+                                    <div class="flex">
+                                        <select id="CONT_TIP_DOC" class="input w-24 rounded-r-none border-r-0 bg-slate-50 text-xs font-bold focus:ring-0 focus:border-slate-300 px-1 text-center" onchange="updateContactPlaceholder()">
+                                            <option value="DNI">DNI</option>
+                                            <option value="CE">CE</option>
+                                            <option value="PAS">PAS</option>
+                                        </select>
+                                        <input id="CONT_DNI" class="input rounded-l-none font-mono" placeholder="44548290" maxlength="8">
+                                    </div>
+                                </div>
                                 <div class="sm:col-span-4"><label class="input-label">Teléfono <span class="text-red-500">*</span></label><input id="CONT_TELEF" class="input"></div>
                                 <div class="sm:col-span-4"><label class="input-label">Correo <span class="text-red-500">*</span></label><input id="CONT_CORREO" class="input" type="email"></div>
 
@@ -1236,6 +1250,62 @@
             let val = parseMoney(el.value);
             el.value = formatMoney(val);
             updateSupRow(rowId);
+        }
+
+        function updateContactPlaceholder() {
+            const type = byId('CONT_TIP_DOC').value;
+            const input = byId('CONT_DNI');
+            if(type === 'DNI') {
+                input.placeholder = '44548290';
+                input.maxLength = 8;
+            } else if (type === 'CE') {
+                input.placeholder = '000000000';
+                input.maxLength = 12;
+            } else {
+                input.placeholder = 'PAS123456';
+                input.maxLength = 15;
+            }
+        }
+
+        function copyRLData() {
+            if(byId('checkSameAsRL').checked) {
+                // Obtener datos del paso 2
+                const nombres = byId('NOMBRES').value.trim();
+                const paterno = byId('APELLIDO_PATERNO').value.trim();
+                const materno = byId('APELLIDO_MATERNO').value.trim();
+                const cargo = byId('CARGO_RL').value;
+                const dni = byId('DNI').value;
+                const telef = byId('TELEFONO').value;
+                const correo = byId('CORREO').value;
+
+                // Validar si hay datos origen
+                if(!nombres && !paterno) showToast('Complete los datos del Rep. Legal primero', 'warning');
+
+                // Concatenar nombre completo
+                const nombreCompleto = [nombres, paterno, materno].filter(Boolean).join(' ');
+
+                // Asignar valores
+                byId('CONT_NOMB').value = nombreCompleto;
+                byId('CONT_CARGO').value = cargo;
+                
+                // Configurar DNI
+                byId('CONT_TIP_DOC').value = 'DNI';
+                updateContactPlaceholder();
+                byId('CONT_DNI').value = dni;
+
+                byId('CONT_TELEF').value = telef;
+                byId('CONT_CORREO').value = correo;
+                
+                showToast('Datos copiados del Representante Legal', 'success');
+            } else {
+                // Opcional: Limpiar campos si se desmarca?
+                // Por UX es mejor dejar los datos para edición manual
+                byId('CONT_NOMB').value = '';
+                byId('CONT_CARGO').value = '';
+                byId('CONT_DNI').value = '';
+                byId('CONT_TELEF').value = '';
+                byId('CONT_CORREO').value = '';
+            }
         }
 
         function updateSupRow(rowId) {
