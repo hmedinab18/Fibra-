@@ -408,87 +408,155 @@
                     <label class="input-label text-brand-600 mb-2 flex items-center gap-2"><i data-lucide="eye" class="w-3 h-3"></i> Vista Previa:</label>
                     <p id="addressPreview" class="text-sm font-mono font-semibold text-gray-800 min-h-[1.25em] tracking-wide">---</p>
                 </div>
-            </div>
-            <div class="px-8 py-5 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
-                <button onclick="closeAddressModal()" class="btn alt">Cancelar</button>
-                <button onclick="confirmAddress()" class="btn">Confirmar Dirección</button>
+                
+                <div class="flex justify-end pt-4">
+                    <button onclick="confirmAddress()" class="btn px-8 shadow-lg">Confirmar Dirección</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- MODAL DE PLANES -->
-    <div id="planModal" class="fixed inset-0 z-[70] flex items-center justify-center bg-gray-900/40 backdrop-blur-sm hidden-vis p-4 transition-all duration-300">
-        <div class="w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col max-h-[90vh] animate-slide-up">
+    <div id="planModal" class="fixed inset-0 z-[70] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden-vis p-4 transition-all duration-300">
+        <div class="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col max-h-[90vh] animate-slide-up">
             <div class="bg-white px-6 py-5 flex justify-between items-center border-b border-gray-100">
-                <h3 id="planModalTitle" class="font-bold text-gray-800 flex items-center gap-2.5 text-lg">
-                    <div class="p-2 bg-brand-50 rounded-lg text-brand-600"><i data-lucide="settings-2" class="w-5 h-5"></i></div> Gestionar Plan
-                </h3>
+                <h3 id="planModalTitle" class="font-bold text-gray-800 flex items-center gap-2.5 text-lg"></h3>
                 <button onclick="closePlanModal()" class="text-gray-400 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-lg transition-all"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto space-y-5 bg-white">
+            <div class="p-6 overflow-y-auto bg-gray-50/50">
                 <input type="hidden" id="planOriginalName">
-                <div><label class="input-label">Nombre del Plan</label><input id="planName" class="input" placeholder="Ej: INTERNET FIBRA + 100 MBPS"></div>
-                <div class="grid grid-cols-2 gap-5">
-                    <div><label class="input-label">Tarifa</label><input id="planTarif" class="input" placeholder="S/ 0.00"></div>
-                    <div><label class="input-label">Cargo Fijo</label><input id="planCargoFijo" class="input" placeholder="S/ 0.00"></div>
-                </div>
-                <div class="grid grid-cols-2 gap-5">
-                    <div><label class="input-label">Plazo (Meses)</label><input id="planPlazo" class="input" placeholder="36"></div>
-                    <div><label class="input-label">Garantía</label><input id="planGar" class="input" placeholder="70%"></div>
-                </div>
-                <div class="p-5 bg-gray-50 rounded-xl border border-gray-200">
-                    <label class="input-label mb-3 text-gray-500 flex items-center gap-2"><i data-lucide="activity" class="w-3 h-3"></i> Velocidades (Mbps)</label>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div><span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1 block">Bajada Max</span><input id="planVmb" class="input h-9 text-sm" type="number"></div>
-                        <div><span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1 block">Bajada Min</span><input id="planVminb" class="input h-9 text-sm" type="number"></div>
+                <div class="space-y-5">
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="col-span-2">
+                                <label class="input-label">Nombre del Plan</label>
+                                <input id="planName" class="input" placeholder="Ej: INTERNET FIBRA + 100 MBPS">
+                            </div>
+                            <div>
+                                <label class="input-label">Tarifa (S/)</label>
+                                <input id="planTarif" class="input" placeholder="0.00">
+                            </div>
+                            <div>
+                                <label class="input-label">Cargo Fijo (S/)</label>
+                                <input id="planCargoFijo" class="input" placeholder="0.00">
+                            </div>
+                            <div>
+                                <label class="input-label">Plazo (Meses)</label>
+                                <input id="planPlazo" class="input" placeholder="36">
+                            </div>
+                            <div>
+                                <label class="input-label">% Garantizado</label>
+                                <select id="planGar" class="input">
+                                    <option value="40%">40%</option>
+                                    <option value="70%">70%</option>
+                                    <option value="100%">100% (Dedicado)</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div><span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1 block">Subida Max</span><input id="planVms" class="input h-9 text-sm" type="number"></div>
-                        <div><span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1 block">Subida Min</span><input id="planVmins" class="input h-9 text-sm" type="number"></div>
+                    
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                         <h4 class="text-xs font-bold text-gray-400 uppercase mb-4 flex items-center gap-2"><i data-lucide="activity" class="w-4 h-4"></i> Velocidades (Mbps)</h4>
+                         <div class="grid grid-cols-2 gap-4">
+                            <div><label class="input-label">Bajada Max</label><input id="planVmb" class="input text-center"></div>
+                            <div><label class="input-label">Bajada Min</label><input id="planVminb" class="input text-center"></div>
+                            <div><label class="input-label">Subida Max</label><input id="planVms" class="input text-center"></div>
+                            <div><label class="input-label">Subida Min</label><input id="planVmins" class="input text-center"></div>
+                         </div>
                     </div>
                 </div>
-                <p id="planMsg" class="text-center text-xs font-medium py-2 hidden"></p>
             </div>
-            <div class="px-6 py-5 bg-gray-50 border-t border-gray-200 flex justify-between gap-3">
-                <button id="btnDeletePlan" onclick="deleteCurrentPlan()" class="btn danger hidden">Eliminar</button>
-                <div class="flex gap-3 ml-auto">
+            <div class="px-6 py-4 bg-white border-t border-gray-100 flex justify-between">
+                <button id="btnDeletePlan" onclick="deleteCurrentPlan()" class="btn danger alt text-red-600 border-red-200 hover:bg-red-50">Eliminar</button>
+                <div class="flex gap-3">
                     <button onclick="closePlanModal()" class="btn alt">Cancelar</button>
-                    <button onclick="savePlan()" class="btn">Guardar Cambios</button>
+                    <button onclick="savePlan()" class="btn shadow-lg">Guardar Plan</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE DETALLE DE VENTA -->
+    <!-- MODAL DE EDICIÓN DE VENTA (ACTUALIZADO: Ahora permite editar todos los campos solicitados) -->
     <div id="logDetailModal" class="fixed inset-0 z-[80] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden-vis p-4 transition-all duration-300">
-        <div class="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-slide-up">
-            <div class="bg-white px-6 py-5 flex justify-between items-center border-b border-gray-100">
-                <h3 class="font-bold text-gray-800 flex items-center gap-2.5 text-lg"><div class="p-2 bg-brand-50 rounded-lg text-brand-600"><i data-lucide="file-text" class="w-5 h-5"></i></div> Detalle de Venta</h3>
+        <div class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-slide-up flex flex-col max-h-[90vh]">
+            <div class="bg-white px-6 py-5 flex justify-between items-center border-b border-gray-100 shrink-0">
+                <h3 class="font-bold text-gray-800 flex items-center gap-2.5 text-lg">
+                    <div class="p-2 bg-brand-50 rounded-lg text-brand-600"><i data-lucide="edit-3" class="w-5 h-5"></i></div> 
+                    Editar Registro de Venta
+                </h3>
                 <button onclick="closeLogModal()" class="text-gray-400 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-lg transition-all"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto space-y-6 max-h-[80vh]">
-                <div class="space-y-4">
-                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                        <label class="text-[10px] uppercase font-bold text-gray-400 block mb-1">Asunto</label>
-                        <p id="detailAsunto" class="font-bold text-gray-900 text-sm select-all">---</p>
-                    </div>
-                    <div class="bg-brand-50 p-4 rounded-xl border border-brand-100 flex items-center gap-3">
-                        <div class="text-brand-500"><i data-lucide="mail" class="w-5 h-5"></i></div>
+            
+            <div class="p-6 overflow-y-auto bg-gray-50/50 grow">
+                <input type="hidden" id="editLogIndex">
+                
+                <!-- Sección 1: Datos Principales -->
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm mb-6">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-4 flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> Datos del Cliente y Venta</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                         <div>
-                            <label class="text-[10px] uppercase font-bold text-brand-400 block mb-0.5">Correo Electrónico</label>
-                            <p id="detailCorreo" class="font-bold text-brand-800 text-sm select-all">---</p>
+                            <label class="input-label">Mes de Venta</label>
+                            <select id="editMesVenta" class="input uppercase">
+                                <option value="ENERO">ENERO</option><option value="FEBRERO">FEBRERO</option><option value="MARZO">MARZO</option>
+                                <option value="ABRIL">ABRIL</option><option value="MAYO">MAYO</option><option value="JUNIO">JUNIO</option>
+                                <option value="JULIO">JULIO</option><option value="AGOSTO">AGOSTO</option><option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                                <option value="OCTUBRE">OCTUBRE</option><option value="NOVIEMBRE">NOVIEMBRE</option><option value="DICIEMBRE">DICIEMBRE</option>
+                            </select>
                         </div>
+                        <div><label class="input-label">RUC</label><input id="editRuc" class="input font-mono"></div>
+                        <div><label class="input-label">Razón Social</label><input id="editRazon" class="input font-bold"></div>
+                        
+                        <div><label class="input-label">Supervisor</label><input id="editSupervisor" class="input"></div>
+                        <div><label class="input-label">EECC</label><input id="editEecc" class="input"></div>
+                        <div><label class="input-label">Ancho de Banda</label><input id="editAnchoBanda" class="input"></div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div class="p-3 border rounded-lg"><span class="text-gray-400 text-xs block">Fecha de Venta</span><span id="detailFecha" class="font-semibold"></span></div>
-                        <div class="p-3 border rounded-lg"><span class="text-gray-400 text-xs block">Gestor</span><span id="detailGestor" class="font-semibold"></span></div>
-                        <div class="p-3 border rounded-lg"><span class="text-gray-400 text-xs block">Razón Social</span><span id="detailRazon" class="font-semibold"></span></div>
-                        <div class="p-3 border rounded-lg"><span class="text-gray-400 text-xs block">RUC</span><span id="detailRuc" class="font-semibold"></span></div>
+                </div>
+
+                <!-- Sección 2: Identificadores y Estado -->
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm mb-6">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-4 flex items-center gap-2"><i data-lucide="hash" class="w-4 h-4"></i> Identificadores y Estado</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+                        <div><label class="input-label">PSI / ID Sol</label><input id="editPsi" class="input font-mono text-sm"></div>
+                        <div><label class="input-label">OPP / ID</label><input id="editOpp" class="input font-mono text-sm font-bold text-brand-600"></div>
+                        <div><label class="input-label">SAF / ID Carrito</label><input id="editSaf" class="input font-mono text-sm"></div>
+                        <div><label class="input-label">SIRO / ID Serv</label><input id="editSiro" class="input font-mono text-sm"></div>
+                        
+                        <div class="md:col-span-2">
+                            <label class="input-label">Estado Actual</label>
+                            <select id="editEstado" class="input font-bold text-gray-700">
+                                <option value="INGRESADO">INGRESADO</option>
+                                <option value="EN PROCESO">EN PROCESO</option>
+                                <option value="OBSERVADO">OBSERVADO</option>
+                                <option value="ADMITIDA">ADMITIDA</option>
+                                <option value="INSTALADO">INSTALADO</option>
+                                <option value="ACTIVO">ACTIVO</option>
+                                <option value="COMPLETADO">COMPLETADO</option>
+                                <option value="ANULADO">ANULADO</option>
+                                <option value="DEUDA">DEUDA</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2"><label class="input-label">Fecha Admisión / Inst.</label><input id="editFechaAdm" class="input" placeholder="dd/mm/aaaa"></div>
+                    </div>
+                </div>
+
+                <!-- Sección 3: Otros -->
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-4 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Detalles Adicionales</h4>
+                    <div class="grid grid-cols-1 gap-5">
+                        <div><label class="input-label">Promoción</label><input id="editPromo" class="input"></div>
+                        <div>
+                            <label class="input-label">Observaciones</label>
+                            <textarea id="editObs" class="input h-24 py-3 resize-none" placeholder="Ingrese observaciones aquí..."></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
-                <button onclick="closeLogModal()" class="btn">Cerrar</button>
+
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 shrink-0">
+                <button onclick="closeLogModal()" class="btn alt">Cancelar</button>
+                <button onclick="saveLogEdit()" class="btn bg-brand-600 hover:bg-brand-700 shadow-md">
+                    <i data-lucide="save" class="w-4 h-4"></i> Guardar Cambios
+                </button>
             </div>
         </div>
     </div>
@@ -577,7 +645,7 @@
                 <div class="bg-gradient-to-br from-brand-500 to-brand-700 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xl shadow-md">N</div>
                 <div class="leading-tight">
                     <h1 class="text-lg font-bold text-gray-800 tracking-tight">NetCom 2.0</h1>
-                    <p class="text-[10px] text-gray-500 uppercase font-semibold tracking-wide">Mobilenet Solutions</p>
+                    <p class="text--[10px] text-gray-500 uppercase font-semibold tracking-wide">Mobilenet Solutions</p>
                 </div>
             </div>
             
@@ -2096,66 +2164,126 @@
 
         function initConfigView() { renderUsers(); renderPlans(); updateStats(); }
         
+        // --- COMPLETANDO LÓGICA DE USUARIOS ---
         function renderUsers() {
-            const cont = byId('usersList'); cont.innerHTML = ''; 
-            const search = (byId('searchUser').value || '').toLowerCase();
-            const filteredUsers = state.users.filter(u => u.u.toLowerCase().includes(search));
-            byId('userCountBadge').textContent = `${filteredUsers.length} Usuarios`;
-            filteredUsers.forEach(u => { 
-                const initials = u.u.substring(0, 2).toUpperCase();
-                const isAdmin = u.role === 'admin';
-                const div = document.createElement('div'); 
-                div.className = "bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between group"; 
-                div.innerHTML = `
+            const cont = byId('usersList'); 
+            cont.innerHTML = ''; 
+            const filter = norm(byId('searchUser').value);
+            
+            const filtered = state.users.filter(u => u.uLower.includes(filter));
+            byId('userCountBadge').textContent = `${filtered.length} Usuarios`;
+
+            filtered.forEach(u => {
+                const isMe = state.currentUser && state.currentUser.u === u.u;
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex justify-between items-center group";
+                card.innerHTML = `
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-lg shadow-inner">${initials}</div>
+                        <div class="w-12 h-12 ${u.role === 'admin' ? 'bg-brand-50 text-brand-600' : 'bg-gray-100 text-gray-500'} rounded-xl flex items-center justify-center font-bold text-lg border border-transparent group-hover:border-gray-200 transition-colors">
+                            ${u.u.charAt(0).toUpperCase()}
+                        </div>
                         <div>
-                            <div class="font-bold text-gray-800 text-sm flex items-center gap-2 group-hover:text-brand-600 transition-colors">${u.u} ${isAdmin ? '<i data-lucide="shield-check" class="w-4 h-4 text-brand-500"></i>' : ''}</div>
-                            <div class="flex items-center gap-2 mt-1"><span class="text-[10px] px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider ${isAdmin?'bg-brand-100 text-brand-700':'bg-gray-100 text-gray-500'}">${u.role}</span></div>
+                            <h4 class="font-bold text-gray-800 text-sm">${u.u}</h4>
+                            <div class="flex gap-2 mt-1">
+                                <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${u.role === 'admin' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'}">${u.role}</span>
+                                ${u.restrictIp ? '<span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">IP Restringida</span>' : ''}
+                            </div>
                         </div>
                     </div>
-                    <button onclick="deleteUser('${u.u}')" class="text-gray-300 hover:text-red-500 hover:bg-red-50 p-2 rounded-lg transition-all"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
-                `; 
-                cont.appendChild(div); 
-            }); 
+                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="resetPassword('${u.uid}')" class="p-2 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors" title="Reset Password"><i data-lucide="key" class="w-4 h-4"></i></button>
+                        ${!isMe ? `<button onclick="deleteUser('${u.uid}')" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Eliminar"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                    </div>
+                `;
+                cont.appendChild(card);
+            });
             lucide.createIcons();
         }
-        
-        function renderPlans() {
-            const tbody = byId('plansListBody'); tbody.innerHTML = ''; 
-            const search = (byId('searchPlan').value || '').toLowerCase();
-            const filteredPlans = state.plans.filter(p => p.name.toLowerCase().includes(search));
-            byId('planFooterCount').textContent = `Mostrando ${filteredPlans.length} planes`;
-            filteredPlans.forEach((p, idx) => {
-                const tr = document.createElement('tr'); tr.className = "hover:bg-brand-50/30 transition-colors border-b border-gray-50 cursor-pointer group";
-                tr.onclick = () => openPlanModal(idx);
-                let icon = 'wifi', iconColor = 'text-brand-500', bgIcon = 'bg-brand-50';
-                if (p.type === 'pack') { icon = 'layers'; iconColor = 'text-orange-500'; bgIcon = 'bg-orange-50'; }
-                if (p.type === 'dedicado') { icon = 'server'; iconColor = 'text-gray-700'; bgIcon = 'bg-gray-100'; }
-                tr.innerHTML = `
-                    <td class="p-5 pl-8">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-xl ${bgIcon} flex items-center justify-center ${iconColor} shadow-sm group-hover:scale-110 transition-transform"><i data-lucide="${icon}" class="w-5 h-5"></i></div>
-                            <div><div class="font-bold text-gray-700 text-sm group-hover:text-brand-700 transition-colors">${p.name}</div></div>
-                        </div>
-                    </td>
-                    <td class="p-5"><span class="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${bgIcon} ${iconColor}">${p.type || 'INTERNET'}</span></td>
-                    <td class="p-5"><div class="font-bold text-gray-800 text-sm">${formatMoney(p.tarif)}</div><div class="text-[10px] text-gray-400 font-medium">CF: ${formatMoney(p.cargoFijo) || '-'}</div></td>
-                    <td class="p-5 text-xs text-gray-500"><div class="flex gap-4"><div><span class="text-gray-400 text-[9px] uppercase block font-bold mb-0.5">Bajada</span><span class="font-mono font-bold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded">${p.vmb}/${p.vminb}</span></div><div><span class="text-gray-400 text-[9px] uppercase block font-bold mb-0.5">Subida</span><span class="font-mono font-bold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded">${p.vms}/${p.vmins}</span></div></div></td>
-                    <td class="p-5 font-mono text-xs font-bold text-gray-600 bg-gray-50/50 rounded-lg text-center mx-2">${p.plazo} m</td>
-                    <td class="p-5 text-center"><button class="text-gray-300 hover:text-brand-600 p-2 rounded-lg hover:bg-brand-50 transition-all opacity-0 group-hover:opacity-100"><i data-lucide="edit-3" class="w-4 h-4"></i></button></td>`;
-                tbody.appendChild(tr);
-            });
-            lucide.createIcons(); updateStats();
+
+        function createNewUser() {
+            const uVal = byId('newUserName').value.trim();
+            const pVal = byId('newUserPass').value.trim();
+            const role = byId('newUserRole').value;
+            const restrict = byId('newUserRestrict').checked;
+
+            if(!uVal || !pVal) return showToast('Complete usuario y contraseña.', 'error');
+            const uid = userId(uVal);
+            if(state.users.some(u => u.uid === uid)) return showToast('El usuario ya existe.', 'warning');
+
+            state.users.push({ u: uVal, p: pVal, role, restrictIp: restrict, uLower: norm(uVal), uid });
+            localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
+            
+            byId('newUserName').value = ''; byId('newUserPass').value = '';
+            renderUsers(); showToast('Usuario creado correctamente.', 'success');
         }
 
-        function updateStats() { byId('statTotal').textContent = state.plans.length; }
-        function generateUserPass() { const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"; let pass = ""; for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random()*chars.length)); byId('newUserPass').value = pass; }
-        function createNewUser() { const u = byId('newUserName').value; const p = byId('newUserPass').value; const role = byId('newUserRole').value; const restrict = byId('newUserRestrict').checked; if(!u || !p) return showToast('Completa los campos.', 'warning'); if(state.users.some(x=>x.uid === userId(u))) return showToast('El usuario ya existe.', 'warning'); state.users.push({ u, p, role, uLower: norm(u), uid: userId(u), restrictIp: role==='admin'?false:restrict }); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); byId('newUserName').value=''; byId('newUserPass').value=''; showToast('Usuario creado correctamente.', 'success'); }
-        function deleteUser(username) { if(!confirm(`¿Eliminar ${username}?`)) return; state.users = state.users.filter(x => x.u !== username); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); showToast('Usuario eliminado.', 'info'); }
+        function deleteUser(uid) {
+            if(!confirm('¿Eliminar este usuario?')) return;
+            state.users = state.users.filter(u => u.uid !== uid);
+            localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
+            renderUsers(); showToast('Usuario eliminado.', 'info');
+        }
         
-        // --- LOGICA DE HISTORIAL Y MODAL DE DETALLE ---
-        let currentDetailLog = null;
+        function resetPassword(uid) {
+            const newPass = Math.random().toString(36).slice(-8);
+            prompt(`Nueva contraseña para el usuario (copiar):`, newPass);
+            const idx = state.users.findIndex(u => u.uid === uid);
+            if(idx !== -1) {
+                state.users[idx].p = newPass;
+                localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
+                showToast('Contraseña actualizada.', 'success');
+            }
+        }
+
+        function generateUserPass() {
+            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%";
+            let pass = "";
+            for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            byId('newUserPass').value = pass;
+        }
+
+        // --- COMPLETANDO LÓGICA DE PLANES ---
+        function renderPlans() {
+            const tbody = byId('plansListBody');
+            tbody.innerHTML = '';
+            const search = norm(byId('searchPlan').value);
+            
+            const filtered = state.plans.filter(p => norm(p.name).includes(search));
+            byId('planFooterCount').textContent = `${filtered.length} Planes mostrados`;
+            
+            filtered.forEach((p, idx) => {
+                // Encontrar el índice real en el array original para la edición
+                const realIdx = state.plans.indexOf(p);
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 group transition-colors";
+                tr.innerHTML = `
+                    <td class="p-5 pl-8 font-bold text-gray-700">${p.name}</td>
+                    <td class="p-5"><span class="px-2 py-1 rounded text-xs font-bold uppercase ${p.type==='pack'?'bg-orange-100 text-orange-700':(p.type==='dedicado'?'bg-purple-100 text-purple-700':'bg-blue-100 text-blue-700')}">${p.type}</span></td>
+                    <td class="p-5 font-mono text-gray-600 text-xs">T: S/ ${p.tarif}<br>CF: S/ ${p.cargoFijo || '-'}</td>
+                    <td class="p-5 text-xs text-gray-500">
+                        <div class="flex gap-2">
+                            <span class="text-green-600 font-bold">↓ ${p.vmb}</span>
+                            <span class="text-blue-600 font-bold">↑ ${p.vms}</span>
+                        </div>
+                        <span class="text-[10px] text-gray-400">Gar: ${p.minGar}</span>
+                    </td>
+                    <td class="p-5 text-gray-500">${p.plazo} m</td>
+                    <td class="p-5 text-center">
+                        <button onclick="openPlanModal(${realIdx})" class="text-gray-400 hover:text-brand-600 p-2 rounded-lg hover:bg-brand-50 transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function updateStats() {
+            byId('statTotal').textContent = state.plans.length;
+        }
+
+        // --- LOGICA DE HISTORIAL Y MODAL DE EDICIÓN ---
+        // Variable ya no es necesaria, usaremos index directo en DOM
+        // let currentDetailLog = null;
 
         function renderLogs() { 
             const tbody = byId('logsTableBody'); 
@@ -2169,15 +2297,15 @@
             
             logs.forEach((l, idx) => { 
                 const tr = document.createElement('tr'); 
-                tr.className = "hover:bg-brand-50/30 transition-colors border-b border-gray-50 cursor-pointer text-xs";
+                tr.className = "hover:bg-brand-50/30 transition-colors border-b border-gray-50 cursor-pointer text-xs group";
                 
-                // Mapeo seguro de valores antiguos a nuevos
                 const safeVal = (v) => v || '-';
                 
-                tr.onclick = () => openLogModal(l);
+                // ACTUALIZADO: Pasamos el índice (idx) para editar
+                tr.onclick = () => openEditLogModal(idx);
 
                 tr.innerHTML = `
-                    <td class="p-4 font-semibold text-gray-600">${safeVal(l.mesVenta)}</td>
+                    <td class="p-4 font-semibold text-gray-600 group-hover:text-brand-600">${safeVal(l.mesVenta)}</td>
                     <td class="p-4 text-brand-700 font-bold">${safeVal(l.gestor)}</td>
                     <td class="p-4 text-gray-500">${safeVal(l.supervisor)}</td>
                     <td class="p-4 text-gray-500">${safeVal(l.eecc)}</td>
@@ -2189,11 +2317,11 @@
                     <td class="p-4 font-bold text-green-700">${safeVal(l.costo)}</td>
                     <td class="p-4 text-gray-500">${safeVal(l.access)}</td>
                     <td class="p-4 text-gray-500">${safeVal(l.fechaIngreso)}</td>
-                    <td class="p-4 text-gray-400 text-[10px]">${safeVal(l.psi)}</td>
-                    <td class="p-4 text-gray-400 text-[10px]">${safeVal(l.opp)}</td>
-                    <td class="p-4 text-gray-400 text-[10px]">${safeVal(l.saf)}</td>
-                    <td class="p-4 text-gray-400 text-[10px]">${safeVal(l.siro)}</td>
-                    <td class="p-4"><span class="bg-yellow-50 text-yellow-700 border border-yellow-200 px-2 py-0.5 rounded-full font-bold text-[10px]">${safeVal(l.estado)}</span></td>
+                    <td class="p-4 text-gray-400 text-[10px] font-mono group-hover:text-gray-600">${safeVal(l.psi)}</td>
+                    <td class="p-4 text-gray-400 text-[10px] font-mono group-hover:text-brand-600 font-bold">${safeVal(l.opp)}</td>
+                    <td class="p-4 text-gray-400 text-[10px] font-mono group-hover:text-gray-600">${safeVal(l.saf)}</td>
+                    <td class="p-4 text-gray-400 text-[10px] font-mono group-hover:text-gray-600">${safeVal(l.siro)}</td>
+                    <td class="p-4"><span class="bg-yellow-50 text-yellow-700 border border-yellow-200 px-2 py-0.5 rounded-full font-bold text-[10px] group-hover:bg-yellow-100">${safeVal(l.estado)}</span></td>
                     <td class="p-4 text-gray-500">${safeVal(l.promocion)}</td>
                     <td class="p-4 text-gray-500">${safeVal(l.fechaAdmision)}</td>
                     <td class="p-4 text-gray-500">${safeVal(l.mesAdmision)}</td>
@@ -2201,17 +2329,72 @@
                 `; 
                 tbody.appendChild(tr); 
             }); 
+            lucide.createIcons();
         }
 
-        function openLogModal(log) {
-            byId('detailAsunto').textContent = log.asunto || `Solicitud de Servicio - ${log.razonSocial || log.RAZON_SOCIAL || '-'}`;
-            byId('detailCorreo').textContent = log.correo || log.CORREO || '-';
-            byId('detailFecha').textContent = log.fechaIngreso || log.date || '-';
-            byId('detailGestor').textContent = log.gestor || log.user || '-';
-            byId('detailRazon').textContent = log.razonSocial || log.RAZON_SOCIAL || '-';
-            byId('detailRuc').textContent = log.ruc || log.RUC || '-';
-            
+        function openEditLogModal(idx) {
+            const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
+            const l = logs[idx];
+            if (!l) return;
+
+            // Guardar índice para identificar cuál registro actualizar
+            byId('editLogIndex').value = idx;
+
+            // Rellenar campos con seguridad (si es null pone string vacío)
+            const safe = (v) => v || '';
+            byId('editMesVenta').value = safe(l.mesVenta).toUpperCase(); // Asegurar mayúscula para el select
+            byId('editRuc').value = safe(l.ruc);
+            byId('editRazon').value = safe(l.razonSocial || l.RAZON_SOCIAL);
+            byId('editSupervisor').value = safe(l.supervisor);
+            byId('editEecc').value = safe(l.eecc);
+            byId('editAnchoBanda').value = safe(l.anchoBanda);
+            byId('editPsi').value = safe(l.psi);
+            byId('editOpp').value = safe(l.opp);
+            byId('editSaf').value = safe(l.saf);
+            byId('editSiro').value = safe(l.siro);
+            byId('editEstado').value = safe(l.estado);
+            byId('editFechaAdm').value = safe(l.fechaAdmision);
+            byId('editPromo').value = safe(l.promocion);
+            // Manejar campo obs que puede venir como 'observaciones' u 'obs'
+            byId('editObs').value = safe(l.observaciones || l.obs);
+
+            // Mostrar modal
             byId('logDetailModal').classList.remove('hidden-vis');
+        }
+
+        function saveLogEdit() {
+            const idx = byId('editLogIndex').value;
+            const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
+            if (!logs[idx]) return;
+
+            // Actualizar objeto en memoria
+            const l = logs[idx];
+            l.mesVenta = byId('editMesVenta').value;
+            l.ruc = byId('editRuc').value;
+            l.razonSocial = byId('editRazon').value;
+            l.RAZON_SOCIAL = byId('editRazon').value; // Mantener compatibilidad por si acaso
+            l.supervisor = byId('editSupervisor').value;
+            l.eecc = byId('editEecc').value;
+            l.anchoBanda = byId('editAnchoBanda').value;
+            l.psi = byId('editPsi').value;
+            l.opp = byId('editOpp').value;
+            l.saf = byId('editSaf').value;
+            l.siro = byId('editSiro').value;
+            l.estado = byId('editEstado').value;
+            l.fechaAdmision = byId('editFechaAdm').value;
+            // Si el campo Mes Admisión no se edita explícitamente, asumimos el mismo mes de venta
+            // o lo dejamos como estaba si ya tenía valor. Aquí actualizamos mesAdmision basado en fecha si quisieras, 
+            // pero lo dejaré vinculado a mesVenta por simplicidad o input manual.
+            l.mesAdmision = byId('editMesVenta').value; 
+            l.promocion = byId('editPromo').value;
+            l.observaciones = byId('editObs').value;
+            l.obs = byId('editObs').value; // Mantener compatibilidad
+
+            // Guardar y refrescar
+            localStorage.setItem(KEYS.LOGS, JSON.stringify(logs));
+            renderLogs();
+            closeLogModal();
+            showToast('Registro actualizado correctamente.', 'success');
         }
 
         function closeLogModal() {
