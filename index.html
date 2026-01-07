@@ -654,6 +654,8 @@
                     <button onclick="switchTab('home')" class="nav-btn active" id="tab-home">Inicio</button>
                     <button onclick="switchTab('generator')" class="nav-btn" id="tab-generator">Contratos Dedicado</button>
                     <button onclick="switchTab('logs')" class="nav-btn" id="tab-logs">Registro de Ventas</button>
+                    <!-- NUEVA PESTAÑA DASHBOARD -->
+                    <button onclick="switchTab('dashboard')" class="nav-btn" id="tab-dashboard">Dashboard</button>
                     <button onclick="switchTab('config')" class="nav-btn" id="tab-config">Configuración</button>
                 </div>
             </div>
@@ -1280,6 +1282,99 @@
             </div>
         </div>
 
+        <!-- === VISTA DASHBOARD (NUEVA) === -->
+        <div id="view-dashboard" class="fade-in hidden-vis animate-fade-in">
+            <div class="mb-8 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Dashboard Gerencial</h2>
+                    <p class="text-sm text-gray-500 mt-1">Indicadores clave de rendimiento en tiempo real.</p>
+                </div>
+                <button onclick="updateDashboardStats()" class="btn alt text-xs"><i data-lucide="refresh-cw" class="w-4 h-4 mr-1"></i> Actualizar</button>
+            </div>
+
+            <!-- FILTROS DASHBOARD (REPLICADOS) -->
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm mb-6">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                    <h3 class="font-bold text-gray-700 text-sm flex items-center gap-2"><i data-lucide="filter" class="w-4 h-4 text-brand-500"></i> Filtrar Datos del Dashboard</h3>
+                    <button onclick="clearDashFilters()" class="text-xs font-bold text-brand-600 hover:bg-brand-50 px-3 py-1.5 rounded-lg transition-colors">Limpiar Filtros</button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Año</label><select id="dashFilterYear" onchange="updateDashboardStats()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Mes Venta</label><select id="dashFilterMonth" onchange="updateDashboardStats()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Supervisor</label><select id="dashFilterSup" onchange="updateDashboardStats()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">EECC</label><select id="dashFilterEecc" onchange="updateDashboardStats()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Ancho de Banda</label><select id="dashFilterBandwidth" onchange="updateDashboardStats()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Tipo Servicio</label><select id="dashFilterType" onchange="updateDashboardStats()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Access</label><select id="dashFilterAccess" onchange="updateDashboardStats()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Estado</label><select id="dashFilterStatus" onchange="updateDashboardStats()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                </div>
+            </div>
+
+            <!-- KPI CARDS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- KPI 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-card border border-gray-100 flex items-center justify-between group">
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Total Ventas</p>
+                        <h3 id="kpiTotalVentas" class="text-3xl font-bold text-gray-800">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform"><i data-lucide="shopping-cart" class="w-6 h-6"></i></div>
+                </div>
+                <!-- KPI 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-card border border-gray-100 flex items-center justify-between group">
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Ingresos Estimados</p>
+                        <h3 id="kpiIngresos" class="text-3xl font-bold text-gray-800">S/ 0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center group-hover:scale-110 transition-transform"><i data-lucide="dollar-sign" class="w-6 h-6"></i></div>
+                </div>
+                <!-- KPI 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-card border border-gray-100 flex items-center justify-between group">
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Efectividad</p>
+                        <h3 id="kpiEfectividad" class="text-3xl font-bold text-gray-800">0%</h3>
+                        <p class="text-[10px] text-gray-400">Activos / Total</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform"><i data-lucide="activity" class="w-6 h-6"></i></div>
+                </div>
+                <!-- KPI 4 -->
+                <div class="bg-white p-6 rounded-2xl shadow-card border border-gray-100 flex items-center justify-between group">
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Top Vendedor</p>
+                        <h3 id="kpiTopUser" class="text-xl font-bold text-gray-800 truncate max-w-[150px]">-</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform"><i data-lucide="award" class="w-6 h-6"></i></div>
+                </div>
+            </div>
+
+            <!-- TABLA RESUMEN -->
+            <div class="grid lg:grid-cols-2 gap-6">
+                <!-- Por Estado -->
+                <div class="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                        <h3 class="font-bold text-gray-800 text-sm">Distribución por Estado</h3>
+                    </div>
+                    <div class="p-4">
+                        <div id="statusDistBars" class="space-y-4">
+                            <!-- JS injected bars -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Por Servicio -->
+                <div class="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                        <h3 class="font-bold text-gray-800 text-sm">Ventas por Tipo de Servicio</h3>
+                    </div>
+                    <div class="p-6 flex items-center justify-center h-full">
+                         <div id="serviceDistStats" class="w-full space-y-3">
+                             <!-- JS injected stats -->
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- LOGIC -->
@@ -1615,7 +1710,7 @@
         function logout() { localStorage.removeItem(KEYS.LOG_OK); localStorage.removeItem(KEYS.LOG_USER); location.reload(); }
         
         function switchTab(tabId) {
-            ['home', 'generator', 'config', 'logs'].forEach(t => { 
+            ['home', 'generator', 'config', 'logs', 'dashboard'].forEach(t => { 
                 byId(`view-${t}`).classList.add('hidden-vis'); 
                 if(byId(`tab-${t}`)) byId(`tab-${t}`).classList.remove('active', 'border-brand-500', 'text-brand-600'); 
             });
@@ -1624,9 +1719,12 @@
             
             if (tabId === 'config') initConfigView(); 
             if (tabId === 'logs') { 
-                // Al entrar a logs, inicializamos los filtros
                 populateLogFilters();
                 renderLogs(); 
+            }
+            if (tabId === 'dashboard') {
+                populateLogFilters(); // Esto llenará tanto los filtros de logs como los del dashboard
+                updateDashboardStats();
             }
             if (tabId === 'home') switchHomeTab('comunicados'); 
         }
@@ -1691,38 +1789,47 @@
                 if(l.estado) statuses.add(l.estado);
             });
 
-            // Helper para llenar select
-            const fill = (id, set) => {
-                const sel = byId(id);
-                const currentVal = sel.value; // Guardar selección actual si existe
-                sel.innerHTML = '<option value="">Todos</option>';
-                const sorted = Array.from(set).sort();
-                sorted.forEach(val => {
-                    if(!val || val === '-') return;
-                    const opt = document.createElement('option');
-                    opt.value = val;
-                    opt.textContent = val;
-                    sel.appendChild(opt);
+            // Helper para llenar select (Ahora soporta múltiples IDs para llenar logs y dashboard a la vez)
+            const fill = (ids, set) => {
+                ids.forEach(id => {
+                    const sel = byId(id);
+                    if(!sel) return;
+                    const currentVal = sel.value; 
+                    sel.innerHTML = '<option value="">Todos</option>';
+                    const sorted = Array.from(set).sort();
+                    sorted.forEach(val => {
+                        if(!val || val === '-') return;
+                        const opt = document.createElement('option');
+                        opt.value = val;
+                        opt.textContent = val;
+                        sel.appendChild(opt);
+                    });
+                    if(currentVal && Array.from(sel.options).some(o => o.value === currentVal)) {
+                        sel.value = currentVal;
+                    }
                 });
-                if(currentVal && Array.from(sel.options).some(o => o.value === currentVal)) {
-                    sel.value = currentVal;
-                }
             };
 
-            fill('filterYear', years);
-            fill('filterMonth', months);
-            fill('filterSup', supervisors);
-            fill('filterEecc', eeccs);
-            fill('filterBandwidth', bws);
-            fill('filterType', types);
-            fill('filterAccess', accesses);
-            fill('filterStatus', statuses);
+            // Llenamos pares de filtros (Logs y Dashboard)
+            fill(['filterYear', 'dashFilterYear'], years);
+            fill(['filterMonth', 'dashFilterMonth'], months);
+            fill(['filterSup', 'dashFilterSup'], supervisors);
+            fill(['filterEecc', 'dashFilterEecc'], eeccs);
+            fill(['filterBandwidth', 'dashFilterBandwidth'], bws);
+            fill(['filterType', 'dashFilterType'], types);
+            fill(['filterAccess', 'dashFilterAccess'], accesses);
+            fill(['filterStatus', 'dashFilterStatus'], statuses);
         }
 
         // 2. Limpiar Filtros
         function clearLogFilters() {
             ['filterYear', 'filterMonth', 'filterSup', 'filterEecc', 'filterBandwidth', 'filterType', 'filterAccess', 'filterStatus'].forEach(id => byId(id).value = "");
             renderLogs();
+        }
+
+        function clearDashFilters() {
+             ['dashFilterYear', 'dashFilterMonth', 'dashFilterSup', 'dashFilterEecc', 'dashFilterBandwidth', 'dashFilterType', 'dashFilterAccess', 'dashFilterStatus'].forEach(id => byId(id).value = "");
+             updateDashboardStats();
         }
 
         // 3. Render Logs con lógica de filtrado
@@ -1804,34 +1911,101 @@
             lucide.createIcons();
         }
 
-        function openEditLogModal(idx) {
-            const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
-            const l = logs[idx];
-            if (!l) return;
+        // --- LÓGICA DASHBOARD ---
+        function updateDashboardStats() {
+            let logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
+            
+            // Filtros Dashboard
+            const fY = byId('dashFilterYear').value;
+            const fM = byId('dashFilterMonth').value;
+            const fS = byId('dashFilterSup').value;
+            const fE = byId('dashFilterEecc').value;
+            const fB = byId('dashFilterBandwidth').value;
+            const fT = byId('dashFilterType').value;
+            const fA = byId('dashFilterAccess').value;
+            const fSt = byId('dashFilterStatus').value;
 
-            // Guardar índice para identificar cuál registro actualizar
-            byId('editLogIndex').value = idx;
+            const filtered = logs.filter(l => {
+                let y = '';
+                if(l.fechaIngreso) y = l.fechaIngreso.split('/')[2];
+                else if(l.date) y = l.date.split(' ')[0].split('/')[2];
+                
+                if(fY && y !== fY) return false;
+                if(fM && l.mesVenta !== fM) return false;
+                if(fS && l.supervisor !== fS) return false;
+                if(fE && l.eecc !== fE) return false;
+                if(fB && l.anchoBanda !== fB) return false;
+                if(fT && l.tipoServicio !== fT) return false;
+                if(fA && l.access !== fA) return false;
+                if(fSt && l.estado !== fSt) return false;
+                return true;
+            });
 
-            // Rellenar campos con seguridad (si es null pone string vacío)
-            const safe = (v) => v || '';
-            byId('editMesVenta').value = safe(l.mesVenta).toUpperCase(); // Asegurar mayúscula para el select
-            byId('editRuc').value = safe(l.ruc);
-            byId('editRazon').value = safe(l.razonSocial || l.RAZON_SOCIAL);
-            byId('editSupervisor').value = safe(l.supervisor);
-            byId('editEecc').value = safe(l.eecc);
-            byId('editAnchoBanda').value = safe(l.anchoBanda);
-            byId('editPsi').value = safe(l.psi);
-            byId('editOpp').value = safe(l.opp);
-            byId('editSaf').value = safe(l.saf);
-            byId('editSiro').value = safe(l.siro);
-            byId('editEstado').value = safe(l.estado);
-            byId('editFechaAdm').value = safe(l.fechaAdmision);
-            byId('editPromo').value = safe(l.promocion);
-            // Manejar campo obs que puede venir como 'observaciones' u 'obs'
-            byId('editObs').value = safe(l.observaciones || l.obs);
+            // KPI 1: Total
+            byId('kpiTotalVentas').textContent = filtered.length;
 
-            // Mostrar modal
-            byId('logDetailModal').classList.remove('hidden-vis');
+            // KPI 2: Ingresos
+            let total = 0;
+            filtered.forEach(l => {
+                total += parseMoney(l.costo);
+            });
+            byId('kpiIngresos').textContent = formatMoney(total);
+
+            // KPI 3: Efectividad (Activos/Instalados/Completados vs Total)
+            const successful = filtered.filter(l => ['ACTIVO', 'INSTALADO', 'COMPLETADO'].includes(l.estado)).length;
+            const efect = filtered.length > 0 ? ((successful / filtered.length) * 100).toFixed(1) : 0;
+            byId('kpiEfectividad').textContent = efect + '%';
+
+            // KPI 4: Top Vendedor
+            const counts = {};
+            filtered.forEach(l => { if(l.gestor) counts[l.gestor] = (counts[l.gestor] || 0) + 1; });
+            let topUser = '-';
+            let maxCount = 0;
+            Object.entries(counts).forEach(([u, c]) => { if(c > maxCount) { maxCount = c; topUser = u; } });
+            byId('kpiTopUser').textContent = topUser;
+
+            // GRAFICO BARRAS ESTADO
+            const statusCounts = {};
+            filtered.forEach(l => { const s = l.estado || 'SIN ESTADO'; statusCounts[s] = (statusCounts[s] || 0) + 1; });
+            const statusContainer = byId('statusDistBars');
+            statusContainer.innerHTML = '';
+            
+            // Colores por estado
+            const stateColors = {
+                'ACTIVO': 'bg-green-500', 'COMPLETADO': 'bg-green-500', 'INSTALADO': 'bg-green-500',
+                'INGRESADO': 'bg-blue-500', 'EN PROCESO': 'bg-blue-400', 'ADMITIDA': 'bg-blue-300',
+                'OBSERVADO': 'bg-yellow-400', 'ANULADO': 'bg-red-500', 'DEUDA': 'bg-red-600'
+            };
+
+            Object.entries(statusCounts).sort((a,b) => b[1] - a[1]).forEach(([st, cnt]) => {
+                const pct = ((cnt / filtered.length) * 100).toFixed(0);
+                const color = stateColors[st] || 'bg-gray-400';
+                statusContainer.innerHTML += `
+                    <div>
+                        <div class="flex justify-between text-xs font-bold text-gray-600 mb-1">
+                            <span>${st}</span>
+                            <span>${cnt} (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                            <div class="${color} h-2.5 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // RESUMEN SERVICIOS
+            const typeCounts = {};
+            filtered.forEach(l => { const t = l.tipoServicio || 'OTRO'; typeCounts[t] = (typeCounts[t] || 0) + 1; });
+            const serviceContainer = byId('serviceDistStats');
+            serviceContainer.innerHTML = '';
+            Object.entries(typeCounts).forEach(([t, c]) => {
+                 serviceContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                        <span class="font-bold text-gray-700 text-xs">${t}</span>
+                        <span class="bg-white px-2 py-1 rounded text-xs font-bold text-brand-600 shadow-sm border border-gray-100">${c} Und.</span>
+                    </div>
+                 `;
+            });
         }
 
         function saveLogEdit() {
