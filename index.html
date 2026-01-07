@@ -561,7 +561,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE RESULTADO DE CONSULTA (NUEVO) -->
+    <!-- MODAL DE RESULTADO DE CONSULTA -->
     <div id="consultaResultModal" class="fixed inset-0 z-[90] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden-vis p-4 transition-all duration-300">
         <div class="w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-slide-up">
             <div class="bg-gradient-to-r from-brand-500 to-brand-600 px-6 py-4 flex justify-between items-center">
@@ -796,6 +796,7 @@
             <div class="grid lg:grid-cols-12 gap-8 items-start">
                 
                 <div class="lg:col-span-8 space-y-8">
+                    <!-- ... contenido del generador ... -->
                     
                     <!-- STEPPER NAVIGATION (PROFESIONAL Y ESTRUCTURADO) -->
                     <div class="step-container">
@@ -991,7 +992,6 @@
                                     <div>
                                         <label class="input-label text-brand-700">Tarifa Mensual</label>
                                         <div class="relative">
-                                            <!-- Se eliminó pl-10 y el ícono de dólar para evitar redundancia con el "S/" del valor -->
                                             <input id="TARIF_MENS" class="input border-brand-200 font-bold text-brand-700 text-xl" readonly>
                                         </div>
                                     </div>
@@ -1223,10 +1223,29 @@
         </div>
         
         <div id="view-logs" class="fade-in hidden-vis">
+            
+            <!-- PANEL DE FILTROS -->
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm mb-5">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                    <h3 class="font-bold text-gray-700 text-sm flex items-center gap-2"><i data-lucide="filter" class="w-4 h-4 text-brand-500"></i> Filtros de Búsqueda</h3>
+                    <button onclick="clearLogFilters()" class="text-xs font-bold text-brand-600 hover:bg-brand-50 px-3 py-1.5 rounded-lg transition-colors">Limpiar Filtros</button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Año</label><select id="filterYear" onchange="renderLogs()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Mes Venta</label><select id="filterMonth" onchange="renderLogs()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Supervisor</label><select id="filterSup" onchange="renderLogs()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">EECC</label><select id="filterEecc" onchange="renderLogs()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Ancho de Banda</label><select id="filterBandwidth" onchange="renderLogs()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Tipo Servicio</label><select id="filterType" onchange="renderLogs()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Access</label><select id="filterAccess" onchange="renderLogs()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                     <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-1 block">Estado</label><select id="filterStatus" onchange="renderLogs()" class="input h-9 text-xs py-0"><option value="">Todos</option></select></div>
+                </div>
+            </div>
+
             <div class="card p-0 overflow-hidden shadow-card border border-gray-200 rounded-xl">
                 <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
                     <div><h2 class="text-base font-bold text-gray-800">Registro de Ventas</h2><p class="text-xs text-gray-500 mt-0.5">Registro de operaciones realizadas.</p></div>
-                    <button onclick="clearAllLogs()" class="btn alt text-red-600 border-gray-300 hover:bg-red-50 text-xs h-8 px-3"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Limpiar</button>
+                    <button onclick="clearAllLogs()" class="btn alt text-red-600 border-gray-300 hover:bg-red-50 text-xs h-8 px-3"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Limpiar Tabla</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left whitespace-nowrap">
@@ -1266,6 +1285,7 @@
     <!-- LOGIC -->
     <script>
         const KEYS = { USERS: 'contratos_users', PLANS: 'contratos_planes', LOG_OK: 'contratos_login_ok', LOG_USER: 'contratos_login_user', LOGS: 'contratos_registros' };
+        // ... (resto de constantes y funciones de utilidad se mantienen igual) ...
         const ALLOWED_IPS = ['148.102.51.78', '190.8.133.125'];
         const APISPERU_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1vYmlsZW5ldGZpamFAZ21haWwuY29tIn0.p96PEX6kNXdguiZk1jpodcUHgUaXRwLi3DzsGzkxsBY";
 
@@ -1284,6 +1304,7 @@
             { id: 'SD WAN Entel', price: 0.00, cantField: 'CANT_IP#0', subField: 'SUB TOT IP#0' }
         ];
 
+        // ... Listas de direcciones y usuarios seed se mantienen igual ...
         const LIST_TIPO_VIA = [" ","ALAMEDA","AVENIDA","BAJADA","BOULEVARD","CALLE","CAMPAMENTO","CARRETERA","COORDENADA","GRANJA 1","JIRON","MALECON","PASAJE","PASEO","PLAZA","PROLONGACION"];
         const LIST_TIPO_INT = [" ","BLOCK","CASETA","DPTO/INT.","ESQUINA","LOCAL","MODULO","OFICINA","PISO","PUESTO","STAND","TIENDA"];
         const LIST_TIPO_EDIF = [" ","AGRUPACION","ASENTAMIENTO HUMANO","ASOCIACION","BARRIO","CENTRO COMERCIAL","CENTRO EMPRESARIAL","CENTRO POBLADO","CIUDAD","COMPLEJO","COMUNIDAD","CONDOMINIO","CONJUNTO HABITACIONAL","EDIFICIO","HACIENDA","GALERIA","MERCADO","MULTIFAMILIAR","PARQUE INDUSTRIAL","PARQUE ZONAL","PUEBLO JOVEN","QUINTA","RESIDENCIAL","SUPERMERCADO"];
@@ -1292,7 +1313,7 @@
 
         const SEED_USERS = [{ u: 'mob_hmedinab', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'mob_dcarrasco', p: 'adminMobilenet2025', role: 'admin', restrictIp: false }, { u: 'MOB_JAQPAREDES', p: 'Mob_2025-17553', role: 'normal', restrictIp: false }, { u: 'MOB_WALSALCEDO', p: 'Mob_2025-63354', role: 'normal', restrictIp: false }, { u: 'MOB_SANDDIAZ', p: 'Mob_2025-32524', role: 'normal', restrictIp: false }, { u: 'MOB_NARFUENTES', p: 'Mob_2025-45225', role: 'normal', restrictIp: false }];
         
-        // --- NUEVO: DATOS DE EJEMPLO PARA REGISTRO DE VENTAS ---
+        // ... SEED_LOGS y SEED_PLANS se mantienen igual ...
         const SEED_LOGS = [
             {
                 mesVenta: "ENERO",
@@ -1479,7 +1500,7 @@
             { name: "INTERNET DEDICADO 200 MBPS", minGar: "100%", vmb: 250, vminb: 250, vms: 250, vmins: 250, cargoFijo: "1400", tarif: "1400", plazo: "36", type: "dedicado" }
         ];
 
-        // Mapas PDF (Iguales)
+        // Mapas PDF y Helpers (sin cambios)
         const MAP_ARR = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'RL': 'RL', 'CARGO': 'CARGO_RL', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO' };
         const MAP_SUP = { 'RUC': 'RUC', 'RAZON SOCIAL': 'RAZON_SOCIAL', 'DIRECCION': 'DIRECCION', 'NUMERO DE CALLE': 'NUMERO_DE_CALLE', 'DPTO_INT': 'DPTO_INT', 'URB': 'URB', 'DISTRITO': 'DISTRITO', 'CIUDAD': 'CIUDAD', 'APELLIDO PATERNO': 'APELLIDO_PATERNO', 'APELLIDO MATERNO': 'APELLIDO_MATERNO', 'NOMBRES': 'NOMBRES', 'DNI': 'DNI', 'TELEFONO': 'TELEFONO', 'CORREO': 'CORREO', 'CONT_NOMB': 'CONT_NOMB', 'CONT_CARGO': 'CONT_CARGO', 'CONT_DNI': 'CONT_DNI', 'CONT_TELEF': 'CONT_TELEF', 'CONT_CORREO': 'CONT_CORREO', 'TOTAL': 'TOTAL_SUP_HIDDEN', 'NOMB_PROMOCION': 'NOMB_PROMOCION', 'DIREC_INST': 'DIREC_INST', 'RL': 'RL', 'CARGO': 'CARGO_FIRM' };
         const MAP_TAR = { 'CARGO FIJO': 'CARGO_FIJO_VAL', 'CARGO': 'CARGO_FIRM', 'CORREO': 'CORREO', 'RL': 'RL', 'NOM_PLAN': 'NOM_PLAN', 'MIN_GAR': 'MIN_GAR', 'VEL_MAX_BAJ': 'VEL_MAX_BAJ', 'VEL_MIN_BAJ': 'VEL_MIN_BAJ', 'VEL_MAX_SUB': 'VEL_MAX_SUB', 'VEL_MIN_SUB': 'VEL_MIN_SUB', 'TARIF_MENS': 'TARIF_MENS', 'DIREC_INST': 'DIREC_INST', 'PLAZO_INST': 'PLAZO_CONT', 'PLAZO_CONT': 'PLAZO_CONT', 'NUM_TELF': 'NUM_TELF', 'CARGO_TELF': 'CARGO_TELF' };
@@ -1498,11 +1519,7 @@
             if (!f.startsWith('S/')) f = 'S/ ' + f;
             return f;
         };
-        const parseMoney = v => {
-            if (!v) return 0;
-            let clean = String(v).replace(/[^0-9,.]/g, '').replace(',', '.');
-            return parseFloat(clean) || 0;
-        }
+        const parseMoney = v => { if (!v) return 0; let clean = String(v).replace(/[^0-9,.]/g, '').replace(',', '.'); return parseFloat(clean) || 0; }
         const getMonthName = idx => ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"][idx];
         const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -1523,14 +1540,10 @@
 
         // --- Inicialización ---
         document.addEventListener('DOMContentLoaded', async () => {
-            // 1. Inicializar Listeners PRIMERO para asegurar que el botón de login funcione
             initListeners();
-            
             try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); state.ip = d.ip; } catch { console.log('IP no detectada'); }
             
-            // 2. Cargar y REPARAR usuarios
             try { state.users = JSON.parse(localStorage.getItem(KEYS.USERS)) || []; } catch { state.users = []; }
-            
             SEED_USERS.forEach(seed => { 
                 const uid = userId(seed.u);
                 const existingIdx = state.users.findIndex(u => u.uid === uid);
@@ -1539,11 +1552,9 @@
             });
             localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
             
-            // 3. Cargar Planes
             state.plans = SEED_PLANS;
             localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans));
 
-            // 4. Cargar y Sembrar Logs (Ejemplos) si está vacío
             try { 
                 let logs = JSON.parse(localStorage.getItem(KEYS.LOGS));
                 if (!logs || logs.length === 0) {
@@ -1554,13 +1565,13 @@
                 localStorage.setItem(KEYS.LOGS, JSON.stringify(SEED_LOGS)); 
             }
 
-            // 5. Inicializar lógica de UI de forma segura
             lucide.createIcons(); 
             try { initGeneratorLogic(); } catch(e) { console.error("Error init logic:", e); }
 
             if (localStorage.getItem(KEYS.LOG_OK) === '1') { try { const u = JSON.parse(localStorage.getItem(KEYS.LOG_USER)); if (u) loginSuccess(u); } catch { logout(); } }
         });
 
+        // ... initListeners, togglePass, showStep, togglePortability, addSupRow, etc... (sin cambios)
         function initListeners() {
             if(byId('btnLogin')) byId('btnLogin').onclick = handleLogin;
             if(byId('btnLogout')) byId('btnLogout').onclick = logout;
@@ -1576,279 +1587,33 @@
             addressInputs.forEach(inp => inp.addEventListener('input', buildAddressPreview));
             addressInputs.forEach(inp => inp.addEventListener('change', buildAddressPreview));
         }
-
-        function togglePass() {
-            const passInput = byId('loginPass');
-            if (passInput.type === "password") {
-                passInput.type = "text";
-            } else {
-                passInput.type = "password";
-            }
-        }
-
-        function showStep(stepNumber) {
-            for (let i = 1; i <= 5; i++) {
-                const content = byId(`step-content-${i}`);
-                const tab = byId(`step-tab-${i}`);
-                if (content) content.classList.add('hidden-vis');
-                if (tab) {
-                    tab.classList.remove('active', 'completed');
-                    if (i < stepNumber) tab.classList.add('completed');
-                }
-            }
-            byId(`step-content-${stepNumber}`).classList.remove('hidden-vis');
-            byId(`step-tab-${stepNumber}`).classList.add('active');
-            lucide.createIcons();
-        }
+        function togglePass() { const passInput = byId('loginPass'); passInput.type = passInput.type === "password" ? "text" : "password"; }
+        function showStep(stepNumber) { for (let i = 1; i <= 5; i++) { const c = byId(`step-content-${i}`); const t = byId(`step-tab-${i}`); if (c) c.classList.add('hidden-vis'); if (t) { t.classList.remove('active', 'completed'); if (i < stepNumber) t.classList.add('completed'); } } byId(`step-content-${stepNumber}`).classList.remove('hidden-vis'); byId(`step-tab-${stepNumber}`).classList.add('active'); lucide.createIcons(); }
+        function togglePortability() { const isChecked = byId('checkPortabilidad').checked; const container = byId('portabilityFields'); const lblPhone = byId('lblPhoneNum'); if(isChecked) { container.classList.remove('hidden'); lblPhone.textContent = 'N° Teléfono a Portar'; updateFileListPreview(); } else { container.classList.add('hidden'); lblPhone.textContent = 'N° Teléfono Asignado'; updateFileListPreview(); } }
+        function addSupRow() { if (state.activeSupRows.length >= 6) return showToast('Límite de servicios alcanzado.', 'warning'); const rowId = 'sup_row_' + Date.now(); state.activeSupRows.push({ id: rowId }); renderSupRows(); }
+        function removeSupRow(id) { state.activeSupRows = state.activeSupRows.filter(r => r.id !== id); renderSupRows(); updateGlobalSupTotal(); }
+        function renderSupRows() { const c = byId('supServicesContainer'); c.innerHTML = ''; state.activeSupRows.forEach((r) => { const div = document.createElement('div'); div.className = "grid sm:grid-cols-12 gap-3 items-center bg-gray-50 p-4 rounded-xl border border-gray-200 animate-fade-in shadow-sm hover:shadow-md transition-shadow"; div.innerHTML = `<div class="sm:col-span-6"><select onchange="onServiceChange('${r.id}')" id="sel_${r.id}" class="input h-10 text-sm py-0 border-gray-300"><option value="">— Seleccionar Servicio —</option>${SUP_SERVICES_DATA.map(s => `<option value="${s.id}">${s.id}</option>`).join('')}</select></div><div class="sm:col-span-2"><input onblur="formatSupRowQty('${r.id}')" oninput="updateSupRow('${r.id}')" id="qty_${r.id}" type="text" value="${String(r.qty || 1).padStart(2, '0')}" class="input h-10 text-sm py-0 text-center font-mono" placeholder="Cant."></div><div class="sm:col-span-2"><input onblur="formatSupRowPrice('${r.id}')" oninput="updateSupRow('${r.id}')" id="price_${r.id}" class="input h-10 text-sm py-0 text-right" value="${r.price || 'S/. 0.00'}" placeholder="Precio"></div><div class="sm:col-span-2 flex gap-2"><input id="sub_${r.id}" class="input h-10 text-sm py-0 bg-brand-50 font-bold text-brand-700 text-right border-brand-100" readonly value="${r.sub || 'S/. 0.00'}"><button onclick="removeSupRow('${r.id}')" class="text-gray-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`; c.appendChild(div); if(r.service) byId(`sel_${r.id}`).value = r.service; }); lucide.createIcons(); }
+        function onServiceChange(rowId) { const sel = byId(`sel_${rowId}`); const val = sel.value; const data = SUP_SERVICES_DATA.find(s => s.id === val); if (data) byId(`price_${rowId}`).value = formatMoney(data.price); updateSupRow(rowId); }
+        function formatSupRowQty(rowId) { const el = byId(`qty_${rowId}`); let val = parseInt(el.value.replace(/\D/g, '')) || 0; if(val < 1) val = 1; el.value = String(val).padStart(2, '0'); updateSupRow(rowId); }
+        function formatSupRowPrice(rowId) { const el = byId(`price_${rowId}`); let val = parseMoney(el.value); el.value = formatMoney(val); updateSupRow(rowId); }
+        function updateSupRow(rowId) { const rowIdx = state.activeSupRows.findIndex(r => r.id === rowId); if(rowIdx === -1) return; const serviceName = byId(`sel_${rowId}`).value; const qty = parseInt(byId(`qty_${rowId}`).value.replace(/\D/g, '')) || 0; const priceStr = byId(`price_${rowId}`).value; const price = parseMoney(priceStr); const sub = qty * price; const subFormatted = formatMoney(sub); byId(`sub_${rowId}`).value = subFormatted; state.activeSupRows[rowIdx] = { id: rowId, service: serviceName, qty: qty, price: priceStr, sub: subFormatted, subValue: sub }; updateGlobalSupTotal(); }
+        function updateGlobalSupTotal() { let total = 0; state.activeSupRows.forEach(r => total += (r.subValue || 0)); byId('txtSupTotalGlobal').textContent = formatMoney(total); byId('TOTAL_SUP_HIDDEN').value = formatMoney(total); }
         
-        function togglePortability() {
-            const isChecked = byId('checkPortabilidad').checked;
-            const container = byId('portabilityFields');
-            const lblPhone = byId('lblPhoneNum');
-            if(isChecked) {
-                container.classList.remove('hidden');
-                lblPhone.textContent = 'N° Teléfono a Portar';
-                updateFileListPreview();
-            } else {
-                container.classList.add('hidden');
-                lblPhone.textContent = 'N° Teléfono Asignado';
-                updateFileListPreview();
-            }
-        }
-
-        function addSupRow() {
-            if (state.activeSupRows.length >= 6) return showToast('Límite de servicios alcanzado.', 'warning');
-            const rowId = 'sup_row_' + Date.now();
-            state.activeSupRows.push({ id: rowId });
-            renderSupRows();
-        }
-
-        function removeSupRow(id) {
-            state.activeSupRows = state.activeSupRows.filter(r => r.id !== id);
-            renderSupRows();
-            updateGlobalSupTotal();
-        }
-
-        function renderSupRows() {
-            const container = byId('supServicesContainer');
-            container.innerHTML = '';
-            state.activeSupRows.forEach((row, idx) => {
-                const div = document.createElement('div');
-                div.className = "grid sm:grid-cols-12 gap-3 items-center bg-gray-50 p-4 rounded-xl border border-gray-200 animate-fade-in shadow-sm hover:shadow-md transition-shadow";
-                div.innerHTML = `
-                    <div class="sm:col-span-6">
-                        <select onchange="onServiceChange('${row.id}')" id="sel_${row.id}" class="input h-10 text-sm py-0 border-gray-300">
-                            <option value="">— Seleccionar Servicio —</option>
-                            ${SUP_SERVICES_DATA.map(s => `<option value="${s.id}">${s.id}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <input onblur="formatSupRowQty('${row.id}')" oninput="updateSupRow('${row.id}')" id="qty_${row.id}" type="text" value="${String(row.qty || 1).padStart(2, '0')}" class="input h-10 text-sm py-0 text-center font-mono" placeholder="Cant.">
-                    </div>
-                    <div class="sm:col-span-2">
-                        <input onblur="formatSupRowPrice('${row.id}')" oninput="updateSupRow('${row.id}')" id="price_${row.id}" class="input h-10 text-sm py-0 text-right" value="${row.price || 'S/. 0.00'}" placeholder="Precio">
-                    </div>
-                    <div class="sm:col-span-2 flex gap-2">
-                        <input id="sub_${row.id}" class="input h-10 text-sm py-0 bg-brand-50 font-bold text-brand-700 text-right border-brand-100" readonly value="${row.sub || 'S/. 0.00'}">
-                        <button onclick="removeSupRow('${row.id}')" class="text-gray-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                    </div>
-                `;
-                container.appendChild(div);
-                if(row.service) byId(`sel_${row.id}`).value = row.service;
-            });
-            lucide.createIcons();
-        }
-
-        function onServiceChange(rowId) {
-            const sel = byId(`sel_${rowId}`);
-            const val = sel.value;
-            const data = SUP_SERVICES_DATA.find(s => s.id === val);
-            if (data) byId(`price_${rowId}`).value = formatMoney(data.price);
-            updateSupRow(rowId);
-        }
-
-        function formatSupRowQty(rowId) {
-            const el = byId(`qty_${rowId}`);
-            let val = parseInt(el.value.replace(/\D/g, '')) || 0;
-            if(val < 1) val = 1;
-            el.value = String(val).padStart(2, '0');
-            updateSupRow(rowId);
-        }
-
-        function formatSupRowPrice(rowId) {
-            const el = byId(`price_${rowId}`);
-            let val = parseMoney(el.value);
-            el.value = formatMoney(val);
-            updateSupRow(rowId);
-        }
-
-        function updateSupRow(rowId) {
-            const rowIdx = state.activeSupRows.findIndex(r => r.id === rowId);
-            if(rowIdx === -1) return;
-            const serviceName = byId(`sel_${rowId}`).value;
-            const qty = parseInt(byId(`qty_${rowId}`).value.replace(/\D/g, '')) || 0;
-            const priceStr = byId(`price_${rowId}`).value;
-            const price = parseMoney(priceStr);
-            const sub = qty * price;
-            const subFormatted = formatMoney(sub);
-            byId(`sub_${rowId}`).value = subFormatted;
-            state.activeSupRows[rowIdx] = { id: rowId, service: serviceName, qty: qty, price: priceStr, sub: subFormatted, subValue: sub };
-            updateGlobalSupTotal();
-        }
-
-        function updateGlobalSupTotal() {
-            let total = 0;
-            state.activeSupRows.forEach(r => total += (r.subValue || 0));
-            byId('txtSupTotalGlobal').textContent = formatMoney(total);
-            byId('TOTAL_SUP_HIDDEN').value = formatMoney(total);
-        }
-
-        function openPlanModal(idx = null) {
-            byId('planModal').classList.remove('hidden-vis');
-            byId('btnDeletePlan').classList.add('hidden');
-            if (idx !== null) {
-                const p = state.plans[idx];
-                byId('planModalTitle').innerHTML = '<div class="p-2 bg-brand-50 rounded-lg text-brand-600"><i data-lucide="settings-2" class="w-5 h-5"></i></div> Editar Plan';
-                byId('planOriginalName').value = idx;
-                byId('planName').value = p.name;
-                byId('planTarif').value = p.tarif;
-                byId('planCargoFijo').value = p.cargoFijo;
-                byId('planPlazo').value = p.plazo;
-                byId('planGar').value = p.minGar;
-                byId('planVmb').value = p.vmb;
-                byId('planVminb').value = p.vminb;
-                byId('planVms').value = p.vms;
-                byId('planVmins').value = p.vmins;
-                byId('btnDeletePlan').classList.remove('hidden');
-            } else {
-                byId('planModalTitle').innerHTML = '<div class="p-2 bg-brand-50 rounded-lg text-brand-600"><i data-lucide="plus" class="w-5 h-5"></i></div> Nuevo Plan';
-                byId('planOriginalName').value = '';
-                byId('planName').value = '';
-                byId('planTarif').value = '';
-                byId('planCargoFijo').value = '';
-                byId('planPlazo').value = '';
-                byId('planGar').value = '70%';
-                byId('planVmb').value = ''; byId('planVminb').value = '';
-                byId('planVms').value = ''; byId('planVmins').value = '';
-            }
-            lucide.createIcons();
-        }
-
+        // ... (Funciones de Modal Planes, Address Modal, Login, SwitchTab igual) ...
+        function openPlanModal(idx = null) { byId('planModal').classList.remove('hidden-vis'); byId('btnDeletePlan').classList.add('hidden'); if (idx !== null) { const p = state.plans[idx]; byId('planModalTitle').innerHTML = '<div class="p-2 bg-brand-50 rounded-lg text-brand-600"><i data-lucide="settings-2" class="w-5 h-5"></i></div> Editar Plan'; byId('planOriginalName').value = idx; byId('planName').value = p.name; byId('planTarif').value = p.tarif; byId('planCargoFijo').value = p.cargoFijo; byId('planPlazo').value = p.plazo; byId('planGar').value = p.minGar; byId('planVmb').value = p.vmb; byId('planVminb').value = p.vminb; byId('planVms').value = p.vms; byId('planVmins').value = p.vmins; byId('btnDeletePlan').classList.remove('hidden'); } else { byId('planModalTitle').innerHTML = '<div class="p-2 bg-brand-50 rounded-lg text-brand-600"><i data-lucide="plus" class="w-5 h-5"></i></div> Nuevo Plan'; byId('planOriginalName').value = ''; byId('planName').value = ''; byId('planTarif').value = ''; byId('planCargoFijo').value = ''; byId('planPlazo').value = ''; byId('planGar').value = '70%'; byId('planVmb').value = ''; byId('planVminb').value = ''; byId('planVms').value = ''; byId('planVmins').value = ''; } lucide.createIcons(); }
         function closePlanModal() { byId('planModal').classList.add('hidden-vis'); }
-
-        function savePlan() {
-            const name = byId('planName').value;
-            const tarif = byId('planTarif').value;
-            if(!name || !tarif) return showToast('Nombre y Tarifa obligatorios.', 'error');
-            const newP = { name, tarif, cargoFijo: byId('planCargoFijo').value, plazo: byId('planPlazo').value, minGar: byId('planGar').value, vmb: byId('planVmb').value, vminb: byId('planVminb').value, vms: byId('planVms').value, vmins: byId('planVmins').value, type: name.toUpperCase().includes('PACK') ? 'pack' : (name.toUpperCase().includes('DEDICADO') ? 'dedicado' : 'internet') };
-            const idx = byId('planOriginalName').value;
-            if (idx !== '') state.plans[parseInt(idx)] = newP; else state.plans.push(newP);
-            localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans));
-            renderPlans(); updatePlanSelect(); updateStats(); closePlanModal();
-            showToast('Plan guardado.', 'success');
-        }
-
-        function deleteCurrentPlan() {
-            const idx = parseInt(byId('planOriginalName').value);
-            if(isNaN(idx) || !confirm('¿Eliminar plan?')) return;
-            state.plans.splice(idx, 1);
-            localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans));
-            renderPlans(); updatePlanSelect(); closePlanModal(); showToast('Plan eliminado.', 'info');
-        }
-
-        function openAddressModal() {
-            byId('addressModal').classList.remove('hidden-vis');
-            if(byId('TIPO_VIA').options.length === 0) populateSelect('TIPO_VIA', LIST_TIPO_VIA);
-            if(byId('TIP_INT').options.length === 0) populateSelect('TIP_INT', LIST_TIPO_INT);
-            if(byId('TIP_EDIF').options.length === 0) populateSelect('TIP_EDIF', LIST_TIPO_EDIF);
-            if(byId('DISTRITO_SEL').options.length === 0) populateSelect('DISTRITO_SEL', LIST_DISTRITOS);
-            buildAddressPreview();
-        }
-
+        function savePlan() { const name = byId('planName').value; const tarif = byId('planTarif').value; if(!name || !tarif) return showToast('Nombre y Tarifa obligatorios.', 'error'); const newP = { name, tarif, cargoFijo: byId('planCargoFijo').value, plazo: byId('planPlazo').value, minGar: byId('planGar').value, vmb: byId('planVmb').value, vminb: byId('planVminb').value, vms: byId('planVms').value, vmins: byId('planVmins').value, type: name.toUpperCase().includes('PACK') ? 'pack' : (name.toUpperCase().includes('DEDICADO') ? 'dedicado' : 'internet') }; const idx = byId('planOriginalName').value; if (idx !== '') state.plans[parseInt(idx)] = newP; else state.plans.push(newP); localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans)); renderPlans(); updatePlanSelect(); updateStats(); closePlanModal(); showToast('Plan guardado.', 'success'); }
+        function deleteCurrentPlan() { const idx = parseInt(byId('planOriginalName').value); if(isNaN(idx) || !confirm('¿Eliminar plan?')) return; state.plans.splice(idx, 1); localStorage.setItem(KEYS.PLANS, JSON.stringify(state.plans)); renderPlans(); updatePlanSelect(); closePlanModal(); showToast('Plan eliminado.', 'info'); }
+        function openAddressModal() { byId('addressModal').classList.remove('hidden-vis'); if(byId('TIPO_VIA').options.length === 0) populateSelect('TIPO_VIA', LIST_TIPO_VIA); if(byId('TIP_INT').options.length === 0) populateSelect('TIP_INT', LIST_TIPO_INT); if(byId('TIP_EDIF').options.length === 0) populateSelect('TIP_EDIF', LIST_TIPO_EDIF); if(byId('DISTRITO_SEL').options.length === 0) populateSelect('DISTRITO_SEL', LIST_DISTRITOS); buildAddressPreview(); }
         function closeAddressModal() { byId('addressModal').classList.add('hidden-vis'); }
-        function confirmAddress() {
-            const addr = byId('addressPreview').textContent;
-            if(!addr || addr === '---') return;
-            byId('DIREC_INST').value = addr;
-            closeAddressModal();
-            showToast('Dirección actualizada.', 'success');
-        }
-
-        function buildAddressPreview() {
-            let addr = "";
-            const tVia = byId('TIPO_VIA').value.trim();
-            const nVia = byId('NOM_VIA').value.trim().toUpperCase();
-            if(tVia) addr += tVia;
-            if(nVia) { if(addr) addr += " "; addr += nVia; }
-            const nro = byId('NRO').value.trim().toUpperCase();
-            if(nro) addr += " NRO. " + nro;
-            const mza = byId('MZA').value.trim().toUpperCase();
-            if(mza) addr += " MZA. " + mza;
-            const lte = byId('LTE').value.trim().toUpperCase();
-            if(lte) addr += " LTE. " + lte;
-            const tInt = byId('TIP_INT').value.trim();
-            const nInt = byId('NRO_INT').value.trim().toUpperCase();
-            if(tInt && tInt !== "NINGUNO" && tInt.trim() !== "") { addr += " " + tInt; if(nInt) addr += " " + nInt; }
-            const tEdif = byId('TIP_EDIF').value.trim();
-            const nEdif = byId('NOM_EDIF').value.trim().toUpperCase();
-            if(tEdif && tEdif.trim() !== "") addr += " " + tEdif;
-            if(nEdif) addr += " " + nEdif;
-            const urb = byId('URB_ADDR').value.trim().toUpperCase();
-            if(urb) addr += " URB. " + urb;
-            const dist = byId('DISTRITO_SEL').value.trim().toUpperCase();
-            let suffix = "LIMA - LIMA";
-            if(CALLAO_DISTRITOS.includes(dist)) suffix = "CALLAO - LIMA";
-            if(dist && dist.trim() !== "") addr += ` (${dist} - ${suffix})`;
-            byId('addressPreview').textContent = addr.trim() || '---';
-        }
-
-        function populateSelect(id, list) {
-            const sel = byId(id); sel.innerHTML = '';
-            list.forEach(item => { const opt = document.createElement('option'); opt.value = item; opt.textContent = item; sel.appendChild(opt); });
-        }
-
-        function handleLogin() {
-            const uInput = byId('loginUser').value.trim(); 
-            const pInput = byId('loginPass').value.trim(); 
-            
-            // ACCESO MAESTRO INFALIBLE (Case-insensitive)
-            if (uInput.toLowerCase() === 'mob_hmedinab' && pInput === 'adminMobilenet2025') {
-                loginSuccess({ u: 'mob_hmedinab', role: 'admin' });
-                return;
-            }
-
-            // Búsqueda en base de datos local (Ya reparada al inicio)
-            const uKey = userId(uInput);
-            const found = state.users.find(x => x.uid === uKey && x.p === pInput);
-            
-            const errDiv = byId('loginError');
-            if (!found) { 
-                errDiv.textContent = 'Credenciales incorrectas.'; 
-                errDiv.classList.remove('animate-pulse');
-                void errDiv.offsetWidth; // Reiniciar animación
-                errDiv.classList.add('animate-pulse');
-                return; 
-            }
-            
-            loginSuccess({ u: found.u, role: found.role });
-        }
-        function loginSuccess(user) {
-            state.currentUser = user; localStorage.setItem(KEYS.LOG_OK, '1'); localStorage.setItem(KEYS.LOG_USER, JSON.stringify(user));
-            byId('loginScreen').classList.add('hidden-vis'); byId('appHeader').classList.remove('hidden-vis'); byId('mainContent').classList.remove('hidden-vis');
-            byId('headerUser').textContent = user.u; byId('headerRole').textContent = user.role;
-            byId('displaySession').textContent = user.u;
-            byId('adminTabs').classList.toggle('hidden-vis', user.role !== 'admin');
-            switchTab('home'); // CHANGE: Default to HOME
-            showToast(`Bienvenido ${user.u}`, 'success');
-        }
+        function confirmAddress() { const addr = byId('addressPreview').textContent; if(!addr || addr === '---') return; byId('DIREC_INST').value = addr; closeAddressModal(); showToast('Dirección actualizada.', 'success'); }
+        function buildAddressPreview() { let addr = ""; const tVia = byId('TIPO_VIA').value.trim(); const nVia = byId('NOM_VIA').value.trim().toUpperCase(); if(tVia) addr += tVia; if(nVia) { if(addr) addr += " "; addr += nVia; } const nro = byId('NRO').value.trim().toUpperCase(); if(nro) addr += " NRO. " + nro; const mza = byId('MZA').value.trim().toUpperCase(); if(mza) addr += " MZA. " + mza; const lte = byId('LTE').value.trim().toUpperCase(); if(lte) addr += " LTE. " + lte; const tInt = byId('TIP_INT').value.trim(); const nInt = byId('NRO_INT').value.trim().toUpperCase(); if(tInt && tInt !== "NINGUNO" && tInt.trim() !== "") { addr += " " + tInt; if(nInt) addr += " " + nInt; } const tEdif = byId('TIP_EDIF').value.trim(); const nEdif = byId('NOM_EDIF').value.trim().toUpperCase(); if(tEdif && tEdif.trim() !== "") addr += " " + tEdif; if(nEdif) addr += " " + nEdif; const urb = byId('URB_ADDR').value.trim().toUpperCase(); if(urb) addr += " URB. " + urb; const dist = byId('DISTRITO_SEL').value.trim().toUpperCase(); let suffix = "LIMA - LIMA"; if(CALLAO_DISTRITOS.includes(dist)) suffix = "CALLAO - LIMA"; if(dist && dist.trim() !== "") addr += ` (${dist} - ${suffix})`; byId('addressPreview').textContent = addr.trim() || '---'; }
+        function populateSelect(id, list) { const sel = byId(id); sel.innerHTML = ''; list.forEach(item => { const opt = document.createElement('option'); opt.value = item; opt.textContent = item; sel.appendChild(opt); }); }
+        
+        function handleLogin() { const uInput = byId('loginUser').value.trim(); const pInput = byId('loginPass').value.trim(); if (uInput.toLowerCase() === 'mob_hmedinab' && pInput === 'adminMobilenet2025') { loginSuccess({ u: 'mob_hmedinab', role: 'admin' }); return; } const uKey = userId(uInput); const found = state.users.find(x => x.uid === uKey && x.p === pInput); const errDiv = byId('loginError'); if (!found) { errDiv.textContent = 'Credenciales incorrectas.'; errDiv.classList.remove('animate-pulse'); void errDiv.offsetWidth; errDiv.classList.add('animate-pulse'); return; } loginSuccess({ u: found.u, role: found.role }); }
+        function loginSuccess(user) { state.currentUser = user; localStorage.setItem(KEYS.LOG_OK, '1'); localStorage.setItem(KEYS.LOG_USER, JSON.stringify(user)); byId('loginScreen').classList.add('hidden-vis'); byId('appHeader').classList.remove('hidden-vis'); byId('mainContent').classList.remove('hidden-vis'); byId('headerUser').textContent = user.u; byId('headerRole').textContent = user.role; byId('displaySession').textContent = user.u; byId('adminTabs').classList.toggle('hidden-vis', user.role !== 'admin'); switchTab('home'); showToast(`Bienvenido ${user.u}`, 'success'); }
         function logout() { localStorage.removeItem(KEYS.LOG_OK); localStorage.removeItem(KEYS.LOG_USER); location.reload(); }
-        function handleResetAccess() {
-            const seeded = SEED_USERS.map(s => ({ ...s, uLower: norm(s.u), uid: userId(s.u) }));
-            localStorage.setItem(KEYS.USERS, JSON.stringify(seeded)); state.users = seeded;
-            byId('loginError').textContent = 'Base de datos restablecida.'; setTimeout(() => byId('loginError').textContent = '', 3000);
-        }
-
-        // --- NEW LOGIC FOR HOME TABS ---
+        
         function switchTab(tabId) {
             ['home', 'generator', 'config', 'logs'].forEach(t => { 
                 byId(`view-${t}`).classList.add('hidden-vis'); 
@@ -1858,451 +1623,158 @@
             if(byId(`tab-${tabId}`)) byId(`tab-${tabId}`).classList.add('active', 'border-brand-500', 'text-brand-600');
             
             if (tabId === 'config') initConfigView(); 
-            if (tabId === 'logs') renderLogs();
-            if (tabId === 'home') switchHomeTab('comunicados'); // Default sub-tab
+            if (tabId === 'logs') { 
+                // Al entrar a logs, inicializamos los filtros
+                populateLogFilters();
+                renderLogs(); 
+            }
+            if (tabId === 'home') switchHomeTab('comunicados'); 
         }
 
-        function switchHomeTab(subTab) {
-            ['comunicados', 'consulta', 'descargas'].forEach(t => {
-                byId(`panel-${t}`).classList.add('hidden-vis');
-                const btn = byId(`btnHome${t.charAt(0).toUpperCase() + t.slice(1)}`);
-                if(btn) btn.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-50";
-            });
-            
-            byId(`panel-${subTab}`).classList.remove('hidden-vis');
-            const activeBtn = byId(`btnHome${subTab.charAt(0).toUpperCase() + subTab.slice(1)}`);
-            if(activeBtn) activeBtn.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all bg-brand-600 text-white shadow-md";
-        }
+        // ... (switchHomeTab, realizarConsultaVenta, closeConsultaModal, switchConfigTab, initGeneratorLogic, etc... sin cambios)
+        function switchHomeTab(subTab) { ['comunicados', 'consulta', 'descargas'].forEach(t => { byId(`panel-${t}`).classList.add('hidden-vis'); const btn = byId(`btnHome${t.charAt(0).toUpperCase() + t.slice(1)}`); if(btn) btn.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-50"; }); byId(`panel-${subTab}`).classList.remove('hidden-vis'); const activeBtn = byId(`btnHome${subTab.charAt(0).toUpperCase() + subTab.slice(1)}`); if(activeBtn) activeBtn.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all bg-brand-600 text-white shadow-md"; }
+        function realizarConsultaVenta() { const query = byId('inputConsultaVenta').value.trim(); if(!query) return showToast('Ingrese un Código OPP/ID', 'warning'); const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; const result = logs.find(l => l.opp === query); const resContainer = byId('resultadoConsulta'); resContainer.innerHTML = ''; resContainer.classList.add('hidden'); if(result) { const safeVal = (v) => v || '-'; byId('resGestor').textContent = safeVal(result.gestor); byId('resSupervisor').textContent = safeVal(result.supervisor); byId('resRuc').textContent = safeVal(result.ruc); byId('resRazon').textContent = safeVal(result.razonSocial || result.RAZON_SOCIAL); byId('resAnchoBanda').textContent = safeVal(result.anchoBanda); byId('resFecha').textContent = safeVal(result.fechaIngreso || result.date); byId('resObs').textContent = safeVal(result.observaciones || result.obs); const estado = safeVal(result.estado); const badge = byId('resEstado'); badge.textContent = estado; if(estado === 'INGRESADO' || estado === 'EN PROCESO' || estado === 'ADMITIDA') { badge.className = "px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold border border-blue-200"; } else if (estado === 'COMPLETADO' || estado === 'ACTIVO' || estado === 'INSTALADO') { badge.className = "px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold border border-green-200"; } else if (estado === 'ANULADO' || estado === 'DEUDA') { badge.className = "px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold border border-red-200"; } else { badge.className = "px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold border border-yellow-200"; } byId('consultaResultModal').classList.remove('hidden-vis'); lucide.createIcons(); } else { resContainer.classList.remove('hidden'); resContainer.innerHTML = `<div class="flex items-center gap-3 text-red-500 font-bold"><i data-lucide="alert-circle"></i> No se encontraron resultados</div><p class="text-sm text-gray-500 mt-2">Verifique el Código OPP/ID ingresado (Ej: 544846).</p>`; lucide.createIcons(); } }
+        function closeConsultaModal() { byId('consultaResultModal').classList.add('hidden-vis'); }
+        function switchConfigTab(subTab) { const btnUsers = byId('btnConfigUsers'); const btnPlans = byId('btnConfigPlans'); const pUsers = byId('panel-users'); const pPlans = byId('panel-plans'); if (subTab === 'users') { btnUsers.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all bg-brand-600 text-white shadow-md"; btnPlans.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-50"; pUsers.classList.remove('hidden-vis'); pPlans.classList.add('hidden-vis'); renderUsers(); } else { btnPlans.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all bg-brand-600 text-white shadow-md"; btnUsers.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-50"; pPlans.classList.remove('hidden-vis'); pUsers.classList.add('hidden-vis'); renderPlans(); } }
+        function initGeneratorLogic() { const today = new Date(); const yyyy = today.getFullYear(); const mm = String(today.getMonth() + 1).padStart(2, '0'); const dd = String(today.getDate()).padStart(2, '0'); byId('FECHA_FIRMA').value = `${yyyy}-${mm}-${dd}`; updatePlanSelect(); byId('planSelect').addEventListener('change', onPlanSelectChange); byId('btnExport').onclick = handleExportAll; setServiceType('internet'); }
+        function setServiceType(type) { state.serviceType = type; const btnInt = byId('btnTypeInternet'); const btnPack = byId('btnTypePack'); const btnDed = byId('btnTypeDedicado'); const packFields = byId('packFields'); const isPack = type === 'pack'; const baseClass = "flex-1 flex flex-col items-center justify-center gap-3 py-6 px-4 rounded-xl border transition-all duration-300 hover:scale-[1.02] cursor-pointer"; const activeClass = "bg-white border-brand-500 text-brand-700 shadow-md ring-2 ring-brand-500/20"; const inactiveClass = "bg-white border-gray-100 text-gray-500 hover:border-gray-300 hover:bg-gray-50"; btnInt.className = baseClass + " " + (type === 'internet' ? activeClass : inactiveClass); btnPack.className = baseClass + " " + (isPack ? activeClass : inactiveClass); btnDed.className = baseClass + " " + (type === 'dedicado' ? activeClass : inactiveClass); if (isPack) { packFields.classList.remove('hidden'); byId('checkPortabilidad').checked = false; togglePortability(); } else { packFields.classList.add('hidden'); byId('checkPortabilidad').checked = false; togglePortability(); } updatePlanSelect(); updateFileListPreview(); }
+        function updateFileListPreview() { const list = byId('fileListPreview'); const prefix = state.serviceType === 'pack' ? 'Pack ' : ''; const isPortability = byId('checkPortabilidad').checked; let filesHtml = `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_5px_rgba(0,92,185,0.5)]"></div> ${prefix}Arrendamiento.pdf</li>`; if(isPortability) { filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_5px_rgba(0,92,185,0.5)]"></div> Pack Portabilidad.pdf</li>`; } filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_5px_rgba(0,92,185,0.5)]"></div> ${prefix}Servicios Suplementarios.pdf</li>`; filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_5px_rgba(0,92,185,0.5)]"></div> ${prefix}Tarifas y Servicios.pdf</li>`; list.innerHTML = filesHtml; }
+        function updatePlanSelect() { const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar Plan —</option>'; const filteredPlans = state.plans.filter(p => p.type === state.serviceType); filteredPlans.forEach((p) => { const opt = document.createElement('option'); opt.value = p.name; opt.textContent = p.name; sel.appendChild(opt); }); byId('NOM_PLAN').value = ''; byId('MIN_GAR').value = ''; byId('VEL_MAX_BAJ').value = ''; byId('VEL_MIN_BAJ').value = ''; byId('VEL_MAX_SUB').value = ''; byId('VEL_MIN_SUB').value = ''; byId('TARIF_MENS').value = ''; byId('PLAZO_CONT').value = ''; byId('CARGO_FIJO_VAL').value = ''; }
+        function onPlanSelectChange(e) { const planName = e.target.value; const p = state.plans.find(x => x.name === planName); if (!p) return; if (p.name.toLowerCase().includes('pack')) setServiceType('pack'); else setServiceType('internet'); let mg = p.minGar; if(mg == 0.7 || mg === "0.7") mg = "70%"; byId('NOM_PLAN').value = p.name; byId('MIN_GAR').value = mg; byId('VEL_MAX_BAJ').value = p.vmb; byId('VEL_MIN_BAJ').value = p.vminb; byId('VEL_MAX_SUB').value = p.vms; byId('VEL_MIN_SUB').value = p.vmins; byId('TARIF_MENS').value = formatMoney(p.tarif); if (p.plazo) byId('PLAZO_CONT').value = p.plazo; if (p.cargoFijo) byId('CARGO_FIJO_VAL').value = formatMoney(p.cargoFijo); }
+        // ... (fetchRucData, fetchDniData, handleExportAll, generatePdf, initConfigView, renderUsers, createNewUser, deleteUser, resetPassword, generateUserPass, renderPlans, updateStats, openEditLogModal, saveLogEdit, closeLogModal, clearAllLogs igual) ...
 
-        function realizarConsultaVenta() {
-            const query = byId('inputConsultaVenta').value.trim();
-            if(!query) return showToast('Ingrese un Código OPP/ID', 'warning');
-            
+        async function fetchRucData() { const ruc = byId('RUC').value; if (!ruc || ruc.length !== 11) return showToast('RUC inválido.', 'error'); const btn = byId('btnSearchRuc'); btn.disabled = true; btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 loading-spin"></i>'; lucide.createIcons(); try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`); if(!res.ok) throw new Error(); const d = await res.json(); if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; showToast('Datos obtenidos.', 'success'); } catch { showToast('Error consultando RUC.', 'error'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); } }
+        async function fetchDniData() { const dni = byId('DNI').value; if (!dni || dni.length !== 8) return showToast('DNI inválido.', 'error'); const btn = byId('btnSearchDni'); btn.disabled = true; btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 loading-spin"></i>'; lucide.createIcons(); try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/dni/${dni}?token=${APISPERU_TOKEN}`); if (!res.ok) throw new Error(); const d = await res.json(); if (d && d.success !== false) { byId('APELLIDO_PATERNO').value = d.apellidoPaterno || ''; byId('APELLIDO_MATERNO').value = d.apellidoMaterno || ''; byId('NOMBRES').value = d.nombres || ''; showToast('Datos obtenidos.', 'success'); } else { showToast('No encontrado.', 'warning'); } } catch (e) { showToast('Error consultando DNI.', 'error'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); } }
+
+        async function handleExportAll() { if (!byId('RUC').value || !byId('RAZON_SOCIAL').value) return showToast('Faltan datos del Cliente.', 'error'); const req = ['APELLIDO_PATERNO','APELLIDO_MATERNO','NOMBRES','DNI','TELEFONO','CORREO','CONT_NOMB','CONT_CARGO','CONT_DNI','CONT_TELEF','CONT_CORREO','RL','CARGO_FIRM','DIREC_INST', 'FECHA_FIRMA']; const missing = req.filter(id => !byId(id).value); if (missing.length > 0) return showToast('Faltan campos obligatorios.', 'error'); if (!isValidEmail(byId('CORREO').value)) return showToast('Correo RL inválido.', 'error'); if (!isValidEmail(byId('CONT_CORREO').value)) return showToast('Correo Contacto inválido.', 'error'); const fiscal = byId('DIRECCION').value.trim().toUpperCase(); const inst = byId('DIREC_INST').value.trim().toUpperCase(); if (!fiscal) return showToast('Falta Dirección Fiscal.', 'error'); if (fiscal === inst) return showToast('Direcciones no pueden ser iguales.', 'warning'); const rows = state.activeSupRows; rows.forEach(row => { const domQty = byId('qty_' + row.id); const domPrice = byId('price_' + row.id); const domSel = byId('sel_' + row.id); if (domQty && domPrice && domSel) { const rawQty = domQty.value.replace(/\D/g, ''); const qty = parseInt(rawQty) || 0; const priceStr = domPrice.value; const price = parseMoney(priceStr); const sub = qty * price; const subFormatted = formatMoney(sub); row.service = domSel.value; row.qty = qty; row.price = priceStr; row.sub = subFormatted; row.subValue = sub; } }); updateGlobalSupTotal(); const dateVal = byId('FECHA_FIRMA').value; let dateExtras = {}; if(dateVal) { const [y, m, d] = dateVal.split('-'); const dateObj = new Date(y, parseInt(m)-1, d); dateExtras = { 'DIA': d, 'MES': getMonthName(dateObj.getMonth()), 'AÑO': y, 'ANO': y }; } const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' '); const suffix = nro ? ` - ${nro}.pdf` : '.pdf'; const prefix = state.serviceType === 'pack' ? 'Pack ' : ''; const st = byId('exportStatus'); st.className = "mt-4 text-xs p-4 rounded-xl border flex items-start gap-3 bg-blue-50 text-blue-700 border-blue-100 font-medium animate-fade-in"; st.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 loading-spin mt-0.5"></i> <span>Generando documentos...</span>'; st.classList.remove('hidden'); lucide.createIcons(); try { await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix, dateExtras); let supValues = { ...dateExtras }; state.activeSupRows.forEach((row, i) => { const serviceInfo = SUP_SERVICES_DATA.find(s => s.id === row.service); if (serviceInfo) { const qtyVal = String(row.qty).padStart(2, '0'); supValues[serviceInfo.cantField] = qtyVal; supValues[serviceInfo.subField] = row.sub; } }); await generatePdf(prefix + 'Servicios Suplementarios.pdf', MAP_SUP, prefix + 'Servicios Suplementarios' + suffix, supValues); await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix, dateExtras); if(byId('checkPortabilidad').checked) { const op = byId('selOperador').value; const portMapFinal = { 'RAZON SOCIAL': byId('RAZON_SOCIAL').value, 'RL': byId('RL').value, 'RUC': byId('RUC').value, 'CONT_TELEF': byId('CONT_TELEF').value, 'CONT_CORREO': byId('CONT_CORREO').value, 'NUM_TELF': byId('NUM_TELF').value }; if (dateVal) { const [y, m, d] = dateVal.split('-'); portMapFinal['FECHA CONT1'] = `${d}/${m}/${y}`; } const now = new Date(); const h = String(now.getHours()).padStart(2, '0'); const min = String(now.getMinutes()).padStart(2, '0'); const sec = String(now.getSeconds()).padStart(2, '0'); portMapFinal['HORA CONT'] = `${h}:${min}:${sec}`; if(op === 'AMERICA_MOVIL') portMapFinal['CLARO'] = 'X'; if(op === 'TELEFONICA') portMapFinal['MOVISTAR'] = 'X'; if(op === 'VIETTEL') portMapFinal['BITEL'] = 'X'; if(op === 'OTRO') portMapFinal['OTRO'] = 'X'; await generatePdf('Pack Portabilidad.pdf', portMapFinal, 'Pack Portabilidad' + suffix); } const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; const planName = byId('NOM_PLAN').value || '-'; const anchoBanda = `${byId('VEL_MAX_BAJ').value} / ${byId('VEL_MAX_SUB').value} Mbps`; logs.unshift({ mesVenta: getMonthName(new Date().getMonth()), gestor: state.currentUser.u, supervisor: '-', eecc: 'MOBILENET', tipoRuc: byId('RUC').value.startsWith('20') ? 'RUC 20' : 'RUC 10', ruc: byId('RUC').value || '-', razonSocial: byId('RAZON_SOCIAL').value || '-', anchoBanda: anchoBanda, tipoServicio: state.serviceType.toUpperCase(), costo: byId('TARIF_MENS').value || '0.00', access: 'FIBRA', fechaIngreso: new Date().toLocaleDateString(), psi: '-', opp: '-', saf: '-', siro: '-', estado: 'INGRESADO', promocion: '-', fechaAdmision: '-', mesAdmision: '-', observaciones: '-', asunto: `Solicitud de Servicio - ${byId('RAZON_SOCIAL').value || '-'}`, correo: byId('CORREO').value || '-', date: new Date().toLocaleString(), nroOport: byId('NRO_OPORT').value || 'S/N', plan: planName, user: state.currentUser.u }); localStorage.setItem(KEYS.LOGS, JSON.stringify(logs)); st.className = "mt-4 text-xs p-4 rounded-xl border flex items-start gap-3 bg-green-50 text-green-700 border-green-100 font-medium animate-fade-in"; st.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 mt-0.5"></i> <span>¡Documentos generados exitosamente!</span>'; lucide.createIcons(); showToast('Contratos generados correctamente.', 'success'); } catch (e) { st.className = "mt-4 text-xs p-4 rounded-xl border flex items-start gap-3 bg-red-50 text-red-700 border-red-100 font-medium animate-fade-in"; st.innerHTML = `<i data-lucide="alert-octagon" class="w-4 h-4 mt-0.5"></i> <span>Error: ${e.message}</span>`; lucide.createIcons(); } }
+        async function generatePdf(fileName, map, outName, extraValues = null) { let pdfDoc; try { if (!window.PDFLib) throw new Error("Librería PDF no cargada."); const resp = await fetch(fileName); if (!resp.ok) throw new Error("Plantilla no encontrada"); const arrBuffer = await resp.arrayBuffer(); pdfDoc = await PDFLib.PDFDocument.load(arrBuffer); const form = pdfDoc.getForm(); const safeSetText = (key, val) => { const strVal = String(val || ''); try { const f = form.getTextField(key); f.setText(strVal); } catch(e1) { try { const f2 = form.getTextField(key + ' '); f2.setText(strVal); } catch(e2) { try { const f3 = form.getTextField(key.trim()); f3.setText(strVal); } catch(e3) { } } } }; for (const [pdfField, domId] of Object.entries(map)) { try { const el = byId(domId); if (el) safeSetText(pdfField, el.value); else safeSetText(pdfField, map[pdfField]); } catch(e) {} } if (extraValues) { for (const [key, val] of Object.entries(extraValues)) { safeSetText(key, val); } } form.flatten(); } catch (err) { if (!window.PDFLib) return alert("Error crítico PDF."); pdfDoc = await PDFLib.PDFDocument.create(); let page = pdfDoc.addPage([595.28, 841.89]); const { width, height } = page.getSize(); const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica); const fontBold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold); let y = height - 50; page.drawText(`CONTRATO: ${outName}`, { x: 50, y, size: 16, font: fontBold, color: PDFLib.rgb(0, 0.36, 0.72) }); y -= 40; const drawField = (label, value) => { if (y < 50) { page = pdfDoc.addPage([595.28, 841.89]); y = height - 50; } page.drawText(label + ":", { x: 50, y, size: 10, font: fontBold }); page.drawText(String(value || '-').toUpperCase(), { x: 200, y, size: 10, font: font }); y -= 15; }; for (const [pdfField, domId] of Object.entries(map)) { const el = byId(domId); if(el) drawField(pdfField, el.value); else drawField(pdfField, map[pdfField]); } if (extraValues) for (const [key, val] of Object.entries(extraValues)) drawField(key, val); } const pdfBytes = await pdfDoc.save(); const blob = new Blob([pdfBytes], { type: 'application/pdf' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = outName; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+        function initConfigView() { renderUsers(); renderPlans(); updateStats(); }
+        function renderUsers() { const cont = byId('usersList'); cont.innerHTML = ''; const filter = norm(byId('searchUser').value); const filtered = state.users.filter(u => u.uLower.includes(filter)); byId('userCountBadge').textContent = `${filtered.length} Usuarios`; filtered.forEach(u => { const isMe = state.currentUser && state.currentUser.u === u.u; const card = document.createElement('div'); card.className = "bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex justify-between items-center group"; card.innerHTML = `<div class="flex items-center gap-4"><div class="w-12 h-12 ${u.role === 'admin' ? 'bg-brand-50 text-brand-600' : 'bg-gray-100 text-gray-500'} rounded-xl flex items-center justify-center font-bold text-lg border border-transparent group-hover:border-gray-200 transition-colors">${u.u.charAt(0).toUpperCase()}</div><div><h4 class="font-bold text-gray-800 text-sm">${u.u}</h4><div class="flex gap-2 mt-1"><span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${u.role === 'admin' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'}">${u.role}</span>${u.restrictIp ? '<span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">IP Restringida</span>' : ''}</div></div></div><div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity"><button onclick="resetPassword('${u.uid}')" class="p-2 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors" title="Reset Password"><i data-lucide="key" class="w-4 h-4"></i></button>${!isMe ? `<button onclick="deleteUser('${u.uid}')" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Eliminar"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}</div>`; cont.appendChild(card); }); lucide.createIcons(); }
+        function createNewUser() { const uVal = byId('newUserName').value.trim(); const pVal = byId('newUserPass').value.trim(); const role = byId('newUserRole').value; const restrict = byId('newUserRestrict').checked; if(!uVal || !pVal) return showToast('Complete usuario y contraseña.', 'error'); const uid = userId(uVal); if(state.users.some(u => u.uid === uid)) return showToast('El usuario ya existe.', 'warning'); state.users.push({ u: uVal, p: pVal, role, restrictIp: restrict, uLower: norm(uVal), uid }); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); byId('newUserName').value = ''; byId('newUserPass').value = ''; renderUsers(); showToast('Usuario creado correctamente.', 'success'); }
+        function deleteUser(uid) { if(!confirm('¿Eliminar este usuario?')) return; state.users = state.users.filter(u => u.uid !== uid); localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); renderUsers(); showToast('Usuario eliminado.', 'info'); }
+        function resetPassword(uid) { const newPass = Math.random().toString(36).slice(-8); prompt(`Nueva contraseña para el usuario (copiar):`, newPass); const idx = state.users.findIndex(u => u.uid === uid); if(idx !== -1) { state.users[idx].p = newPass; localStorage.setItem(KEYS.USERS, JSON.stringify(state.users)); showToast('Contraseña actualizada.', 'success'); } }
+        function generateUserPass() { const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%"; let pass = ""; for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length)); byId('newUserPass').value = pass; }
+        function renderPlans() { const tbody = byId('plansListBody'); tbody.innerHTML = ''; const search = norm(byId('searchPlan').value); const filtered = state.plans.filter(p => norm(p.name).includes(search)); byId('planFooterCount').textContent = `${filtered.length} Planes mostrados`; filtered.forEach((p, idx) => { const realIdx = state.plans.indexOf(p); const tr = document.createElement('tr'); tr.className = "hover:bg-gray-50 group transition-colors"; tr.innerHTML = `<td class="p-5 pl-8 font-bold text-gray-700">${p.name}</td><td class="p-5"><span class="px-2 py-1 rounded text-xs font-bold uppercase ${p.type==='pack'?'bg-orange-100 text-orange-700':(p.type==='dedicado'?'bg-purple-100 text-purple-700':'bg-blue-100 text-blue-700')}">${p.type}</span></td><td class="p-5 font-mono text-gray-600 text-xs">T: S/ ${p.tarif}<br>CF: S/ ${p.cargoFijo || '-'}</td><td class="p-5 text-xs text-gray-500"><div class="flex gap-2"><span class="text-green-600 font-bold">↓ ${p.vmb}</span><span class="text-blue-600 font-bold">↑ ${p.vms}</span></div><span class="text-[10px] text-gray-400">Gar: ${p.minGar}</span></td><td class="p-5 text-gray-500">${p.plazo} m</td><td class="p-5 text-center"><button onclick="openPlanModal(${realIdx})" class="text-gray-400 hover:text-brand-600 p-2 rounded-lg hover:bg-brand-50 transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button></td>`; tbody.appendChild(tr); }); lucide.createIcons(); }
+        function updateStats() { byId('statTotal').textContent = state.plans.length; }
+
+        // --- FUNCIONES NUEVAS PARA FILTRADO DE LOGS ---
+        
+        // 1. Poblar Filtros dinámicamente
+        function populateLogFilters() {
             const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
             
-            // Lógica actualizada: Buscar ESTRICTAMENTE por campo 'opp' (OPP/ID)
-            const result = logs.find(l => l.opp === query);
-            
-            const resContainer = byId('resultadoConsulta');
-            resContainer.innerHTML = '';
-            resContainer.classList.add('hidden');
+            // Sets para valores únicos
+            const years = new Set();
+            const months = new Set();
+            const supervisors = new Set();
+            const eeccs = new Set();
+            const bws = new Set();
+            const types = new Set();
+            const accesses = new Set();
+            const statuses = new Set();
 
-            if(result) {
-                // Llenar datos del Modal Flotante
-                const safeVal = (v) => v || '-';
-                
-                byId('resGestor').textContent = safeVal(result.gestor);
-                byId('resSupervisor').textContent = safeVal(result.supervisor);
-                byId('resRuc').textContent = safeVal(result.ruc);
-                byId('resRazon').textContent = safeVal(result.razonSocial || result.RAZON_SOCIAL);
-                byId('resAnchoBanda').textContent = safeVal(result.anchoBanda);
-                byId('resFecha').textContent = safeVal(result.fechaIngreso || result.date);
-                byId('resObs').textContent = safeVal(result.observaciones || result.obs);
-                
-                const estado = safeVal(result.estado);
-                const badge = byId('resEstado');
-                badge.textContent = estado;
-                
-                // Color dinámico del estado
-                if(estado === 'INGRESADO' || estado === 'EN PROCESO' || estado === 'ADMITIDA') {
-                    badge.className = "px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold border border-blue-200";
-                } else if (estado === 'COMPLETADO' || estado === 'ACTIVO' || estado === 'INSTALADO') {
-                    badge.className = "px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold border border-green-200";
-                } else if (estado === 'ANULADO' || estado === 'DEUDA') {
-                    badge.className = "px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold border border-red-200";
-                } else {
-                    badge.className = "px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold border border-yellow-200";
+            logs.forEach(l => {
+                if(l.fechaIngreso) {
+                    const parts = l.fechaIngreso.split('/');
+                    if(parts.length === 3) years.add(parts[2]);
+                } else if (l.date) {
+                    const parts = l.date.split(' ')[0].split('/');
+                    if(parts.length === 3) years.add(parts[2]);
                 }
-
-                // Mostrar Modal
-                byId('consultaResultModal').classList.remove('hidden-vis');
-                lucide.createIcons();
-            } else {
-                // Mostrar error inline si no se encuentra
-                resContainer.classList.remove('hidden');
-                resContainer.innerHTML = `
-                    <div class="flex items-center gap-3 text-red-500 font-bold"><i data-lucide="alert-circle"></i> No se encontraron resultados</div>
-                    <p class="text-sm text-gray-500 mt-2">Verifique el Código OPP/ID ingresado (Ej: 544846).</p>
-                `;
-                lucide.createIcons();
-            }
-        }
-
-        function closeConsultaModal() {
-            byId('consultaResultModal').classList.add('hidden-vis');
-        }
-
-        function switchConfigTab(subTab) {
-            const btnUsers = byId('btnConfigUsers'); const btnPlans = byId('btnConfigPlans'); const pUsers = byId('panel-users'); const pPlans = byId('panel-plans');
-            if (subTab === 'users') { 
-                btnUsers.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all bg-brand-600 text-white shadow-md"; 
-                btnPlans.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-50"; 
-                pUsers.classList.remove('hidden-vis'); pPlans.classList.add('hidden-vis'); 
-                renderUsers();
-            }
-            else { 
-                btnPlans.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all bg-brand-600 text-white shadow-md"; 
-                btnUsers.className = "px-5 py-2.5 rounded-lg text-sm font-bold transition-all text-gray-500 hover:text-gray-900 hover:bg-gray-50"; 
-                pPlans.classList.remove('hidden-vis'); pUsers.classList.add('hidden-vis'); 
-                renderPlans();
-            }
-        }
-
-        function initGeneratorLogic() {
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            byId('FECHA_FIRMA').value = `${yyyy}-${mm}-${dd}`;
-
-            updatePlanSelect(); 
-            byId('planSelect').addEventListener('change', onPlanSelectChange); 
-            byId('btnExport').onclick = handleExportAll; 
-            setServiceType('internet');
-        }
-        function setServiceType(type) {
-            state.serviceType = type; 
-            const btnInt = byId('btnTypeInternet'); 
-            const btnPack = byId('btnTypePack');
-            const btnDed = byId('btnTypeDedicado');
-            const packFields = byId('packFields');
-            const isPack = type === 'pack';
-            
-            const baseClass = "flex-1 flex flex-col items-center justify-center gap-3 py-6 px-4 rounded-xl border transition-all duration-300 hover:scale-[1.02] cursor-pointer";
-            const activeClass = "bg-white border-brand-500 text-brand-700 shadow-md ring-2 ring-brand-500/20";
-            const inactiveClass = "bg-white border-gray-100 text-gray-500 hover:border-gray-300 hover:bg-gray-50";
-
-            btnInt.className = baseClass + " " + (type === 'internet' ? activeClass : inactiveClass);
-            btnPack.className = baseClass + " " + (isPack ? activeClass : inactiveClass);
-            btnDed.className = baseClass + " " + (type === 'dedicado' ? activeClass : inactiveClass);
-
-            if (isPack) {
-                packFields.classList.remove('hidden');
-                byId('checkPortabilidad').checked = false;
-                togglePortability();
-            } else {
-                packFields.classList.add('hidden');
-                byId('checkPortabilidad').checked = false; 
-                togglePortability(); 
-            }
-            
-            updatePlanSelect(); 
-            updateFileListPreview();
-        }
-        function updateFileListPreview() {
-            const list = byId('fileListPreview'); const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
-            const isPortability = byId('checkPortabilidad').checked;
-            let filesHtml = `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_5px_rgba(0,92,185,0.5)]"></div> ${prefix}Arrendamiento.pdf</li>`;
-            
-            if(isPortability) {
-                filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_5px_rgba(0,92,185,0.5)]"></div> Pack Portabilidad.pdf</li>`;
-            }
-
-            filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_5px_rgba(0,92,185,0.5)]"></div> ${prefix}Servicios Suplementarios.pdf</li>`;
-            filesHtml += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_5px_rgba(0,92,185,0.5)]"></div> ${prefix}Tarifas y Servicios.pdf</li>`;
-            
-            list.innerHTML = filesHtml;
-        }
-        function updatePlanSelect() { const sel = byId('planSelect'); sel.innerHTML = '<option value="">— Seleccionar Plan —</option>'; const filteredPlans = state.plans.filter(p => p.type === state.serviceType); filteredPlans.forEach((p) => { const opt = document.createElement('option'); opt.value = p.name; opt.textContent = p.name; sel.appendChild(opt); }); byId('NOM_PLAN').value = ''; byId('MIN_GAR').value = ''; byId('VEL_MAX_BAJ').value = ''; byId('VEL_MIN_BAJ').value = ''; byId('VEL_MAX_SUB').value = ''; byId('VEL_MIN_SUB').value = ''; byId('TARIF_MENS').value = ''; byId('PLAZO_CONT').value = ''; byId('CARGO_FIJO_VAL').value = ''; }
-        
-        function onPlanSelectChange(e) {
-            const planName = e.target.value; const p = state.plans.find(x => x.name === planName); if (!p) return;
-            if (p.name.toLowerCase().includes('pack')) setServiceType('pack'); else setServiceType('internet');
-            let mg = p.minGar; if(mg == 0.7 || mg === "0.7") mg = "70%";
-            byId('NOM_PLAN').value = p.name; byId('MIN_GAR').value = mg; 
-            byId('VEL_MAX_BAJ').value = p.vmb; byId('VEL_MIN_BAJ').value = p.vminb; byId('VEL_MAX_SUB').value = p.vms; byId('VEL_MIN_SUB').value = p.vmins; byId('TARIF_MENS').value = formatMoney(p.tarif);
-            if (p.plazo) byId('PLAZO_CONT').value = p.plazo;
-            if (p.cargoFijo) byId('CARGO_FIJO_VAL').value = formatMoney(p.cargoFijo);
-        }
-        async function fetchRucData() {
-            const ruc = byId('RUC').value; if (!ruc || ruc.length !== 11) return showToast('RUC inválido.', 'error');
-            const btn = byId('btnSearchRuc'); btn.disabled = true; btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 loading-spin"></i>'; lucide.createIcons();
-            try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/ruc/${ruc}?token=${APISPERU_TOKEN}`); if(!res.ok) throw new Error(); const d = await res.json(); if(d) byId('RAZON_SOCIAL').value = d.razonSocial || ''; showToast('Datos obtenidos.', 'success'); } catch { showToast('Error consultando RUC.', 'error'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
-        }
-
-        async function fetchDniData() {
-            const dni = byId('DNI').value; if (!dni || dni.length !== 8) return showToast('DNI inválido.', 'error');
-            const btn = byId('btnSearchDni'); btn.disabled = true; btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 loading-spin"></i>'; lucide.createIcons();
-            try { const res = await fetch(`https://dniruc.apisperu.com/api/v1/dni/${dni}?token=${APISPERU_TOKEN}`); if (!res.ok) throw new Error(); const d = await res.json(); if (d && d.success !== false) { byId('APELLIDO_PATERNO').value = d.apellidoPaterno || ''; byId('APELLIDO_MATERNO').value = d.apellidoMaterno || ''; byId('NOMBRES').value = d.nombres || ''; showToast('Datos obtenidos.', 'success'); } else { showToast('No encontrado.', 'warning'); } } catch (e) { showToast('Error consultando DNI.', 'error'); } finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="search" class="w-4 h-4"></i>'; lucide.createIcons(); }
-        }
-
-        async function handleExportAll() {
-            if (!byId('RUC').value || !byId('RAZON_SOCIAL').value) return showToast('Faltan datos del Cliente.', 'error');
-            const req = ['APELLIDO_PATERNO','APELLIDO_MATERNO','NOMBRES','DNI','TELEFONO','CORREO','CONT_NOMB','CONT_CARGO','CONT_DNI','CONT_TELEF','CONT_CORREO','RL','CARGO_FIRM','DIREC_INST', 'FECHA_FIRMA'];
-            const missing = req.filter(id => !byId(id).value); if (missing.length > 0) return showToast('Faltan campos obligatorios.', 'error');
-            if (!isValidEmail(byId('CORREO').value)) return showToast('Correo RL inválido.', 'error'); if (!isValidEmail(byId('CONT_CORREO').value)) return showToast('Correo Contacto inválido.', 'error');
-            const fiscal = byId('DIRECCION').value.trim().toUpperCase(); 
-            const inst = byId('DIREC_INST').value.trim().toUpperCase();
-            if (!fiscal) return showToast('Falta Dirección Fiscal.', 'error');
-            if (fiscal === inst) return showToast('Direcciones no pueden ser iguales.', 'warning');
-            
-            // Sync rows
-            const rows = state.activeSupRows;
-            rows.forEach(row => {
-                const domQty = byId('qty_' + row.id); const domPrice = byId('price_' + row.id); const domSel = byId('sel_' + row.id);
-                if (domQty && domPrice && domSel) {
-                    const rawQty = domQty.value.replace(/\D/g, ''); const qty = parseInt(rawQty) || 0;
-                    const priceStr = domPrice.value; const price = parseMoney(priceStr);
-                    const sub = qty * price; const subFormatted = formatMoney(sub);
-                    row.service = domSel.value; row.qty = qty; row.price = priceStr; row.sub = subFormatted; row.subValue = sub;
-                }
+                
+                if(l.mesVenta) months.add(l.mesVenta);
+                if(l.supervisor) supervisors.add(l.supervisor);
+                if(l.eecc) eeccs.add(l.eecc);
+                if(l.anchoBanda) bws.add(l.anchoBanda);
+                if(l.tipoServicio) types.add(l.tipoServicio);
+                if(l.access) accesses.add(l.access);
+                if(l.estado) statuses.add(l.estado);
             });
-            updateGlobalSupTotal();
 
-            // Date Parts
-            const dateVal = byId('FECHA_FIRMA').value;
-            let dateExtras = {};
-            if(dateVal) {
-                const [y, m, d] = dateVal.split('-'); 
-                const dateObj = new Date(y, parseInt(m)-1, d); 
-                dateExtras = { 'DIA': d, 'MES': getMonthName(dateObj.getMonth()), 'AÑO': y, 'ANO': y };
-            }
-
-            const nro = byId('NRO_OPORT').value.trim().replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' '); const suffix = nro ? ` - ${nro}.pdf` : '.pdf'; const prefix = state.serviceType === 'pack' ? 'Pack ' : '';
-            const st = byId('exportStatus'); st.className = "mt-4 text-xs p-4 rounded-xl border flex items-start gap-3 bg-blue-50 text-blue-700 border-blue-100 font-medium animate-fade-in"; st.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 loading-spin mt-0.5"></i> <span>Generando documentos...</span>'; st.classList.remove('hidden'); lucide.createIcons();
-            
-            try {
-                await generatePdf(prefix + 'Arrendamiento.pdf', MAP_ARR, prefix + 'Arrendamiento' + suffix, dateExtras);
-                
-                let supValues = { ...dateExtras }; 
-                state.activeSupRows.forEach((row, i) => {
-                    const serviceInfo = SUP_SERVICES_DATA.find(s => s.id === row.service);
-                    if (serviceInfo) {
-                        const qtyVal = String(row.qty).padStart(2, '0');
-                        supValues[serviceInfo.cantField] = qtyVal; 
-                        supValues[serviceInfo.subField] = row.sub;
-                    }
+            // Helper para llenar select
+            const fill = (id, set) => {
+                const sel = byId(id);
+                const currentVal = sel.value; // Guardar selección actual si existe
+                sel.innerHTML = '<option value="">Todos</option>';
+                const sorted = Array.from(set).sort();
+                sorted.forEach(val => {
+                    if(!val || val === '-') return;
+                    const opt = document.createElement('option');
+                    opt.value = val;
+                    opt.textContent = val;
+                    sel.appendChild(opt);
                 });
-                await generatePdf(prefix + 'Servicios Suplementarios.pdf', MAP_SUP, prefix + 'Servicios Suplementarios' + suffix, supValues);
-                await generatePdf(prefix + 'Tarifas y Servicios.pdf', MAP_TAR, prefix + 'Tarifas y Servicios' + suffix, dateExtras);
-
-                if(byId('checkPortabilidad').checked) {
-                      const op = byId('selOperador').value;
-                      const portMapFinal = { 'RAZON SOCIAL': byId('RAZON_SOCIAL').value, 'RL': byId('RL').value, 'RUC': byId('RUC').value, 'CONT_TELEF': byId('CONT_TELEF').value, 'CONT_CORREO': byId('CONT_CORREO').value, 'NUM_TELF': byId('NUM_TELF').value };
-                      if (dateVal) { const [y, m, d] = dateVal.split('-'); portMapFinal['FECHA CONT1'] = `${d}/${m}/${y}`; }
-                      const now = new Date(); const h = String(now.getHours()).padStart(2, '0'); const min = String(now.getMinutes()).padStart(2, '0'); const sec = String(now.getSeconds()).padStart(2, '0');
-                      portMapFinal['HORA CONT'] = `${h}:${min}:${sec}`;
-                      if(op === 'AMERICA_MOVIL') portMapFinal['CLARO'] = 'X'; if(op === 'TELEFONICA') portMapFinal['MOVISTAR'] = 'X'; if(op === 'VIETTEL') portMapFinal['BITEL'] = 'X'; if(op === 'OTRO') portMapFinal['OTRO'] = 'X';
-                      await generatePdf('Pack Portabilidad.pdf', portMapFinal, 'Pack Portabilidad' + suffix);
+                if(currentVal && Array.from(sel.options).some(o => o.value === currentVal)) {
+                    sel.value = currentVal;
                 }
-                
-                const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
-                const planName = byId('NOM_PLAN').value || '-';
-                const anchoBanda = `${byId('VEL_MAX_BAJ').value} / ${byId('VEL_MAX_SUB').value} Mbps`;
-                
-                logs.unshift({ 
-                    mesVenta: getMonthName(new Date().getMonth()),
-                    gestor: state.currentUser.u,
-                    supervisor: '-', 
-                    eecc: 'MOBILENET',
-                    tipoRuc: byId('RUC').value.startsWith('20') ? 'RUC 20' : 'RUC 10',
-                    ruc: byId('RUC').value || '-',
-                    razonSocial: byId('RAZON_SOCIAL').value || '-',
-                    anchoBanda: anchoBanda,
-                    tipoServicio: state.serviceType.toUpperCase(),
-                    costo: byId('TARIF_MENS').value || '0.00',
-                    access: 'FIBRA', 
-                    fechaIngreso: new Date().toLocaleDateString(),
-                    psi: '-', opp: '-', saf: '-', siro: '-', estado: 'INGRESADO', promocion: '-', fechaAdmision: '-', mesAdmision: '-', observaciones: '-',
-                    asunto: `Solicitud de Servicio - ${byId('RAZON_SOCIAL').value || '-'}`,
-                    correo: byId('CORREO').value || '-',
-                    date: new Date().toLocaleString(), 
-                    nroOport: byId('NRO_OPORT').value || 'S/N', 
-                    plan: planName, 
-                    user: state.currentUser.u 
-                });
-                localStorage.setItem(KEYS.LOGS, JSON.stringify(logs));
-                
-                st.className = "mt-4 text-xs p-4 rounded-xl border flex items-start gap-3 bg-green-50 text-green-700 border-green-100 font-medium animate-fade-in"; st.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 mt-0.5"></i> <span>¡Documentos generados exitosamente!</span>'; lucide.createIcons();
-                showToast('Contratos generados correctamente.', 'success');
-            } catch (e) { 
-                st.className = "mt-4 text-xs p-4 rounded-xl border flex items-start gap-3 bg-red-50 text-red-700 border-red-100 font-medium animate-fade-in"; st.innerHTML = `<i data-lucide="alert-octagon" class="w-4 h-4 mt-0.5"></i> <span>Error: ${e.message}</span>`; lucide.createIcons();
-            }
-        }
-        
-        async function generatePdf(fileName, map, outName, extraValues = null) {
-            let pdfDoc;
-            try {
-                if (!window.PDFLib) throw new Error("Librería PDF no cargada.");
-                const resp = await fetch(fileName);
-                if (!resp.ok) throw new Error("Plantilla no encontrada");
-                const arrBuffer = await resp.arrayBuffer();
-                pdfDoc = await PDFLib.PDFDocument.load(arrBuffer);
-                const form = pdfDoc.getForm();
-                const safeSetText = (key, val) => {
-                    const strVal = String(val || '');
-                    try { const f = form.getTextField(key); f.setText(strVal); } catch(e1) { try { const f2 = form.getTextField(key + ' '); f2.setText(strVal); } catch(e2) { try { const f3 = form.getTextField(key.trim()); f3.setText(strVal); } catch(e3) { } } }
-                };
-                for (const [pdfField, domId] of Object.entries(map)) { try { const el = byId(domId); if (el) safeSetText(pdfField, el.value); else safeSetText(pdfField, map[pdfField]); } catch(e) {} }
-                if (extraValues) { for (const [key, val] of Object.entries(extraValues)) { safeSetText(key, val); } }
-                form.flatten();
-            } catch (err) {
-                // Fallback Simple
-                if (!window.PDFLib) return alert("Error crítico PDF.");
-                pdfDoc = await PDFLib.PDFDocument.create();
-                let page = pdfDoc.addPage([595.28, 841.89]);
-                const { width, height } = page.getSize();
-                const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
-                const fontBold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
-                let y = height - 50;
-                page.drawText(`CONTRATO: ${outName}`, { x: 50, y, size: 16, font: fontBold, color: PDFLib.rgb(0, 0.36, 0.72) });
-                y -= 40;
-                const drawField = (label, value) => {
-                    if (y < 50) { page = pdfDoc.addPage([595.28, 841.89]); y = height - 50; }
-                    page.drawText(label + ":", { x: 50, y, size: 10, font: fontBold });
-                    page.drawText(String(value || '-').toUpperCase(), { x: 200, y, size: 10, font: font });
-                    y -= 15;
-                };
-                for (const [pdfField, domId] of Object.entries(map)) { const el = byId(domId); if(el) drawField(pdfField, el.value); else drawField(pdfField, map[pdfField]); }
-                if (extraValues) for (const [key, val] of Object.entries(extraValues)) drawField(key, val);
-            }
-            const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = outName; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            };
+
+            fill('filterYear', years);
+            fill('filterMonth', months);
+            fill('filterSup', supervisors);
+            fill('filterEecc', eeccs);
+            fill('filterBandwidth', bws);
+            fill('filterType', types);
+            fill('filterAccess', accesses);
+            fill('filterStatus', statuses);
         }
 
-        function initConfigView() { renderUsers(); renderPlans(); updateStats(); }
-        
-        // --- COMPLETANDO LÓGICA DE USUARIOS ---
-        function renderUsers() {
-            const cont = byId('usersList'); 
-            cont.innerHTML = ''; 
-            const filter = norm(byId('searchUser').value);
-            
-            const filtered = state.users.filter(u => u.uLower.includes(filter));
-            byId('userCountBadge').textContent = `${filtered.length} Usuarios`;
-
-            filtered.forEach(u => {
-                const isMe = state.currentUser && state.currentUser.u === u.u;
-                const card = document.createElement('div');
-                card.className = "bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex justify-between items-center group";
-                card.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 ${u.role === 'admin' ? 'bg-brand-50 text-brand-600' : 'bg-gray-100 text-gray-500'} rounded-xl flex items-center justify-center font-bold text-lg border border-transparent group-hover:border-gray-200 transition-colors">
-                            ${u.u.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-sm">${u.u}</h4>
-                            <div class="flex gap-2 mt-1">
-                                <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${u.role === 'admin' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'}">${u.role}</span>
-                                ${u.restrictIp ? '<span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">IP Restringida</span>' : ''}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onclick="resetPassword('${u.uid}')" class="p-2 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors" title="Reset Password"><i data-lucide="key" class="w-4 h-4"></i></button>
-                        ${!isMe ? `<button onclick="deleteUser('${u.uid}')" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Eliminar"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
-                    </div>
-                `;
-                cont.appendChild(card);
-            });
-            lucide.createIcons();
+        // 2. Limpiar Filtros
+        function clearLogFilters() {
+            ['filterYear', 'filterMonth', 'filterSup', 'filterEecc', 'filterBandwidth', 'filterType', 'filterAccess', 'filterStatus'].forEach(id => byId(id).value = "");
+            renderLogs();
         }
 
-        function createNewUser() {
-            const uVal = byId('newUserName').value.trim();
-            const pVal = byId('newUserPass').value.trim();
-            const role = byId('newUserRole').value;
-            const restrict = byId('newUserRestrict').checked;
-
-            if(!uVal || !pVal) return showToast('Complete usuario y contraseña.', 'error');
-            const uid = userId(uVal);
-            if(state.users.some(u => u.uid === uid)) return showToast('El usuario ya existe.', 'warning');
-
-            state.users.push({ u: uVal, p: pVal, role, restrictIp: restrict, uLower: norm(uVal), uid });
-            localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
-            
-            byId('newUserName').value = ''; byId('newUserPass').value = '';
-            renderUsers(); showToast('Usuario creado correctamente.', 'success');
-        }
-
-        function deleteUser(uid) {
-            if(!confirm('¿Eliminar este usuario?')) return;
-            state.users = state.users.filter(u => u.uid !== uid);
-            localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
-            renderUsers(); showToast('Usuario eliminado.', 'info');
-        }
-        
-        function resetPassword(uid) {
-            const newPass = Math.random().toString(36).slice(-8);
-            prompt(`Nueva contraseña para el usuario (copiar):`, newPass);
-            const idx = state.users.findIndex(u => u.uid === uid);
-            if(idx !== -1) {
-                state.users[idx].p = newPass;
-                localStorage.setItem(KEYS.USERS, JSON.stringify(state.users));
-                showToast('Contraseña actualizada.', 'success');
-            }
-        }
-
-        function generateUserPass() {
-            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%";
-            let pass = "";
-            for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            byId('newUserPass').value = pass;
-        }
-
-        // --- COMPLETANDO LÓGICA DE PLANES ---
-        function renderPlans() {
-            const tbody = byId('plansListBody');
-            tbody.innerHTML = '';
-            const search = norm(byId('searchPlan').value);
-            
-            const filtered = state.plans.filter(p => norm(p.name).includes(search));
-            byId('planFooterCount').textContent = `${filtered.length} Planes mostrados`;
-            
-            filtered.forEach((p, idx) => {
-                // Encontrar el índice real en el array original para la edición
-                const realIdx = state.plans.indexOf(p);
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-gray-50 group transition-colors";
-                tr.innerHTML = `
-                    <td class="p-5 pl-8 font-bold text-gray-700">${p.name}</td>
-                    <td class="p-5"><span class="px-2 py-1 rounded text-xs font-bold uppercase ${p.type==='pack'?'bg-orange-100 text-orange-700':(p.type==='dedicado'?'bg-purple-100 text-purple-700':'bg-blue-100 text-blue-700')}">${p.type}</span></td>
-                    <td class="p-5 font-mono text-gray-600 text-xs">T: S/ ${p.tarif}<br>CF: S/ ${p.cargoFijo || '-'}</td>
-                    <td class="p-5 text-xs text-gray-500">
-                        <div class="flex gap-2">
-                            <span class="text-green-600 font-bold">↓ ${p.vmb}</span>
-                            <span class="text-blue-600 font-bold">↑ ${p.vms}</span>
-                        </div>
-                        <span class="text-[10px] text-gray-400">Gar: ${p.minGar}</span>
-                    </td>
-                    <td class="p-5 text-gray-500">${p.plazo} m</td>
-                    <td class="p-5 text-center">
-                        <button onclick="openPlanModal(${realIdx})" class="text-gray-400 hover:text-brand-600 p-2 rounded-lg hover:bg-brand-50 transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-            lucide.createIcons();
-        }
-
-        function updateStats() {
-            byId('statTotal').textContent = state.plans.length;
-        }
-
-        // --- LOGICA DE HISTORIAL Y MODAL DE EDICIÓN ---
-        // Variable ya no es necesaria, usaremos index directo en DOM
-        // let currentDetailLog = null;
-
+        // 3. Render Logs con lógica de filtrado
         function renderLogs() { 
             const tbody = byId('logsTableBody'); 
-            const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; 
+            let logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || []; 
             tbody.innerHTML = ''; 
+
+            // --- FILTRADO ---
+            const fYear = byId('filterYear').value;
+            const fMonth = byId('filterMonth').value;
+            const fSup = byId('filterSup').value;
+            const fEecc = byId('filterEecc').value;
+            const fBw = byId('filterBandwidth').value;
+            const fType = byId('filterType').value;
+            const fAccess = byId('filterAccess').value;
+            const fStatus = byId('filterStatus').value;
+
+            const filteredLogs = logs.filter((l, idx) => {
+                // Preservar índice original para edición
+                l._originalIdx = idx;
+
+                // Logica Año
+                let y = '';
+                if(l.fechaIngreso) y = l.fechaIngreso.split('/')[2];
+                else if(l.date) y = l.date.split(' ')[0].split('/')[2];
+                
+                if (fYear && y !== fYear) return false;
+                if (fMonth && l.mesVenta !== fMonth) return false;
+                if (fSup && l.supervisor !== fSup) return false;
+                if (fEecc && l.eecc !== fEecc) return false;
+                if (fBw && l.anchoBanda !== fBw) return false;
+                if (fType && l.tipoServicio !== fType) return false;
+                if (fAccess && l.access !== fAccess) return false;
+                if (fStatus && l.estado !== fStatus) return false;
+                
+                return true;
+            });
             
-            if (logs.length === 0) { 
-                tbody.innerHTML = '<tr><td colspan="21" class="p-10 text-center text-gray-400 italic bg-gray-50/50">No hay registros aún.</td></tr>'; 
+            if (filteredLogs.length === 0) { 
+                tbody.innerHTML = '<tr><td colspan="21" class="p-10 text-center text-gray-400 italic bg-gray-50/50">No hay registros que coincidan con los filtros.</td></tr>'; 
                 return; 
             } 
             
-            logs.forEach((l, idx) => { 
+            filteredLogs.forEach((l) => { 
                 const tr = document.createElement('tr'); 
                 tr.className = "hover:bg-brand-50/30 transition-colors border-b border-gray-50 cursor-pointer text-xs group";
                 
                 const safeVal = (v) => v || '-';
                 
-                // ACTUALIZADO: Pasamos el índice (idx) para editar
-                tr.onclick = () => openEditLogModal(idx);
+                // Usamos el índice original guardado
+                tr.onclick = () => openEditLogModal(l._originalIdx);
 
                 tr.innerHTML = `
                     <td class="p-4 font-semibold text-gray-600 group-hover:text-brand-600">${safeVal(l.mesVenta)}</td>
@@ -2392,7 +1864,11 @@
 
             // Guardar y refrescar
             localStorage.setItem(KEYS.LOGS, JSON.stringify(logs));
+            
+            // Refrescar tabla y filtros (por si cambiaron valores únicos)
+            populateLogFilters();
             renderLogs();
+            
             closeLogModal();
             showToast('Registro actualizado correctamente.', 'success');
         }
