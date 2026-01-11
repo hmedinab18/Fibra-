@@ -282,24 +282,12 @@
             <!-- Panel Busqueda de Venta -->
             <div id="panel-home-search" class="hidden-vis fade-in">
                 <div class="card mb-6">
-                    <h3 class="card-header border-0 pb-2 mb-2">Búsqueda Rápida</h3>
+                    <h3 class="card-header border-0 pb-2 mb-2">Búsqueda de Venta</h3>
                     <div class="flex gap-2">
-                        <input id="homeSearchInput" class="input" placeholder="Buscar por RUC o Razón Social..." onkeyup="if(event.key === 'Enter') executeSalesSearch()">
+                        <input id="homeSearchInput" class="input" placeholder="Ingrese N° de OPP / ID para buscar..." onkeyup="if(event.key === 'Enter') executeSalesSearch()">
                         <button onclick="executeSalesSearch()" class="btn"><i data-lucide="search" class="w-4 h-4"></i> Buscar</button>
                     </div>
-                </div>
-                <div id="homeSearchResults" class="hidden-vis">
-                    <div class="card p-0 overflow-hidden">
-                         <div class="px-6 py-4 bg-gray-50 border-b border-gray-100"><h3 class="font-bold text-sm text-gray-700">Resultados</h3></div>
-                         <div class="overflow-x-auto">
-                             <table class="w-full text-xs text-left">
-                                 <thead class="bg-gray-50 text-gray-600 font-bold border-b border-gray-200">
-                                     <tr><th class="p-3">Fecha</th><th class="p-3">RUC</th><th class="p-3">Razón Social</th><th class="p-3">Usuario</th></tr>
-                                 </thead>
-                                 <tbody id="homeSearchBody" class="divide-y divide-gray-100"></tbody>
-                             </table>
-                         </div>
-                    </div>
+                    <p class="text-xs text-gray-400 mt-2 ml-1">Los resultados se abrirán en una nueva ventana.</p>
                 </div>
             </div>
 
@@ -640,6 +628,39 @@
             <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
                 <button onclick="closeEditLogModal()" class="btn alt">Cancelar</button>
                 <button onclick="saveLogChanges()" class="btn">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEARCH RESULT MODAL (NEW) -->
+    <div id="searchResultModal" class="fixed inset-0 z-[80] flex items-center justify-center bg-gray-900/60 backdrop-blur-sm hidden-vis">
+        <div class="w-full max-w-6xl bg-white rounded-xl shadow-2xl overflow-hidden m-4 flex flex-col max-h-[90vh]">
+            <div class="bg-entel-blue px-6 py-4 flex justify-between items-center text-white">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i data-lucide="search" class="w-5 h-5"></i> Resultados de Búsqueda</h3>
+                <button onclick="closeSearchModal()" class="hover:bg-white/20 p-1 rounded transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-0 overflow-auto flex-1">
+                 <div class="overflow-x-auto">
+                     <table class="w-full text-xs text-left whitespace-nowrap">
+                         <thead class="bg-gray-50 text-gray-600 font-bold border-b border-gray-200 sticky top-0 shadow-sm">
+                             <tr>
+                                 <th class="p-3 bg-gray-50">F. Ingreso</th>
+                                 <th class="p-3 bg-gray-50">RUC</th>
+                                 <th class="p-3 bg-gray-50">Razón Social</th>
+                                 <th class="p-3 bg-gray-50">Ancho Banda</th>
+                                 <th class="p-3 bg-gray-50">Promoción</th>
+                                 <th class="p-3 bg-gray-50">Supervisor</th>
+                                 <th class="p-3 bg-gray-50">EECC</th>
+                                 <th class="p-3 bg-gray-50">Estado</th>
+                                 <th class="p-3 bg-gray-50">F. Admisión</th>
+                             </tr>
+                         </thead>
+                         <tbody id="homeSearchBody" class="divide-y divide-gray-100"></tbody>
+                     </table>
+                 </div>
+            </div>
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
+                <button onclick="closeSearchModal()" class="btn">Cerrar</button>
             </div>
         </div>
     </div>
@@ -987,28 +1008,48 @@
 
         function executeSalesSearch() {
             const term = byId('homeSearchInput').value.trim().toLowerCase();
-            if(!term) return alert('Ingrese un término de búsqueda.');
+            if(!term) return alert('Ingrese un número de OPP / ID para buscar.');
             
             const logs = JSON.parse(localStorage.getItem(KEYS.LOGS)) || [];
-            const results = logs.filter(l => 
-                (l.RUC && l.RUC.includes(term)) || 
-                (l.RAZON_SOCIAL && l.RAZON_SOCIAL.toLowerCase().includes(term))
-            );
+            // Filtrar estrictamente por OPP (contiene el termino)
+            const results = logs.filter(l => l.opp && String(l.opp).toLowerCase().includes(term));
 
-            byId('homeSearchResults').classList.remove('hidden-vis');
             const tbody = byId('homeSearchBody');
             tbody.innerHTML = '';
 
             if(results.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-gray-500">No se encontraron resultados.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" class="p-8 text-center text-gray-500 italic">No se encontraron ventas con ese OPP.</td></tr>';
             } else {
                 results.forEach(r => {
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-gray-50";
-                    tr.innerHTML = `<td class="p-3 text-gray-500">${r.date || '-'}</td><td class="p-3 font-mono text-xs">${r.RUC || '-'}</td><td class="p-3 font-semibold text-gray-700">${r.RAZON_SOCIAL || '-'}</td><td class="p-3 text-gray-500">${r.user || '-'}</td>`;
+                    tr.className = "hover:bg-blue-50 transition-colors";
+                    
+                    // Función auxiliar para valores nulos
+                    const v = (val) => val || '-';
+                    
+                    // Mapeo de columnas solicitado:
+                    // 1. F. Ingreso, 2. RUC, 3. Razon Social, 4. Ancho Banda, 5. Promocion, 6. Supervisor, 7. EECC, 8. Estado, 9. F. Admision
+                    tr.innerHTML = `
+                        <td class="p-3 font-mono text-gray-600">${v(r.f_ingreso)}</td>
+                        <td class="p-3 font-mono text-gray-600">${v(r.ruc)}</td>
+                        <td class="p-3 font-bold text-gray-800">${v(r.razon_social)}</td>
+                        <td class="p-3 text-gray-600">${v(r.ancho_banda)}</td>
+                        <td class="p-3 text-xs text-gray-500 truncate max-w-[150px]" title="${v(r.promocion)}">${v(r.promocion)}</td>
+                        <td class="p-3 text-gray-600">${v(r.supervisor)}</td>
+                        <td class="p-3 text-gray-600">${v(r.eecc)}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-[10px] font-bold border border-gray-200">${v(r.estado)}</span></td>
+                        <td class="p-3 text-gray-600">${v(r.f_admision)}</td>
+                    `;
                     tbody.appendChild(tr);
                 });
             }
+            
+            // Mostrar Modal
+            byId('searchResultModal').classList.remove('hidden-vis');
+        }
+
+        function closeSearchModal() {
+            byId('searchResultModal').classList.add('hidden-vis');
         }
 
         // --- ADMIN LOGIC ---
